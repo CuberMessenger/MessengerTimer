@@ -24,20 +24,25 @@ namespace MessengerTimer {
 
     enum TimerStatus { Waiting, Display, Observing, Timing }
 
-    class BingPictureJson {
-        public string url { get; set; }
-        public string copyright { get; set; }
-        public string copyrightlink { get; set; }
-    }
-
     public sealed partial class MainPage : Page {
-        private TimerStatus TimerStatus;
-        private bool needObserving;
-        private DispatcherTimer refreshTimeTimer;
-        private DateTime startTime;
-        private DateTime endTime;
+        //Static Val
+        private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
+        private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
+        private static Brush RedBrush = new SolidColorBrush(Windows.UI.Colors.Red);
+        private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
-        private BingPictureJson BingPictureJson;
+        //Useful Var
+        private TimerStatus TimerStatus { get; set; }
+        private DispatcherTimer refreshTimeTimer { get; set; }
+
+        //Display Var
+        private DateTime startTime { get; set; }
+        private DateTime endTime { get; set; }
+
+        //Config Var
+        private bool needObserving { get; set; }
+        private long startDelay { get; set; }
+        private string timerFormat { get; set; }
 
         public MainPage() {
             this.InitializeComponent();
@@ -46,16 +51,14 @@ namespace MessengerTimer {
 
         private void Init() {
             InitBingBackground();
+            InitConfig();
+            InitUI();
 
             TimerStatus = TimerStatus.Waiting;
-            needObserving = true;
 
             refreshTimeTimer = new DispatcherTimer();
             refreshTimeTimer.Interval = new TimeSpan(10000);
             refreshTimeTimer.Tick += RefreshTimeTimer_Tick;
-
-            StatusTextBlock.Text = TimerStatus.ToString();
-            DisplayTime(new TimeSpan(0));
 
             Window.Current.CoreWindow.KeyUp += Space_KeyUp;
             Window.Current.CoreWindow.KeyDown += Space_KeyDown;
@@ -67,8 +70,19 @@ namespace MessengerTimer {
             BackGroundGrid.Background = image;
         }
 
+        private void InitConfig() {
+            needObserving = true;
+            startDelay = 3000000;
+            timerFormat = "s.fff";
+        }
+
+        private void InitUI() {
+            StatusTextBlock.Text = TimerStatus.ToString();
+            DisplayTime(new TimeSpan(0));
+        }
+
         private void DisplayTime(TimeSpan timeSpan) {
-            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString("s.fff");
+            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(timerFormat);
         }
 
         private void StopTimer() {
@@ -77,6 +91,10 @@ namespace MessengerTimer {
             refreshTimeTimer.Stop();
 
             //Todo
+        }
+
+        private void RefreshStatusTextBlock() {
+            StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
         }
 
         private void Space_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
@@ -90,7 +108,8 @@ namespace MessengerTimer {
                     default:
                         break;
                 }
-                StatusTextBlock.Text = TimerStatus.ToString();
+                TimerTextBlock.Foreground = TimerStatus == TimerStatus.Display ? RedBrush : YellowBrush;
+                RefreshStatusTextBlock();
             }
         }
 
@@ -109,6 +128,7 @@ namespace MessengerTimer {
             if (args.VirtualKey == Windows.System.VirtualKey.Space) {
                 switch (TimerStatus) {
                     case TimerStatus.Waiting:
+
                         if (needObserving) {
                             TimerStatus = TimerStatus.Observing;
                             //Todo
@@ -131,7 +151,8 @@ namespace MessengerTimer {
                     default:
                         break;
                 }
-                StatusTextBlock.Text = TimerStatus.ToString();
+                TimerTextBlock.Foreground = BlackBrush;
+                RefreshStatusTextBlock();
             }
         }
     }

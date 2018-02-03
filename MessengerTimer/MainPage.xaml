@@ -2,10 +2,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="MainPageLargerTextBlock">
+            <Setter Property="FontSize" Value="50" />
+        </Style>
+        <Style TargetType="TextBlock" x:Key="MainPageSmallerTextBlock">
+            <Setter Property="FontSize" Value="30" />
+        </Style>
+    </Page.Resources>
 
     <Grid Name="BackGroundGrid">
         <Grid Margin="0 100" Background="#BFFFFFFF">
             <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
@@ -16,10 +25,33 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <TextBlock Name="StatusTextBlock" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" />
+            <TextBlock Name="StatusTextBlock" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
+                    VerticalAlignment="Center" Style="{StaticResource MainPageLargerTextBlock}" />
 
-            <TextBlock Name="TimerTextBlock" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center"
-                    VerticalAlignment="Top" FontSize="50" Margin="0 50 0 0" />
+            <Grid Grid.Row="2" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="AverageOf 5: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Name="Ao5ValueTextBlock" Text="12.345" Margin="30 0 0 0"
+                                Style="{StaticResource MainPageLargerTextBlock}" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="AverageOf 12: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                VerticalAlignment="Center" />
+                        <TextBlock Name="Ao12ValueTextBlock" Text="67.890" Margin="30 0 0 0"
+                                Style="{StaticResource MainPageLargerTextBlock}" />
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center"
+                        Margin="0 35 0 0" VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
+            </Grid>
         </Grid>
     </Grid>
 </Page>
