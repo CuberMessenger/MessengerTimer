@@ -12,7 +12,7 @@
     </Page.Resources>
 
     <Grid Name="BackGroundGrid">
-        <Grid Margin="0 100" Background="#BFFFFFFF">
+        <Grid Margin="0 100" Background="#A5FFFFFF">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50" />
                 <RowDefinition Height="*" />

@@ -22,7 +22,9 @@ namespace MessengerTimer {
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
 
-    enum TimerStatus { Waiting, Display, Observing, Timing }
+    enum TimerStatus { Waiting, Display, Observing, Holding, Timing }
+
+    enum DisplayMode { RealTime, OnlyOberving }
 
     public sealed partial class MainPage : Page {
         //Static Val
@@ -32,8 +34,10 @@ namespace MessengerTimer {
         private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
         //Useful Var
-        private TimerStatus TimerStatus { get; set; }
+        private TimerStatus timerStatus { get; set; }
         private DispatcherTimer refreshTimeTimer { get; set; }
+        private DispatcherTimer holdingCheckTimer { get; set; }
+        private bool isHolding { get; set; }
 
         //Display Var
         private DateTime startTime { get; set; }
@@ -43,25 +47,18 @@ namespace MessengerTimer {
         private bool needObserving { get; set; }
         private long startDelay { get; set; }
         private string timerFormat { get; set; }
+        private DisplayMode displayMode { get; set; }
 
         public MainPage() {
             this.InitializeComponent();
             Init();
         }
 
-        private void Init() {
-            InitBingBackground();
-            InitConfig();
-            InitUI();
-
-            TimerStatus = TimerStatus.Waiting;
-
-            refreshTimeTimer = new DispatcherTimer();
-            refreshTimeTimer.Interval = new TimeSpan(10000);
-            refreshTimeTimer.Tick += RefreshTimeTimer_Tick;
-
-            Window.Current.CoreWindow.KeyUp += Space_KeyUp;
-            Window.Current.CoreWindow.KeyDown += Space_KeyDown;
+        private void InitConfig() {
+            needObserving = false;
+            startDelay = 3000000;
+            timerFormat = "s.fff";
+            displayMode = DisplayMode.RealTime;
         }
 
         private void InitBingBackground() {
@@ -70,19 +67,58 @@ namespace MessengerTimer {
             BackGroundGrid.Background = image;
         }
 
-        private void InitConfig() {
-            needObserving = true;
-            startDelay = 3000000;
-            timerFormat = "s.fff";
+        private void InitUI() {
+            InitBingBackground();
+            StatusTextBlock.Text = timerStatus.ToString();
+            ResetTimer();
+        }
+
+        private void Init() {
+            InitConfig();
+            InitUI();
+
+            timerStatus = TimerStatus.Waiting;
+
+            holdingCheckTimer = new DispatcherTimer();
+            holdingCheckTimer.Interval = new TimeSpan(startDelay);
+            holdingCheckTimer.Tick += HoldingCheckTimer_Tick;
+
+            switch (displayMode) {
+                case DisplayMode.RealTime:
+                    refreshTimeTimer = new DispatcherTimer();
+                    refreshTimeTimer.Interval = new TimeSpan(10000);
+                    refreshTimeTimer.Tick += RefreshTimeTimer_Tick;
+
+                    Window.Current.CoreWindow.KeyUp += RealTimeSpaceKeyUp;
+                    Window.Current.CoreWindow.KeyDown += RealTimeSpaceKeyDown;
+                    break;
+                case DisplayMode.OnlyOberving:
+                    //Todo
+                    break;
+                default:
+                    break;
+            }
+
+            //Hot Key
+            Window.Current.CoreWindow.KeyUp += EscapeKeyUp;
+        }
+
+        private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
+            if (args.VirtualKey == Windows.System.VirtualKey.Escape && timerStatus == TimerStatus.Waiting)
+                ResetTimer();
+        }
+
+        private void HoldingCheckTimer_Tick(object sender, object e) {
+            if (isHolding) {
+                timerStatus = TimerStatus.Holding;
+                TimerTextBlock.Foreground = GreenBrush;
+            }
+            isHolding = false;
+            holdingCheckTimer.Stop();
         }
 
         private void ResetTimer() {
             DisplayTime(new TimeSpan(0));
-        }
-
-        private void InitUI() {
-            StatusTextBlock.Text = TimerStatus.ToString();
-            ResetTimer();
         }
 
         private void DisplayTime(TimeSpan timeSpan) {
@@ -93,73 +129,26 @@ namespace MessengerTimer {
             endTime = DateTime.Now;
             DisplayTime(endTime - startTime);
             refreshTimeTimer.Stop();
-
-            //Todo
         }
 
         private void RefreshStatusTextBlock() {
-            StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
+            StatusTextBlock.Text = timerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : timerStatus.ToString();
         }
 
-        private void Space_KeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
-            if (args.VirtualKey == Windows.System.VirtualKey.Space) {
-                switch (TimerStatus) {
-                    case TimerStatus.Timing:
-                        TimerStatus = TimerStatus.Display;
-                        StopTimer();
-                        //Todo
-                        break;
-                    default:
-                        break;
-                }
-                TimerTextBlock.Foreground = TimerStatus == TimerStatus.Display ? RedBrush : YellowBrush;
-                RefreshStatusTextBlock();
-            }
+        private void StartHoldingTick() {
+            isHolding = true;
+            TimerTextBlock.Foreground = YellowBrush;
+            holdingCheckTimer.Start();
         }
 
         private void StartTimer() {
             startTime = DateTime.Now;
             refreshTimeTimer.Start();
-            //Todo
         }
 
         private void RefreshTimeTimer_Tick(object sender, object e) {
             endTime = DateTime.Now;
             DisplayTime(endTime - startTime);
-        }
-
-        private void Space_KeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
-            if (args.VirtualKey == Windows.System.VirtualKey.Space) {
-                switch (TimerStatus) {
-                    case TimerStatus.Waiting:
-
-                        if (needObserving) {
-                            TimerStatus = TimerStatus.Observing;
-
-                            ResetTimer();
-                            //Todo
-                        }
-                        else {
-                            TimerStatus = TimerStatus.Timing;
-                            StartTimer();
-                            //Todo
-                        }
-                        break;
-                    case TimerStatus.Observing:
-                        TimerStatus = TimerStatus.Timing;
-                        StartTimer();
-                        //Todo
-                        break;
-                    case TimerStatus.Display:
-                        TimerStatus = TimerStatus.Waiting;
-                        //Todo
-                        break;
-                    default:
-                        break;
-                }
-                TimerTextBlock.Foreground = BlackBrush;
-                RefreshStatusTextBlock();
-            }
         }
     }
 }
