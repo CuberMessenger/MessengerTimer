@@ -76,9 +76,13 @@ namespace MessengerTimer {
             timerFormat = "s.fff";
         }
 
+        private void ResetTimer() {
+            DisplayTime(new TimeSpan(0));
+        }
+
         private void InitUI() {
             StatusTextBlock.Text = TimerStatus.ToString();
-            DisplayTime(new TimeSpan(0));
+            ResetTimer();
         }
 
         private void DisplayTime(TimeSpan timeSpan) {
@@ -131,6 +135,8 @@ namespace MessengerTimer {
 
                         if (needObserving) {
                             TimerStatus = TimerStatus.Observing;
+
+                            ResetTimer();
                             //Todo
                         }
                         else {
