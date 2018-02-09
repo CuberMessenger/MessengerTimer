@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using UIHelper;
+using TimeData;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -129,6 +130,8 @@ namespace MessengerTimer {
             endTime = DateTime.Now;
             DisplayTime(endTime - startTime);
             refreshTimeTimer.Stop();
+
+            
         }
 
         private void RefreshStatusTextBlock() {
@@ -149,6 +152,23 @@ namespace MessengerTimer {
         private void RefreshTimeTimer_Tick(object sender, object e) {
             endTime = DateTime.Now;
             DisplayTime(endTime - startTime);
+        }
+
+        private void SwitchLeftSplitView() {
+            PseudoHambergurMenu.IsPaneOpen = !PseudoHambergurMenu.IsPaneOpen;
+        }
+
+        private void HamburgerButton_Click(object sender, RoutedEventArgs e) {
+            SwitchLeftSplitView();
+        }
+
+        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            if (ResultListBoxItem.IsSelected) {
+                InfoFrame.Navigate(typeof(ResultPage));
+            }
+            else if (SettingListBoxItem.IsSelected) {
+
+            }
         }
     }
 }

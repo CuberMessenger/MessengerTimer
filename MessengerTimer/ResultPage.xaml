@@ -1,0 +1,26 @@
+﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:data="using:TimeData" mc:Ignorable="d">
+    <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="ResultText">
+            <Setter Property="FontSize" Value="30" />
+            <Setter Property="Margin" Value="10 0 10 0" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="data:Result">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id}" Style="{StaticResource ResultText}" />
+                        <!--<TextBlock Name="ResultTextBlock" Text="{x:Bind result.ToString('s.fff')}" Style="{StaticResource ResultText}" />-->
+                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind ao5Value}" Style="{StaticResource ResultText}" />
+                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind ao12Value}" Style="{StaticResource ResultText}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</Page>

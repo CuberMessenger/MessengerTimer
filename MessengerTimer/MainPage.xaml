@@ -6,15 +6,33 @@
         <Style TargetType="TextBlock" x:Key="MainPageLargerTextBlock">
             <Setter Property="FontSize" Value="50" />
         </Style>
+
         <Style TargetType="TextBlock" x:Key="MainPageSmallerTextBlock">
             <Setter Property="FontSize" Value="30" />
+        </Style>
+
+        <Style TargetType="Button" x:Key="MainPageLeftSideButton">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="36" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="MainPageSplitViewText">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="36" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="MainPageSplitViewPaneText">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="20 0 0 0" />
         </Style>
     </Page.Resources>
 
     <Grid Name="BackGroundGrid">
         <Grid Margin="0 100" Background="#A5FFFFFF">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="2*" />
             </Grid.RowDefinitions>
@@ -24,6 +42,38 @@
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
+
+            <Button Name="HamburgerButton" Style="{StaticResource MainPageLeftSideButton}" Content="&#xE700;"
+                    Click="HamburgerButton_Click" />
+
+            <SplitView Name="PseudoHambergurMenu" DisplayMode="CompactOverlay" CompactPaneLength="56" Grid.Row="1"
+                    Grid.RowSpan="2" HorizontalAlignment="Left" OpenPaneLength="170">
+                <SplitView.Pane>
+                    <ListBox Name="IconListBox" SelectionMode="Single" SelectionChanged="IconListBox_SelectionChanged">
+                        <ListBoxItem Name="ResultListBoxItem">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="ResultIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE71D;" />
+
+                                <TextBlock Name="ResultTextBlock" Style="{StaticResource MainPageSplitViewPaneText}"
+                                        Text="Results" />
+                            </StackPanel>
+                        </ListBoxItem>
+
+                        <ListBoxItem Name="SettingListBoxItem">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="SettingIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE713;" />
+
+                                <TextBlock Name="SettingTextBlock" Style="{StaticResource MainPageSplitViewPaneText}"
+                                        Text="Settings" />
+                            </StackPanel>
+                        </ListBoxItem>
+                    </ListBox>
+                </SplitView.Pane>
+
+                <SplitView.Content>
+                    <Frame Name="InfoFrame" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                </SplitView.Content>
+            </SplitView>
 
             <TextBlock Name="StatusTextBlock" Grid.Row="1" Grid.Column="2" HorizontalAlignment="Center"
                     VerticalAlignment="Center" Style="{StaticResource MainPageLargerTextBlock}" />
@@ -36,21 +86,19 @@
 
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="AverageOf 5: " Style="{StaticResource MainPageSmallerTextBlock}"
-                                VerticalAlignment="Center" />
+                        <TextBlock Text=" AO5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
                         <TextBlock Name="Ao5ValueTextBlock" Text="12.345" Margin="30 0 0 0"
                                 Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="AverageOf 12: " Style="{StaticResource MainPageSmallerTextBlock}"
-                                VerticalAlignment="Center" />
+                        <TextBlock Text="AO12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
                         <TextBlock Name="Ao12ValueTextBlock" Text="67.890" Margin="30 0 0 0"
                                 Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
                 </StackPanel>
-                <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center"
-                        Margin="0 35 0 0" VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
+                <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center" Margin="0 35 0 0"
+                        VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
             </Grid>
         </Grid>
     </Grid>
