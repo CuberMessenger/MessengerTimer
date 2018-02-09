@@ -15,7 +15,7 @@
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id}" Style="{StaticResource ResultText}" />
-                        <!--<TextBlock Name="ResultTextBlock" Text="{x:Bind result.ToString('s.fff')}" Style="{StaticResource ResultText}" />-->
+                        <!--<TextBlock Name="ResultTextBlock" Text="{x:Bind result.ToString(&quot;s.fff&quot;)}" Style="{StaticResource ResultText}" />-->
                         <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind ao5Value}" Style="{StaticResource ResultText}" />
                         <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind ao12Value}" Style="{StaticResource ResultText}" />
                     </StackPanel>

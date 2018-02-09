@@ -22,14 +22,10 @@ namespace MessengerTimer {
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
     public sealed partial class ResultPage : Page {
-        public ObservableCollection<Result> Results;
+        public ObservableCollection<Result> Results = App.Results;
+
         public ResultPage() {
             this.InitializeComponent();
-            Results = new ObservableCollection<Result>();
-            Results.Add(new Result() { Id = 0, result = new TimeSpan(123145124), ao5Value = 12.345, ao12Value = 67.890 });
-            Results.Add(new Result() { Id = 1, result = new TimeSpan(12314123124), ao5Value = 12.5, ao12Value = 67.0 });
-            Results.Add(new Result() { Id = 2, result = new TimeSpan(121235124), ao5Value = 1, ao12Value = 6 });
-
         }
     }
 }

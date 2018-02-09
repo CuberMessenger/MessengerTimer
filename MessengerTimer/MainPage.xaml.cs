@@ -84,6 +84,10 @@ namespace MessengerTimer {
             holdingCheckTimer.Interval = new TimeSpan(startDelay);
             holdingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
+            //toDelete
+            App.Results = new System.Collections.ObjectModel.ObservableCollection<Result>();
+            //
+
             switch (displayMode) {
                 case DisplayMode.RealTime:
                     refreshTimeTimer = new DispatcherTimer();
@@ -131,7 +135,7 @@ namespace MessengerTimer {
             DisplayTime(endTime - startTime);
             refreshTimeTimer.Stop();
 
-            
+
         }
 
         private void RefreshStatusTextBlock() {
@@ -169,6 +173,10 @@ namespace MessengerTimer {
             else if (SettingListBoxItem.IsSelected) {
 
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            App.Results.Add(new Result() { Id = 2, result = new TimeSpan(121235124), ao5Value = 1, ao12Value = 345 });
         }
     }
 }
