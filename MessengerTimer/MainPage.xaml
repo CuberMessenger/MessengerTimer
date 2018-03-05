@@ -38,12 +38,12 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="400" />
                 <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Button Grid.Row="0" Grid.Column="1" Click="Button_Click" Content="test" />
+            <!--<Button Grid.Row="0" Grid.Column="1" Click="Button_Click" Content="test" />-->
 
             <Button Name="HamburgerButton" Style="{StaticResource MainPageLeftSideButton}" Content="&#xE700;" Click="HamburgerButton_Click" />
 
@@ -70,7 +70,7 @@
                 </SplitView.Pane>
 
                 <SplitView.Content>
-                    <Frame Name="InfoFrame" Width="Auto" VerticalAlignment="Top" HorizontalAlignment="Left" />
+                    <Frame Name="InfoFrame" Width="350" VerticalAlignment="Top" HorizontalAlignment="Left" />
                 </SplitView.Content>
             </SplitView>
 
@@ -85,12 +85,12 @@
 
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text=" AO5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
+                        <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
                         <TextBlock Name="Ao5ValueTextBlock" Text="12.345" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="AO12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
+                        <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
                         <TextBlock Name="Ao12ValueTextBlock" Text="67.890" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
                 </StackPanel>

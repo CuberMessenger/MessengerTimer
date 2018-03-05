@@ -135,7 +135,35 @@ namespace MessengerTimer {
             DisplayTime(endTime - startTime);
             refreshTimeTimer.Stop();
 
+            UpdateResult(endTime - startTime);
+        }
 
+        private void UpdateResult(TimeSpan result) {
+            App.Results.Insert(0, new Result(result, App.Results.Count + 1));
+
+            double ao5 = 0, ao12 = 0;
+
+            if (App.Results.Count >= 5) {
+                for (int i = 0; i < 5; i++)
+                    ao5 += App.Results[i].resultValue;
+                ao5 = Math.Round(ao5 / 5, 3);
+            }
+            else
+                ao5 = double.NaN;
+
+            if (App.Results.Count >= 12) {
+                for (int i = 0; i < 12; i++)
+                    ao12 += App.Results[i].resultValue;
+                ao12 = Math.Round(ao12 / 12, 3);
+            }
+            else
+                ao12 = double.NaN;
+
+            App.Results.First().ao5Value = ao5;
+            App.Results.First().ao12Value = ao12;
+
+            Ao5ValueTextBlock.Text = ao5.ToString();
+            Ao12ValueTextBlock.Text = ao12.ToString();
         }
 
         private void RefreshStatusTextBlock() {
@@ -175,8 +203,8 @@ namespace MessengerTimer {
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e) {
-            App.Results.Add(new Result() { Id = 2, result = new TimeSpan(121235124), ao5Value = 1, ao12Value = 345 });
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e) {
+        //    App.Results.Insert(0, new Result(new TimeSpan(12123415124), App.Results.Count + 1, 12.345, 67.890));
+        //}
     }
 }
