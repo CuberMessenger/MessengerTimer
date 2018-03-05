@@ -53,7 +53,7 @@
                     <ListBox Name="IconListBox" SelectionMode="Single" SelectionChanged="IconListBox_SelectionChanged">
                         <ListBoxItem Name="ResultListBoxItem">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Name="ResultIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE71D;" />
+                                <TextBlock Name="ResultIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE71D;"/>
 
                                 <TextBlock Name="ResultTextBlock" Style="{StaticResource MainPageSplitViewPaneText}" Text="Results" />
                             </StackPanel>

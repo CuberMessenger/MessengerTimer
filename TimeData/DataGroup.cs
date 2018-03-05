@@ -8,5 +8,7 @@ using System.Threading.Tasks;
 namespace TimeData {
     public class DataGroup {
         public ObservableCollection<Result> results { get; set; }
+        public string type { get; set; }
+        public int count { get; set; }
     }
 }

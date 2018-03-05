@@ -15,6 +15,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.Storage;
+using System.Threading.Tasks;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -39,6 +41,7 @@ namespace MessengerTimer {
         private DispatcherTimer refreshTimeTimer { get; set; }
         private DispatcherTimer holdingCheckTimer { get; set; }
         private bool isHolding { get; set; }
+        private List<DataGroup> dataGroups { get; set; }
 
         //Display Var
         private DateTime startTime { get; set; }
@@ -74,9 +77,54 @@ namespace MessengerTimer {
             ResetTimer();
         }
 
+        private void ParseSaveData(string raw) {
+            var rawArray = raw.Split(' ');
+
+            int index = 0;
+            for (int i = 0; i < int.Parse(rawArray.First()); i++) {
+                DataGroup dataGroup = new DataGroup { type = rawArray[++index], count = int.Parse(rawArray[++index]), results = new System.Collections.ObjectModel.ObservableCollection<Result>() };
+
+                for (int j = 0; j < dataGroup.count; j++)
+                    dataGroup.results.Add(new Result(j + 1, double.Parse(rawArray[++index]), double.Parse(rawArray[++index]), double.Parse(rawArray[++index])));
+
+                dataGroups.Add(dataGroup);
+            }
+        }
+
+        private async Task ReadSaveData() {
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile file;
+
+            try {
+                file = await storageFolder.GetFileAsync("SaveData");
+            }
+            catch (FileNotFoundException) {
+                await storageFolder.CreateFileAsync("SaveData");
+                file = await storageFolder.GetFileAsync("SaveData");
+            }
+
+            await FileIO.WriteTextAsync(file, "1 3x3 3 1.23 2.34 3.45 4.567 5.678 6.789 7.89 8.90 9.00");
+
+            string data = await FileIO.ReadTextAsync(file);
+            ParseSaveData(data);
+        }
+
+        private void FillResult(DataGroup dataGroup) {
+            App.Results = dataGroup.results;
+        }
+
+        private async void InitResults() {
+            dataGroups = new List<DataGroup>();
+
+            await ReadSaveData();
+
+            FillResult(dataGroups.First());
+        }
+
         private void Init() {
             InitConfig();
             InitUI();
+            InitResults();
 
             timerStatus = TimerStatus.Waiting;
 
