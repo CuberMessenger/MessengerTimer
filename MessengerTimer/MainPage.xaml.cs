@@ -32,7 +32,8 @@ namespace MessengerTimer
 
     enum InfoFrameStatus { Null, Result, Empty, Setting }
 
-    public sealed partial class MainPage : Page {
+    public sealed partial class MainPage : Page
+    {
         //Static Val
         private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
         private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
@@ -74,7 +75,8 @@ namespace MessengerTimer
         {
             var image = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri(await BingImage.FetchUrlAsync(), UriKind.Absolute))
+                ImageSource = new BitmapImage(new Uri(await BingImage.FetchUrlAsync(), UriKind.Absolute)),
+                Stretch = Stretch.UniformToFill
             };
             BackGroundGrid.Background = image;
         }
@@ -313,7 +315,8 @@ namespace MessengerTimer
             DisplayTime(EndTime - StartTime);
         }
 
-        private void MainPageNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args) {
+        private void MainPageNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
+        {
             //if (args.IsSettingsSelected) {
             //    //Todo
             //}
@@ -328,18 +331,24 @@ namespace MessengerTimer
             //}
         }
 
-        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-            if (args.IsSettingsInvoked) {
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked)
+            {
                 //Todo
             }
-            else {
-                switch (args.InvokedItem) {
+            else
+            {
+                switch (args.InvokedItem)
+                {
                     case "Results":
-                        if (infoFrameStatus == InfoFrameStatus.Result) {
+                        if (infoFrameStatus == InfoFrameStatus.Result)
+                        {
                             InfoFrame.Navigate(typeof(EmptyPage));
                             infoFrameStatus = InfoFrameStatus.Empty;
                         }
-                        else {
+                        else
+                        {
                             InfoFrame.Navigate(typeof(ResultPage));
                             infoFrameStatus = InfoFrameStatus.Result;
                         }

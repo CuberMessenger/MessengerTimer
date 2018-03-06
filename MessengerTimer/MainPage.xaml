@@ -30,13 +30,13 @@
         </Style>
     </Page.Resources>
 
-    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1921" SelectionChanged="MainPageNavigationView_SelectionChanged"
+    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" SelectionChanged="MainPageNavigationView_SelectionChanged"
             ItemInvoked="MainPageNavigationView_ItemInvoked">
         <NavigationView.MenuItems>
             <NavigationViewItem Icon="AllApps" Content="Results" Tag="results" />
         </NavigationView.MenuItems>
 
-        <Grid Name="BackGroundGrid">
+        <Grid Name="BackGroundGrid">            
             <Grid Margin="0 100" Background="#A5FFFFFF">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
