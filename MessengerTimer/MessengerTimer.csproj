@@ -101,8 +101,11 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\BingImage.cs" />
+    <Compile Include="Models\DataGroup.cs" />
+    <Compile Include="Models\Result.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RealTimeTimerControl.cs" />
+    <Compile Include="Controller\RealTimeTimerControl.cs" />
     <Compile Include="ResultPage.xaml.cs">
       <DependentUpon>ResultPage.xaml</DependentUpon>
     </Compile>
@@ -111,7 +114,6 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <None Include="MessengerTimer_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\GraniteDells_ZH-CN10095346278_1920x1080.jpg" />
@@ -146,16 +148,6 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.6</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TimeData\TimeData.csproj">
-      <Project>{1621d3c8-cac0-4b81-90b7-11b19f6bd7bc}</Project>
-      <Name>TimeData</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\UIHelper\UIHelper.csproj">
-      <Project>{29883950-4917-49f5-8aaa-d8f03036b1be}</Project>
-      <Name>UIHelper</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
