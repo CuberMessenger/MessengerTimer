@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using System.Threading.Tasks;
+using System.Text;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -79,13 +80,14 @@ namespace MessengerTimer {
 
         private void ParseSaveData(string raw) {
             var rawArray = raw.Split(' ');
+            //rawArray: NumOfDataGroup FirstDataGroupType FirstDataGroupResultsCount Result1 Result1 Result1 ...... SecondDataGroup ...
 
             int index = 0;
             for (int i = 0; i < int.Parse(rawArray.First()); i++) {
                 DataGroup dataGroup = new DataGroup { type = rawArray[++index], count = int.Parse(rawArray[++index]), results = new System.Collections.ObjectModel.ObservableCollection<Result>() };
 
                 for (int j = 0; j < dataGroup.count; j++)
-                    dataGroup.results.Add(new Result(j + 1, double.Parse(rawArray[++index]), double.Parse(rawArray[++index]), double.Parse(rawArray[++index])));
+                    dataGroup.results.Add(new Result(dataGroup.count - j, double.Parse(rawArray[++index]), double.Parse(rawArray[++index]), double.Parse(rawArray[++index])));
 
                 dataGroups.Add(dataGroup);
             }
@@ -103,7 +105,7 @@ namespace MessengerTimer {
                 file = await storageFolder.GetFileAsync("SaveData");
             }
 
-            await FileIO.WriteTextAsync(file, "1 3x3 3 1.23 2.34 3.45 4.567 5.678 6.789 7.89 8.90 9.00");
+            //await FileIO.WriteTextAsync(file, "1 3x3 5 1.23 2.34 3.45 4.567 5.678 6.789 7.89 8.90 9.00 3 4 5 78 98 NaN");
 
             string data = await FileIO.ReadTextAsync(file);
             ParseSaveData(data);
@@ -111,6 +113,9 @@ namespace MessengerTimer {
 
         private void FillResult(DataGroup dataGroup) {
             App.Results = dataGroup.results;
+
+            Ao5ValueTextBlock.Text = App.Results.First().ao5Value.ToString();
+            Ao12ValueTextBlock.Text = App.Results.First().ao12Value.ToString();
         }
 
         private async void InitResults() {
@@ -131,10 +136,6 @@ namespace MessengerTimer {
             holdingCheckTimer = new DispatcherTimer();
             holdingCheckTimer.Interval = new TimeSpan(startDelay);
             holdingCheckTimer.Tick += HoldingCheckTimer_Tick;
-
-            //toDelete
-            App.Results = new System.Collections.ObjectModel.ObservableCollection<Result>();
-            //
 
             switch (displayMode) {
                 case DisplayMode.RealTime:
@@ -178,12 +179,39 @@ namespace MessengerTimer {
             TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(timerFormat);
         }
 
+        private async void SaveData() {
+            StringBuilder buffer = new StringBuilder();
+            buffer.Append(dataGroups.Count);
+
+            for (int i = 0; i < dataGroups.Count; i++) {
+                buffer.Append(" " + dataGroups[i].type);
+                buffer.Append(" " + dataGroups[i].count);
+
+                for (int j = 0; j < dataGroups[i].count; j++)
+                    buffer.Append(" " + dataGroups[i].results[j].resultValue + " " + dataGroups[i].results[j].ao5Value + " " + dataGroups[i].results[j].ao12Value);
+            }
+
+            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
+            StorageFile file;
+
+            try {
+                file = await storageFolder.GetFileAsync("SaveData");
+            }
+            catch (FileNotFoundException) {
+                await storageFolder.CreateFileAsync("SaveData");
+                file = await storageFolder.GetFileAsync("SaveData");
+            }
+
+            await FileIO.WriteTextAsync(file, buffer.ToString());
+        }
+
         private void StopTimer() {
             endTime = DateTime.Now;
             DisplayTime(endTime - startTime);
             refreshTimeTimer.Stop();
 
             UpdateResult(endTime - startTime);
+            SaveData();
         }
 
         private void UpdateResult(TimeSpan result) {
@@ -248,6 +276,9 @@ namespace MessengerTimer {
             }
             else if (SettingListBoxItem.IsSelected) {
 
+            }
+            else if (EmptyListBoxItem.IsSelected) {
+                InfoFrame.Navigate(typeof(EmptyPage));
             }
         }
 

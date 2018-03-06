@@ -66,6 +66,14 @@
                                 <TextBlock Name="SettingTextBlock" Style="{StaticResource MainPageSplitViewPaneText}" Text="Settings" />
                             </StackPanel>
                         </ListBoxItem>
+
+                        <ListBoxItem Name="EmptyListBoxItem">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Name="EmptyIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xEB96;" />
+
+                                <TextBlock Name="EmptyTextBlock" Style="{StaticResource MainPageSplitViewPaneText}" Text="Hide" />
+                            </StackPanel>
+                        </ListBoxItem>
                     </ListBox>
                 </SplitView.Pane>
 
