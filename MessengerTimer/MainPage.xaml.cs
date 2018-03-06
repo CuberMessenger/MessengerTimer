@@ -30,8 +30,9 @@ namespace MessengerTimer
 
     enum DisplayMode { RealTime, OnlyOberving }
 
-    public sealed partial class MainPage : Page
-    {
+    enum InfoFrameStatus { Null, Result, Empty, Setting }
+
+    public sealed partial class MainPage : Page {
         //Static Val
         private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
         private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
@@ -43,7 +44,7 @@ namespace MessengerTimer
         private DispatcherTimer RefreshTimeTimer { get; set; }
         private DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
-        private List<DataGroup> DataGroups { get; set; }
+        private InfoFrameStatus infoFrameStatus { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -83,6 +84,8 @@ namespace MessengerTimer
             InitBingBackgroundAsync();
             StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
+
+            infoFrameStatus = InfoFrameStatus.Null;
         }
 
         private void ParseSaveData(string raw)
@@ -310,30 +313,61 @@ namespace MessengerTimer
             DisplayTime(EndTime - StartTime);
         }
 
-        private void SwitchLeftSplitView()
-        {
-            PseudoHambergurMenu.IsPaneOpen = !PseudoHambergurMenu.IsPaneOpen;
+        private void MainPageNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args) {
+            //if (args.IsSettingsSelected) {
+            //    //Todo
+            //}
+            //else {
+            //    switch ((args.SelectedItem as NavigationViewItem).Tag) {
+            //        case "results":
+            //            InfoFrame.Navigate(typeof(ResultPage));
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e)
-        {
-            SwitchLeftSplitView();
-        }
-
-        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ResultListBoxItem.IsSelected)
-            {
-                InfoFrame.Navigate(typeof(ResultPage));
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+            if (args.IsSettingsInvoked) {
+                //Todo
             }
-            else if (SettingListBoxItem.IsSelected)
-            {
-
+            else {
+                switch (args.InvokedItem) {
+                    case "Results":
+                        if (infoFrameStatus == InfoFrameStatus.Result) {
+                            InfoFrame.Navigate(typeof(EmptyPage));
+                            infoFrameStatus = InfoFrameStatus.Empty;
+                        }
+                        else {
+                            InfoFrame.Navigate(typeof(ResultPage));
+                            infoFrameStatus = InfoFrameStatus.Result;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
-        //private void Button_Click(object sender, RoutedEventArgs e) {
-        //    App.Results.Insert(0, new Result(new TimeSpan(12123415124), App.Results.Count + 1, 12.345, 67.890));
+        //private void SwitchLeftSplitView() {
+        //    PseudoHambergurMenu.IsPaneOpen = !PseudoHambergurMenu.IsPaneOpen;
+        //}
+
+        //private void HamburgerButton_Click(object sender, RoutedEventArgs e) {
+        //    SwitchLeftSplitView();
+        //}
+
+        //private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        //    if (ResultListBoxItem.IsSelected) {
+        //        InfoFrame.Navigate(typeof(ResultPage));
+        //    }
+        //    else if (SettingListBoxItem.IsSelected) {
+
+        //    }
+        //    else if (EmptyListBoxItem.IsSelected) {
+        //        InfoFrame.Navigate(typeof(EmptyPage));
+        //    }
         //}
     }
 }

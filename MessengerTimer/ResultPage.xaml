@@ -23,7 +23,7 @@
         </Style>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
@@ -50,8 +50,8 @@
             <TextBlock Text="Ao12" Style="{StaticResource ResultText}" />
         </StackPanel>
 
-        <Canvas Width="2000" Height="2" Grid.Row="2">
-            <Line X1="0" Y1="0" X2="2000" Y2="0" Stroke="Black" StrokeThickness="2" />
+        <Canvas Grid.Row="2">
+            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
         <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="3" MinHeight="600" MaxHeight="900">
