@@ -15,27 +15,45 @@
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="10 0 10 0" />
         </Style>
+
+        <Style TargetType="Button" x:Key="ResultPageButton">
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontSize" Value="24" />
+        </Style>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Style="{StaticResource ResultPageStackPanel}">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="0 0 20 0">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="data:DataGroup">
+                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind type}" FontSize="24" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+
+            <Button Name="AddGroupButton" Content="&#xE710;" Style="{StaticResource ResultPageButton}" />
+        </StackPanel>
+
+        <StackPanel Style="{StaticResource ResultPageStackPanel}" Grid.Row="1">
             <TextBlock Text="Id" Style="{StaticResource ResultText}" Width="30" />
             <TextBlock Text="Result" Style="{StaticResource ResultText}" />
             <TextBlock Text="Ao5" Style="{StaticResource ResultText}" />
             <TextBlock Text="Ao12" Style="{StaticResource ResultText}" />
         </StackPanel>
 
-        <Canvas Width="2000" Height="2" Grid.Row="1">
+        <Canvas Width="2000" Height="2" Grid.Row="2">
             <Line X1="0" Y1="0" X2="2000" Y2="0" Stroke="Black" StrokeThickness="2" />
         </Canvas>
 
-        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="2" MinHeight="600" MaxHeight="900">
+        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="3" MinHeight="600" MaxHeight="900">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0">

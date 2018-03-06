@@ -43,8 +43,6 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!--<Button Grid.Row="0" Grid.Column="1" Click="Button_Click" Content="test" />-->
-
             <Button Name="HamburgerButton" Style="{StaticResource MainPageLeftSideButton}" Content="&#xE700;" Click="HamburgerButton_Click" />
 
             <SplitView Name="PseudoHambergurMenu" DisplayMode="CompactOverlay" CompactPaneLength="56" Grid.Row="1" Grid.RowSpan="2"
@@ -53,7 +51,7 @@
                     <ListBox Name="IconListBox" SelectionMode="Single" SelectionChanged="IconListBox_SelectionChanged">
                         <ListBoxItem Name="ResultListBoxItem">
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Name="ResultIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE71D;"/>
+                                <TextBlock Name="ResultIcon" Style="{StaticResource MainPageSplitViewText}" Text="&#xE71D;" />
 
                                 <TextBlock Name="ResultTextBlock" Style="{StaticResource MainPageSplitViewPaneText}" Text="Results" />
                             </StackPanel>
@@ -94,12 +92,12 @@
                 <StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                        <TextBlock Name="Ao5ValueTextBlock" Text="12.345" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                        <TextBlock Name="Ao5ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                        <TextBlock Name="Ao12ValueTextBlock" Text="67.890" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                        <TextBlock Name="Ao12ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
                     </StackPanel>
                 </StackPanel>
                 <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center" Margin="0 35 0 0" VerticalAlignment="Top"

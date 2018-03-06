@@ -24,6 +24,8 @@ namespace MessengerTimer {
     public sealed partial class ResultPage : Page {
         public ObservableCollection<Result> Results = App.Results;
 
+        public ObservableCollection<DataGroup> DataGroups = App.DataGroups;
+
         public ResultPage() {
             this.InitializeComponent();
         }

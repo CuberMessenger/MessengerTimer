@@ -42,7 +42,6 @@ namespace MessengerTimer {
         private DispatcherTimer refreshTimeTimer { get; set; }
         private DispatcherTimer holdingCheckTimer { get; set; }
         private bool isHolding { get; set; }
-        private List<DataGroup> dataGroups { get; set; }
 
         //Display Var
         private DateTime startTime { get; set; }
@@ -89,7 +88,7 @@ namespace MessengerTimer {
                 for (int j = 0; j < dataGroup.count; j++)
                     dataGroup.results.Add(new Result(dataGroup.count - j, double.Parse(rawArray[++index]), double.Parse(rawArray[++index]), double.Parse(rawArray[++index])));
 
-                dataGroups.Add(dataGroup);
+                App.DataGroups.Add(dataGroup);
             }
         }
 
@@ -105,8 +104,6 @@ namespace MessengerTimer {
                 file = await storageFolder.GetFileAsync("SaveData");
             }
 
-            //await FileIO.WriteTextAsync(file, "1 3x3 5 1.23 2.34 3.45 4.567 5.678 6.789 7.89 8.90 9.00 3 4 5 78 98 NaN");
-
             string data = await FileIO.ReadTextAsync(file);
             ParseSaveData(data);
         }
@@ -114,16 +111,22 @@ namespace MessengerTimer {
         private void FillResult(DataGroup dataGroup) {
             App.Results = dataGroup.results;
 
-            Ao5ValueTextBlock.Text = App.Results.First().ao5Value.ToString();
-            Ao12ValueTextBlock.Text = App.Results.First().ao12Value.ToString();
+            try {
+                Ao5ValueTextBlock.Text = App.Results.First().ao5Value.ToString();
+                Ao12ValueTextBlock.Text = App.Results.First().ao12Value.ToString();
+            }
+            catch (Exception) {
+                Ao5ValueTextBlock.Text = double.NaN.ToString();
+                Ao12ValueTextBlock.Text = double.NaN.ToString();
+            }
         }
 
         private async void InitResults() {
-            dataGroups = new List<DataGroup>();
+            App.DataGroups = new System.Collections.ObjectModel.ObservableCollection<DataGroup>();
 
             await ReadSaveData();
 
-            FillResult(dataGroups.First());
+            FillResult(App.DataGroups.First());
         }
 
         private void Init() {
@@ -180,15 +183,18 @@ namespace MessengerTimer {
         }
 
         private async void SaveData() {
+            App.DataGroups.First().results = App.Results;
+            App.DataGroups.First().count = App.DataGroups.First().results.Count;
+
             StringBuilder buffer = new StringBuilder();
-            buffer.Append(dataGroups.Count);
+            buffer.Append(App.DataGroups.Count);
 
-            for (int i = 0; i < dataGroups.Count; i++) {
-                buffer.Append(" " + dataGroups[i].type);
-                buffer.Append(" " + dataGroups[i].count);
+            for (int i = 0; i < App.DataGroups.Count; i++) {
+                buffer.Append(" " + App.DataGroups[i].type);
+                buffer.Append(" " + App.DataGroups[i].count);
 
-                for (int j = 0; j < dataGroups[i].count; j++)
-                    buffer.Append(" " + dataGroups[i].results[j].resultValue + " " + dataGroups[i].results[j].ao5Value + " " + dataGroups[i].results[j].ao12Value);
+                for (int j = 0; j < App.DataGroups[i].count; j++)
+                    buffer.Append(" " + App.DataGroups[i].results[j].resultValue + " " + App.DataGroups[i].results[j].ao5Value + " " + App.DataGroups[i].results[j].ao12Value);
             }
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
