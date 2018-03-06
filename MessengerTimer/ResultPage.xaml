@@ -54,7 +54,7 @@
             <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
-        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="3" MinHeight="600" MaxHeight="900">
+        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="3">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0">
