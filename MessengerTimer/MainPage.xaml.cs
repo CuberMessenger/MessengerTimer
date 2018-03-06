@@ -30,6 +30,8 @@ namespace MessengerTimer {
 
     enum DisplayMode { RealTime, OnlyOberving }
 
+    enum InfoFrameStatus { Null, Result, Empty, Setting }
+
     public sealed partial class MainPage : Page {
         //Static Val
         private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
@@ -42,6 +44,7 @@ namespace MessengerTimer {
         private DispatcherTimer refreshTimeTimer { get; set; }
         private DispatcherTimer holdingCheckTimer { get; set; }
         private bool isHolding { get; set; }
+        private InfoFrameStatus infoFrameStatus { get; set; }
 
         //Display Var
         private DateTime startTime { get; set; }
@@ -75,6 +78,8 @@ namespace MessengerTimer {
             InitBingBackground();
             StatusTextBlock.Text = timerStatus.ToString();
             ResetTimer();
+
+            infoFrameStatus = InfoFrameStatus.Null;
         }
 
         private void ParseSaveData(string raw) {
@@ -268,28 +273,61 @@ namespace MessengerTimer {
             DisplayTime(endTime - startTime);
         }
 
-        private void SwitchLeftSplitView() {
-            PseudoHambergurMenu.IsPaneOpen = !PseudoHambergurMenu.IsPaneOpen;
+        private void MainPageNavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args) {
+            //if (args.IsSettingsSelected) {
+            //    //Todo
+            //}
+            //else {
+            //    switch ((args.SelectedItem as NavigationViewItem).Tag) {
+            //        case "results":
+            //            InfoFrame.Navigate(typeof(ResultPage));
+            //            break;
+            //        default:
+            //            break;
+            //    }
+            //}
         }
 
-        private void HamburgerButton_Click(object sender, RoutedEventArgs e) {
-            SwitchLeftSplitView();
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+            if (args.IsSettingsInvoked) {
+                //Todo
+            }
+            else {
+                switch (args.InvokedItem) {
+                    case "Results":
+                        if (infoFrameStatus == InfoFrameStatus.Result) {
+                            InfoFrame.Navigate(typeof(EmptyPage));
+                            infoFrameStatus = InfoFrameStatus.Empty;
+                        }
+                        else {
+                            InfoFrame.Navigate(typeof(ResultPage));
+                            infoFrameStatus = InfoFrameStatus.Result;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
 
-        private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            if (ResultListBoxItem.IsSelected) {
-                InfoFrame.Navigate(typeof(ResultPage));
-            }
-            else if (SettingListBoxItem.IsSelected) {
+        //private void SwitchLeftSplitView() {
+        //    PseudoHambergurMenu.IsPaneOpen = !PseudoHambergurMenu.IsPaneOpen;
+        //}
 
-            }
-            else if (EmptyListBoxItem.IsSelected) {
-                InfoFrame.Navigate(typeof(EmptyPage));
-            }
-        }
+        //private void HamburgerButton_Click(object sender, RoutedEventArgs e) {
+        //    SwitchLeftSplitView();
+        //}
 
-        //private void Button_Click(object sender, RoutedEventArgs e) {
-        //    App.Results.Insert(0, new Result(new TimeSpan(12123415124), App.Results.Count + 1, 12.345, 67.890));
+        //private void IconListBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        //    if (ResultListBoxItem.IsSelected) {
+        //        InfoFrame.Navigate(typeof(ResultPage));
+        //    }
+        //    else if (SettingListBoxItem.IsSelected) {
+
+        //    }
+        //    else if (EmptyListBoxItem.IsSelected) {
+        //        InfoFrame.Navigate(typeof(EmptyPage));
+        //    }
         //}
     }
 }

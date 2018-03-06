@@ -28,6 +28,8 @@ namespace MessengerTimer {
 
         public ResultPage() {
             this.InitializeComponent();
+
+            
         }
     }
 }
