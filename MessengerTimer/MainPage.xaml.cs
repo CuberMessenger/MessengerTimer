@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using System.Threading.Tasks;
 using MessengerTimer.Models;
+using System.Text;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -119,20 +120,24 @@ namespace MessengerTimer
             ParseSaveData(data);
         }
 
-        private void FillResult(DataGroup dataGroup) {
-            App.Results = dataGroup.results;
+        private void FillResult(DataGroup dataGroup)
+        {
+            App.Results = dataGroup.Results;
 
-            try {
-                Ao5ValueTextBlock.Text = App.Results.First().ao5Value.ToString();
-                Ao12ValueTextBlock.Text = App.Results.First().ao12Value.ToString();
+            try
+            {
+                Ao5ValueTextBlock.Text = App.Results.First().Ao5Value.ToString();
+                Ao12ValueTextBlock.Text = App.Results.First().Ao12Value.ToString();
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Ao5ValueTextBlock.Text = double.NaN.ToString();
                 Ao12ValueTextBlock.Text = double.NaN.ToString();
             }
         }
 
-        private async void InitResults() {
+        private async void InitResults()
+        {
             App.DataGroups = new System.Collections.ObjectModel.ObservableCollection<DataGroup>();
 
             await ReadSaveDataAsync();
@@ -203,32 +208,37 @@ namespace MessengerTimer
             DisplayTime(new TimeSpan(0));
         }
 
-        private void DisplayTime(TimeSpan timeSpan) {
-            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(timerFormat);
+        private void DisplayTime(TimeSpan timeSpan)
+        {
+            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(TimerFormat);
         }
 
-        private async void SaveData() {
-            App.DataGroups.First().results = App.Results;
-            App.DataGroups.First().count = App.DataGroups.First().results.Count;
+        private async void SaveData()
+        {
+            App.DataGroups.First().Results = App.Results;
+            App.DataGroups.First().Count = App.DataGroups.First().Results.Count;
 
             StringBuilder buffer = new StringBuilder();
             buffer.Append(App.DataGroups.Count);
 
-            for (int i = 0; i < App.DataGroups.Count; i++) {
-                buffer.Append(" " + App.DataGroups[i].type);
-                buffer.Append(" " + App.DataGroups[i].count);
+            for (int i = 0; i < App.DataGroups.Count; i++)
+            {
+                buffer.Append(" " + App.DataGroups[i].Type);
+                buffer.Append(" " + App.DataGroups[i].Count);
 
-                for (int j = 0; j < App.DataGroups[i].count; j++)
-                    buffer.Append(" " + App.DataGroups[i].results[j].resultValue + " " + App.DataGroups[i].results[j].ao5Value + " " + App.DataGroups[i].results[j].ao12Value);
+                for (int j = 0; j < App.DataGroups[i].Count; j++)
+                    buffer.Append(" " + App.DataGroups[i].Results[j].ResultValue + " " + App.DataGroups[i].Results[j].Ao5Value + " " + App.DataGroups[i].Results[j].Ao12Value);
             }
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile file;
 
-            try {
+            try
+            {
                 file = await storageFolder.GetFileAsync("SaveData");
             }
-            catch (FileNotFoundException) {
+            catch (FileNotFoundException)
+            {
                 await storageFolder.CreateFileAsync("SaveData");
                 file = await storageFolder.GetFileAsync("SaveData");
             }

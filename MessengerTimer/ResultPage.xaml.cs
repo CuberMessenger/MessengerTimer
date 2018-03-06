@@ -28,7 +28,8 @@ namespace MessengerTimer
 
         public ObservableCollection<DataGroup> DataGroups = App.DataGroups;
 
-        public ResultPage() {
+        public ResultPage()
+        {
             this.InitializeComponent();
         }
     }

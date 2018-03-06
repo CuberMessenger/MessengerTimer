@@ -35,7 +35,7 @@
             <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="0 0 20 0">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:DataGroup">
-                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind type}" FontSize="24" />
+                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type}" FontSize="24" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
