@@ -16,16 +16,11 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
-namespace MessengerTimer
-{
-    public sealed partial class MainPage : Page
-    {
-        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey == VirtualKey.Space)
-            {
-                switch (TimerStatus)
-                {
+namespace MessengerTimer {
+    public sealed partial class MainPage : Page {
+        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args) {
+            if (args.VirtualKey == VirtualKey.Space) {
+                switch (TimerStatus) {
                     case TimerStatus.Timing:
                         TimerStatus = TimerStatus.Display;
                         StopTimer();
@@ -50,18 +45,15 @@ namespace MessengerTimer
                         break;
                 }
                 RefreshStatusTextBlock();
+                滴汤Button.Focus(FocusState.Keyboard);
             }
         }
 
-        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey == VirtualKey.Space)
-            {
-                switch (TimerStatus)
-                {
+        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args) {
+            if (args.VirtualKey == VirtualKey.Space) {
+                switch (TimerStatus) {
                     case TimerStatus.Waiting:
-                        if (appSettings.NeedObserving)
-                        {
+                        if (appSettings.NeedObserving) {
                             TimerStatus = TimerStatus.Observing;
 
                             ResetTimer();

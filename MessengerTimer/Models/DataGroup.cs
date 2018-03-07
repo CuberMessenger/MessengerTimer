@@ -20,14 +20,14 @@ namespace MessengerTimer.Models {
             }
         }
 
-        private int _count;
-        public int Count {
-            get => _count;
-            set {
-                _count = value;
-                NotifyPropertyChanged();
-            }
-        }
+        //private int _count;
+        //public int Count {
+        //    get => _count;
+        //    set {
+        //        _count = value;
+        //        NotifyPropertyChanged();
+        //    }
+        //}
 
         static public DataGroup CurrentDataGroup;
 
