@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MessengerTimer.Models {
-    public class DataGroup : INotifyPropertyChanged {
+namespace MessengerTimer.Models
+{
+    public class DataGroup : INotifyPropertyChanged
+    {
         public ObservableCollection<Result> Results { get; set; }
 
         private string _type;
-        public string Type {
+        public string Type
+        {
             get => _type;
-            set {
+            set
+            {
                 _type = value;
                 NotifyPropertyChanged();
             }
@@ -33,7 +32,8 @@ namespace MessengerTimer.Models {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged([CallerMemberName]string propName = "") {
+        protected void NotifyPropertyChanged([CallerMemberName]string propName = "")
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }

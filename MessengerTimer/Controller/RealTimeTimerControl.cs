@@ -1,26 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.System;
+﻿using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 
-namespace MessengerTimer {
-    public sealed partial class MainPage : Page {
-        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args) {
-            if (args.VirtualKey == VirtualKey.Space) {
-                switch (TimerStatus) {
+namespace MessengerTimer
+{
+    public sealed partial class MainPage : Page
+    {
+        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == VirtualKey.Space)
+            {
+                switch (TimerStatus)
+                {
                     case TimerStatus.Timing:
                         TimerStatus = TimerStatus.Display;
                         StopTimer();
@@ -49,11 +41,15 @@ namespace MessengerTimer {
             }
         }
 
-        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args) {
-            if (args.VirtualKey == VirtualKey.Space) {
-                switch (TimerStatus) {
+        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args)
+        {
+            if (args.VirtualKey == VirtualKey.Space)
+            {
+                switch (TimerStatus)
+                {
                     case TimerStatus.Waiting:
-                        if (appSettings.NeedObserving) {
+                        if (appSettings.NeedObserving)
+                        {
                             TimerStatus = TimerStatus.Observing;
 
                             ResetTimer();
