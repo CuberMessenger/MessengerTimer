@@ -32,11 +32,13 @@
 
     <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" ItemInvoked="MainPageNavigationView_ItemInvoked">
         <NavigationView.MenuItems>
-            <NavigationViewItem Icon="AllApps" Content="Results" Tag="results" />
+            <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Results" Tag="results" />
         </NavigationView.MenuItems>
 
         <Grid Name="BackGroundGrid">
-            <Grid Margin="0 100" Background="#A5FFFFFF">
+            <Button Name="滴汤Button" Opacity="0" />
+
+            <Grid Name="MainGrid" Margin="0 100" Background="#A5FFFFFF">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
                     <RowDefinition Height="2*" />

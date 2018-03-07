@@ -38,9 +38,8 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0"
-                    SelectionChanged="GroupComboBox_SelectionChanged"
-                      SelectedItem="{x:Bind DataGroups[0]}">
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged"
+                    SelectedItem="{x:Bind DataGroups[0]}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:DataGroup">
                         <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type, Mode=OneWay}" FontSize="24" />
