@@ -30,8 +30,7 @@ namespace MessengerTimer
         /// 已执行，逻辑上等同于 main() 或 WinMain()。
         /// </summary>
         /// 
-        static public ObservableCollection<Result> Results;
-        static public ObservableCollection<DataGroup> DataGroups;
+        
         public App()
         {
             this.InitializeComponent();
