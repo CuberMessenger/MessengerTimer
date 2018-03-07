@@ -32,7 +32,7 @@ namespace MessengerTimer
         {
             this.InitializeComponent();
 
-            
+
         }
     }
 }
