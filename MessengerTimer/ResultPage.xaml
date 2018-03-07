@@ -36,38 +36,48 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="Group: " Style="{StaticResource ResultText}" />
+            <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <TextBlock Name="GroupNameTextBlock" Text="{x:Bind CurrentDataGroup.Type}" Style="{StaticResource ResultText}" />
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0"
+                    SelectionChanged="GroupComboBox_SelectionChanged">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="data:DataGroup">
+                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type, Mode=OneWay}" FontSize="24" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
 
-            <Button Name="ConfigGroupButton" Content="&#xE90F;" Style="{StaticResource ResultPageButton}">
+            <Button Name="AddDataGroupButton" Content="&#xE710;" Style="{StaticResource ResultPageButton}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
-                        <StackPanel>
-                            <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 0 20">
-                                <TextBlock Text="Switch DataGroup: " Style="{StaticResource NormalText}" Margin="8 3 30 0" />
+                        <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 10">
+                            <TextBlock Text="New: " Style="{StaticResource NormalText}" Margin="0 10" />
 
-                                <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" SelectedItem="{x:Bind CurrentDataGroup}">
-                                    <ComboBox.ItemTemplate>
-                                        <DataTemplate x:DataType="data:DataGroup">
-                                            <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type}" FontSize="24" />
-                                        </DataTemplate>
-                                    </ComboBox.ItemTemplate>
-                                </ComboBox>
-                            </StackPanel>
+                            <TextBox Name="NewDataGroupNameTextBox" FontSize="20" Width="150" Margin="10 0" />
 
-                            <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 0 20">
-                                <TextBlock Text="New: " Style="{StaticResource NormalText}" />
-
-                                <TextBox Name="NewDataGroup" FontSize="20" Width="150" Margin="10 0" />
-
-                                <Button Name="AddDataGroupButton" Content="Add" FontSize="20" />
-                            </StackPanel>
-
-                            <StackPanel Style="{StaticResource ResultPageStackPanel}">
-                                <Button Name="DeleteCurrentDataGroupButton" Content="Delete Current DataGroup" FontSize="20" />
-                            </StackPanel>
+                            <Button Name="ConfirmAddDataGroupButton" Content="Add" FontSize="20" Click="ConfirmAddDataGroupButton_Click" />
                         </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+            </Button>
+
+            <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" Style="{StaticResource ResultPageButton}" Margin="5 0">
+                <Button.Flyout>
+                    <Flyout>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Confirm delete current DataGroup?" Style="{StaticResource NormalText}" Grid.Row="0"
+                                    HorizontalAlignment="Left" />
+                            <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}" Grid.Row="1"
+                                    HorizontalAlignment="Left" Margin="0 10" />
+                            <Button Name="ConfirmDeleteCurrentDataGroupButton" Content="Delete" FontSize="20"
+                                    Click="ConfirmDeleteCurrentDataGroupButton_Click" Grid.Row="2" HorizontalAlignment="Right" />
+                        </Grid>
                     </Flyout>
                 </Button.Flyout>
             </Button>
@@ -84,14 +94,14 @@
             <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
-        <ListView Name="ResultListView" ItemsSource="{x:Bind Results}" Grid.Row="3">
+        <ListView Name="ResultListView" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0">
-                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id }" Style="{StaticResource ResultText}" Width="30" />
-                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultValue}" Style="{StaticResource ResultText}" />
-                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5Value}" Style="{StaticResource ResultText}" />
-                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12Value}" Style="{StaticResource ResultText}" />
+                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}" Width="30" />
+                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultValue, Mode=OneWay}" Style="{StaticResource ResultText}" />
+                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5Value, Mode=OneWay}" Style="{StaticResource ResultText}" />
+                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12Value, Mode=OneWay}" Style="{StaticResource ResultText}" />
                     </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>

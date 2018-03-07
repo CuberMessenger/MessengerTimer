@@ -30,7 +30,45 @@ namespace MessengerTimer {
 
         public ResultPage() {
             this.InitializeComponent();
+        }
 
+        private void RefreshMainPageDotResults() {
+            MainPage.Results.Clear();
+            for (int i = 0; i < MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex].Results.Count; i++)
+                MainPage.Results.Add(MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex].Results[i]);
+        }
+
+        private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var cg = (sender as ComboBox).SelectedItem;
+            MainPage.appSettings.CurrentDataGroupIndex = MainPage.DataGroups.IndexOf(cg as DataGroup);
+            RefreshMainPageDotResults();
+            DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
+        }
+
+        private bool IsValidString(string s) {
+            return s != null && s != "";
+        }
+
+        private async void ShowAlertDialog(string message) {
+            ContentDialog contentDialog = new ContentDialog { Title = message, CloseButtonText = "OK" };
+            await contentDialog.ShowAsync();
+        }
+
+        private void ConfirmAddDataGroupButton_Click(object sender, RoutedEventArgs e) {
+            string type = NewDataGroupNameTextBox.Text;
+            if (IsValidString(type)) {
+                MainPage.DataGroups.Add(new DataGroup { Results = new ObservableCollection<Result>(), Count = 0, Type = type });
+                MainPage.appSettings.CurrentDataGroupIndex = MainPage.DataGroups.Count - 1;
+                RefreshMainPageDotResults();
+                MainPage.SaveData();
+
+                DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
+            }
+            else
+                ShowAlertDialog("Invalid DataGroup Name!");
+        }
+
+        private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e) {
 
         }
     }
