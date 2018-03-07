@@ -17,22 +17,21 @@ using Windows.UI.Xaml.Navigation;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-namespace MessengerTimer
-{
+namespace MessengerTimer {
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ResultPage : Page
-    {
-        public ObservableCollection<Result> Results = App.Results;
+    public sealed partial class ResultPage : Page {
+        public ObservableCollection<Result> Results = MainPage.Results;
 
-        public ObservableCollection<DataGroup> DataGroups = App.DataGroups;
+        public ObservableCollection<DataGroup> DataGroups = MainPage.DataGroups;
 
-        public ResultPage()
-        {
+        public DataGroup CurrentDataGroup = DataGroup.CurrentDataGroup;
+
+        public ResultPage() {
             this.InitializeComponent();
 
-            
+
         }
     }
 }
