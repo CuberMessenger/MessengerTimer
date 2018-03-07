@@ -33,7 +33,7 @@ namespace MessengerTimer
                         TimerTextBlock.Foreground = RedBrush;
                         break;
                     case TimerStatus.Waiting:
-                        if (!NeedObserving)
+                        if (!appSettings.NeedObserving)
                             StartHoldingTick();
                         else
                             TimerTextBlock.Foreground = YellowBrush;
@@ -60,7 +60,7 @@ namespace MessengerTimer
                 switch (TimerStatus)
                 {
                     case TimerStatus.Waiting:
-                        if (NeedObserving)
+                        if (appSettings.NeedObserving)
                         {
                             TimerStatus = TimerStatus.Observing;
 

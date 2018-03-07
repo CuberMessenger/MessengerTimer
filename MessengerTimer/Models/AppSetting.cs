@@ -64,6 +64,20 @@ namespace MessengerTimer.Models
             }
         }
 
+        public int CurrentDataGroupIndex
+        {
+            get
+            {
+                return ReadSettings(nameof(CurrentDataGroupIndex), 0);
+            }
+            set
+            {
+                SaveSettings(nameof(CurrentDataGroupIndex), value);
+                NotifyPropertyChanged();
+            }
+        }
+
+
         public ApplicationDataContainer LocalSettings { get; set; }
 
         public AppSettings()
