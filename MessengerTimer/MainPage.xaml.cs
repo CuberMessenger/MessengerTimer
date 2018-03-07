@@ -17,6 +17,7 @@ using Windows.Storage;
 using System.Threading.Tasks;
 using MessengerTimer.Models;
 using System.Text;
+using System.Collections.ObjectModel;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -39,6 +40,9 @@ namespace MessengerTimer
         private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
         private static Brush RedBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
+
+        static public ObservableCollection<Result> Results;
+        static public ObservableCollection<DataGroup> DataGroups;
 
         //Useful Var
         private TimerStatus TimerStatus { get; set; }
@@ -86,11 +90,13 @@ namespace MessengerTimer
             for (int i = 0; i < int.Parse(rawArray.First()); i++)
             {
                 DataGroup dataGroup = new DataGroup { Type = rawArray[++index], Count = int.Parse(rawArray[++index]), Results = new System.Collections.ObjectModel.ObservableCollection<Result>() };
+            for (int i = 0; i < int.Parse(rawArray.First()); i++) {
+                DataGroup dataGroup = new DataGroup { Type = rawArray[++index], Count = int.Parse(rawArray[++index]), Results = new ObservableCollection<Result>() };
 
                 for (int j = 0; j < dataGroup.Count; j++)
                     dataGroup.Results.Add(new Result(dataGroup.Count - j, double.Parse(rawArray[++index]), double.Parse(rawArray[++index]), double.Parse(rawArray[++index])));
 
-                App.DataGroups.Add(dataGroup);
+                DataGroups.Add(dataGroup);
             }
         }
 
@@ -112,16 +118,15 @@ namespace MessengerTimer
 
             string data = await FileIO.ReadTextAsync(file);
             ParseSaveData(data);
+            DataGroup.CurrentDataGroup = DataGroups[CurrentDataGroupIndex];
         }
 
-        private void FillResult(DataGroup dataGroup)
-        {
-            App.Results = dataGroup.Results;
+        private void FillResult(DataGroup dataGroup) {
+            Results = dataGroup.Results;
 
-            try
-            {
-                Ao5ValueTextBlock.Text = App.Results.First().Ao5Value.ToString();
-                Ao12ValueTextBlock.Text = App.Results.First().Ao12Value.ToString();
+            try {
+                Ao5ValueTextBlock.Text = Results.First().Ao5Value.ToString();
+                Ao12ValueTextBlock.Text = Results.First().Ao12Value.ToString();
             }
             catch (Exception)
             {
@@ -130,13 +135,12 @@ namespace MessengerTimer
             }
         }
 
-        private async void InitResults()
-        {
-            App.DataGroups = new System.Collections.ObjectModel.ObservableCollection<DataGroup>();
+        private async void InitResults() {
+            DataGroups = new ObservableCollection<DataGroup>();
 
             await ReadSaveDataAsync();
 
-            FillResult(App.DataGroups.First());
+            FillResult(DataGroups.First());
         }
 
         private void Init()
@@ -153,15 +157,9 @@ namespace MessengerTimer
             };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
-            //toDelete
-            App.Results = new System.Collections.ObjectModel.ObservableCollection<Result>();
-            //
-
-            switch (DisplayMode)
-            {
-                case DisplayModeEnum.RealTime:
-                    RefreshTimeTimer = new DispatcherTimer
-                    {
+            switch (DisplayMode) {
+                case DisplayMode.RealTime:
+                    RefreshTimeTimer = new DispatcherTimer {
                         Interval = new TimeSpan(10000)
                     };
                     RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
@@ -207,21 +205,19 @@ namespace MessengerTimer
             TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(TimerFormat);
         }
 
-        private async void SaveData()
-        {
-            App.DataGroups.First().Results = App.Results;
-            App.DataGroups.First().Count = App.DataGroups.First().Results.Count;
+        private async void SaveData() {
+            DataGroups.First().Results = Results;
+            DataGroups.First().Count = DataGroups.First().Results.Count;
 
             StringBuilder buffer = new StringBuilder();
-            buffer.Append(App.DataGroups.Count);
+            buffer.Append(DataGroups.Count);
 
-            for (int i = 0; i < App.DataGroups.Count; i++)
-            {
-                buffer.Append(" " + App.DataGroups[i].Type);
-                buffer.Append(" " + App.DataGroups[i].Count);
+            for (int i = 0; i < DataGroups.Count; i++) {
+                buffer.Append(" " + DataGroups[i].Type);
+                buffer.Append(" " + DataGroups[i].Count);
 
-                for (int j = 0; j < App.DataGroups[i].Count; j++)
-                    buffer.Append(" " + App.DataGroups[i].Results[j].ResultValue + " " + App.DataGroups[i].Results[j].Ao5Value + " " + App.DataGroups[i].Results[j].Ao12Value);
+                for (int j = 0; j < DataGroups[i].Count; j++)
+                    buffer.Append(" " + DataGroups[i].Results[j].ResultValue + " " + DataGroups[i].Results[j].Ao5Value + " " + DataGroups[i].Results[j].Ao12Value);
             }
 
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
@@ -250,32 +246,29 @@ namespace MessengerTimer
             SaveData();
         }
 
-        private void UpdateResult(TimeSpan result)
-        {
-            App.Results.Insert(0, new Result(result, App.Results.Count + 1));
+        private void UpdateResult(TimeSpan result) {
+            Results.Insert(0, new Result(result, Results.Count + 1));
 
             double ao5 = 0, ao12 = 0;
 
-            if (App.Results.Count >= 5)
-            {
+            if (Results.Count >= 5) {
                 for (int i = 0; i < 5; i++)
-                    ao5 += App.Results[i].ResultValue;
+                    ao5 += Results[i].ResultValue;
                 ao5 = Math.Round(ao5 / 5, 3);
             }
             else
                 ao5 = double.NaN;
 
-            if (App.Results.Count >= 12)
-            {
+            if (Results.Count >= 12) {
                 for (int i = 0; i < 12; i++)
-                    ao12 += App.Results[i].ResultValue;
+                    ao12 += Results[i].ResultValue;
                 ao12 = Math.Round(ao12 / 12, 3);
             }
             else
                 ao12 = double.NaN;
 
-            App.Results.First().Ao5Value = ao5;
-            App.Results.First().Ao12Value = ao12;
+            Results.First().Ao5Value = ao5;
+            Results.First().Ao12Value = ao12;
 
             Ao5ValueTextBlock.Text = ao5.ToString();
             Ao12ValueTextBlock.Text = ao12.ToString();
