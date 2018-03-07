@@ -55,7 +55,8 @@ namespace MessengerTimer
         private DateTime StartTime { get; set; }
         private DateTime EndTime { get; set; }
 
-
+        //Setting
+        private AppSettings appSettings = new AppSettings();
 
         public MainPage()
         {
@@ -89,8 +90,6 @@ namespace MessengerTimer
             int index = 0;
             for (int i = 0; i < int.Parse(rawArray.First()); i++)
             {
-                DataGroup dataGroup = new DataGroup { Type = rawArray[++index], Count = int.Parse(rawArray[++index]), Results = new System.Collections.ObjectModel.ObservableCollection<Result>() };
-            for (int i = 0; i < int.Parse(rawArray.First()); i++) {
                 DataGroup dataGroup = new DataGroup { Type = rawArray[++index], Count = int.Parse(rawArray[++index]), Results = new ObservableCollection<Result>() };
 
                 for (int j = 0; j < dataGroup.Count; j++)
@@ -118,13 +117,15 @@ namespace MessengerTimer
 
             string data = await FileIO.ReadTextAsync(file);
             ParseSaveData(data);
-            DataGroup.CurrentDataGroup = DataGroups[CurrentDataGroupIndex];
+            DataGroup.CurrentDataGroup = DataGroups[appSettings.CurrentDataGroupIndex];
         }
 
-        private void FillResult(DataGroup dataGroup) {
+        private void FillResult(DataGroup dataGroup)
+        {
             Results = dataGroup.Results;
 
-            try {
+            try
+            {
                 Ao5ValueTextBlock.Text = Results.First().Ao5Value.ToString();
                 Ao12ValueTextBlock.Text = Results.First().Ao12Value.ToString();
             }
@@ -135,7 +136,8 @@ namespace MessengerTimer
             }
         }
 
-        private async void InitResults() {
+        private async void InitResults()
+        {
             DataGroups = new ObservableCollection<DataGroup>();
 
             await ReadSaveDataAsync();
@@ -145,7 +147,6 @@ namespace MessengerTimer
 
         private void Init()
         {
-            InitConfig();
             InitUI();
             InitResults();
 
@@ -153,13 +154,15 @@ namespace MessengerTimer
 
             HoldingCheckTimer = new DispatcherTimer
             {
-                Interval = new TimeSpan(StartDelay)
+                Interval = new TimeSpan(appSettings.StartDelay)
             };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
-            switch (DisplayMode) {
-                case DisplayMode.RealTime:
-                    RefreshTimeTimer = new DispatcherTimer {
+            switch (appSettings.DisplayMode)
+            {
+                case DisplayModeEnum.RealTime:
+                    RefreshTimeTimer = new DispatcherTimer
+                    {
                         Interval = new TimeSpan(10000)
                     };
                     RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
@@ -202,17 +205,19 @@ namespace MessengerTimer
 
         private void DisplayTime(TimeSpan timeSpan)
         {
-            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(TimerFormat);
+            TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(appSettings.TimerFormat);
         }
 
-        private async void SaveData() {
+        private async void SaveData()
+        {
             DataGroups.First().Results = Results;
             DataGroups.First().Count = DataGroups.First().Results.Count;
 
             StringBuilder buffer = new StringBuilder();
             buffer.Append(DataGroups.Count);
 
-            for (int i = 0; i < DataGroups.Count; i++) {
+            for (int i = 0; i < DataGroups.Count; i++)
+            {
                 buffer.Append(" " + DataGroups[i].Type);
                 buffer.Append(" " + DataGroups[i].Count);
 
@@ -246,12 +251,14 @@ namespace MessengerTimer
             SaveData();
         }
 
-        private void UpdateResult(TimeSpan result) {
+        private void UpdateResult(TimeSpan result)
+        {
             Results.Insert(0, new Result(result, Results.Count + 1));
 
             double ao5 = 0, ao12 = 0;
 
-            if (Results.Count >= 5) {
+            if (Results.Count >= 5)
+            {
                 for (int i = 0; i < 5; i++)
                     ao5 += Results[i].ResultValue;
                 ao5 = Math.Round(ao5 / 5, 3);
@@ -259,7 +266,8 @@ namespace MessengerTimer
             else
                 ao5 = double.NaN;
 
-            if (Results.Count >= 12) {
+            if (Results.Count >= 12)
+            {
                 for (int i = 0; i < 12; i++)
                     ao12 += Results[i].ResultValue;
                 ao12 = Math.Round(ao12 / 12, 3);
