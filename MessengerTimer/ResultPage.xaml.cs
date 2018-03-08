@@ -70,6 +70,7 @@ namespace MessengerTimer
             else
                 ShowAlertDialog("Invalid DataGroup Name!");
 
+            NewDataGroupNameTextBox.Text = "";
             AddDataGroupButton.Flyout.Hide();
         }
 
