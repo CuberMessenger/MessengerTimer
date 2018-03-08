@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 
-namespace MessengerTimer.Models
+namespace MessengerTimer.DataModels
 {
     public class AppSettings : INotifyPropertyChanged
     {

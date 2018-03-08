@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MessengerTimer.Models {
+namespace MessengerTimer.DataModels {
     public class Result : INotifyPropertyChanged {
         private int _id;
         private double _ao5Value;

@@ -7,7 +7,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.Storage;
 using System.Threading.Tasks;
-using MessengerTimer.Models;
+using MessengerTimer.DataModels;
 using System.Text;
 using System.Collections.ObjectModel;
 
