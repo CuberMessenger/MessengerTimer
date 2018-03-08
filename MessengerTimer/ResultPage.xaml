@@ -89,10 +89,10 @@
             <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
-        <ListView Name="ResultListView" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3">
+        <ListView Name="ResultListView" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
-                    <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0">
+                    <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0" RightTapped="StackPanel_RightTapped">
                         <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}" Width="30" />
                         <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultValue, Mode=OneWay}" Style="{StaticResource ResultText}" />
                         <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5Value, Mode=OneWay}" Style="{StaticResource ResultText}" />
