@@ -1,18 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
-using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using System.Threading.Tasks;
 using MessengerTimer.Models;
@@ -21,7 +13,8 @@ using System.Collections.ObjectModel;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
-namespace MessengerTimer {
+namespace MessengerTimer
+{
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
@@ -32,7 +25,8 @@ namespace MessengerTimer {
 
     enum InfoFrameStatus { Null, Result, Empty, Setting }
 
-    public sealed partial class MainPage : Page {
+    public sealed partial class MainPage : Page
+    {
         //Static Val
         private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
         private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
@@ -56,20 +50,24 @@ namespace MessengerTimer {
         //Setting
         public static AppSettings appSettings = new AppSettings();
 
-        public MainPage() {
+        public MainPage()
+        {
             InitializeComponent();
             Init();
         }
 
-        private async void InitBingBackgroundAsync() {
-            var image = new ImageBrush {
+        private async void InitBingBackgroundAsync()
+        {
+            var image = new ImageBrush
+            {
                 ImageSource = new BitmapImage(new Uri(await BingImage.FetchUrlAsync(), UriKind.Absolute)),
                 Stretch = Stretch.UniformToFill
             };
             BackGroundGrid.Background = image;
         }
 
-        private void InitUI() {
+        private void InitUI()
+        {
             InitBingBackgroundAsync();
             StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
@@ -77,11 +75,13 @@ namespace MessengerTimer {
             infoFrameStatus = InfoFrameStatus.Null;
         }
 
-        private void ParseSaveData(string raw) {
+        private void ParseSaveData(string raw)
+        {
             var rawArray = raw.Split(' ');
 
             int index = 0;
-            for (int i = 0; i < int.Parse(rawArray.First()); i++) {
+            for (int i = 0; i < int.Parse(rawArray.First()); i++)
+            {
                 DataGroup dataGroup = new DataGroup { Type = rawArray[++index], Results = new ObservableCollection<Result>() };
 
                 var nor = int.Parse(rawArray[++index]);
@@ -92,14 +92,17 @@ namespace MessengerTimer {
             }
         }
 
-        private async Task ReadSaveDataAsync() {
+        private async Task ReadSaveDataAsync()
+        {
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile file;
 
-            try {
+            try
+            {
                 file = await storageFolder.GetFileAsync("SaveData");
             }
-            catch (FileNotFoundException) {
+            catch (FileNotFoundException)
+            {
                 await storageFolder.CreateFileAsync("SaveData");
                 file = await storageFolder.GetFileAsync("SaveData");
                 await FileIO.WriteTextAsync(file, "1 3x3 0");
@@ -110,23 +113,28 @@ namespace MessengerTimer {
             DataGroup.CurrentDataGroup = DataGroups[appSettings.CurrentDataGroupIndex];
         }
 
-        private void FillResult(DataGroup dataGroup) {
-            foreach (var item in dataGroup.Results) {
+        private void FillResult(DataGroup dataGroup)
+        {
+            foreach (var item in dataGroup.Results)
+            {
                 Results.Add(item);
             }
             //Results = dataGroup.Results;
 
-            try {
+            try
+            {
                 Ao5ValueTextBlock.Text = Results.First().Ao5Value.ToString();
                 Ao12ValueTextBlock.Text = Results.First().Ao12Value.ToString();
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Ao5ValueTextBlock.Text = double.NaN.ToString();
                 Ao12ValueTextBlock.Text = double.NaN.ToString();
             }
         }
 
-        private async void InitResults() {
+        private async void InitResults()
+        {
             DataGroups = new ObservableCollection<DataGroup>();
 
             //appSettings.CurrentDataGroupIndex = 0;
@@ -135,20 +143,24 @@ namespace MessengerTimer {
             FillResult(DataGroups.First());
         }
 
-        private void Init() {
+        private void Init()
+        {
             InitUI();
             InitResults();
 
             TimerStatus = TimerStatus.Waiting;
 
-            HoldingCheckTimer = new DispatcherTimer {
+            HoldingCheckTimer = new DispatcherTimer
+            {
                 Interval = new TimeSpan(appSettings.StartDelay)
             };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
-            switch (appSettings.DisplayMode) {
+            switch (appSettings.DisplayMode)
+            {
                 case DisplayModeEnum.RealTime:
-                    RefreshTimeTimer = new DispatcherTimer {
+                    RefreshTimeTimer = new DispatcherTimer
+                    {
                         Interval = new TimeSpan(10000)
                     };
                     RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
@@ -167,13 +179,16 @@ namespace MessengerTimer {
             Window.Current.CoreWindow.KeyUp += EscapeKeyUp;
         }
 
-        private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
+        private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
+        {
             if (args.VirtualKey == Windows.System.VirtualKey.Escape && TimerStatus == TimerStatus.Waiting)
                 ResetTimer();
         }
 
-        private void HoldingCheckTimer_Tick(object sender, object e) {
-            if (IsHolding) {
+        private void HoldingCheckTimer_Tick(object sender, object e)
+        {
+            if (IsHolding)
+            {
                 TimerStatus = TimerStatus.Holding;
                 TimerTextBlock.Foreground = GreenBrush;
             }
@@ -181,25 +196,32 @@ namespace MessengerTimer {
             HoldingCheckTimer.Stop();
         }
 
-        private void ResetTimer() {
+        private void ResetTimer()
+        {
             DisplayTime(new TimeSpan(0));
         }
 
-        private void DisplayTime(TimeSpan timeSpan) {
+        private void DisplayTime(TimeSpan timeSpan)
+        {
             TimerTextBlock.Text = new DateTime(timeSpan.Ticks).ToString(appSettings.TimerFormat);
         }
 
-        public static async void SaveData() {
-            DataGroups[appSettings.CurrentDataGroupIndex].Results.Clear();
-            foreach (var item in Results)
-                DataGroups[appSettings.CurrentDataGroupIndex].Results.Add(item);
+        public static async void SaveDataAsync(bool isDelete)
+        {
+            if (!isDelete)
+            {
+                DataGroups[appSettings.CurrentDataGroupIndex].Results.Clear();
+                foreach (var item in Results)
+                    DataGroups[appSettings.CurrentDataGroupIndex].Results.Add(item);
+            }
 
             //DataGroups[appSettings.CurrentDataGroupIndex].Count = DataGroups[appSettings.CurrentDataGroupIndex].Results.Count;
 
             StringBuilder buffer = new StringBuilder();
             buffer.Append(DataGroups.Count);
 
-            for (int i = 0; i < DataGroups.Count; i++) {
+            for (int i = 0; i < DataGroups.Count; i++)
+            {
                 buffer.Append(" " + DataGroups[i].Type);
                 buffer.Append(" " + DataGroups[i].Results.Count);
 
@@ -210,10 +232,12 @@ namespace MessengerTimer {
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
             StorageFile file;
 
-            try {
+            try
+            {
                 file = await storageFolder.GetFileAsync("SaveData");
             }
-            catch (FileNotFoundException) {
+            catch (FileNotFoundException)
+            {
                 await storageFolder.CreateFileAsync("SaveData");
                 file = await storageFolder.GetFileAsync("SaveData");
             }
@@ -221,21 +245,24 @@ namespace MessengerTimer {
             await FileIO.WriteTextAsync(file, buffer.ToString());
         }
 
-        private void StopTimer() {
+        private void StopTimer()
+        {
             EndTime = DateTime.Now;
             DisplayTime(EndTime - StartTime);
             RefreshTimeTimer.Stop();
 
             UpdateResult(EndTime - StartTime);
-            SaveData();
+            SaveDataAsync(false);
         }
 
-        private void UpdateResult(TimeSpan result) {
+        private void UpdateResult(TimeSpan result)
+        {
             Results.Insert(0, new Result(result, Results.Count + 1));
 
             double ao5 = 0, ao12 = 0;
 
-            if (Results.Count >= 5) {
+            if (Results.Count >= 5)
+            {
                 for (int i = 0; i < 5; i++)
                     ao5 += Results[i].ResultValue;
                 ao5 = Math.Round(ao5 / 5, 3);
@@ -243,7 +270,8 @@ namespace MessengerTimer {
             else
                 ao5 = double.NaN;
 
-            if (Results.Count >= 12) {
+            if (Results.Count >= 12)
+            {
                 for (int i = 0; i < 12; i++)
                     ao12 += Results[i].ResultValue;
                 ao12 = Math.Round(ao12 / 12, 3);
@@ -258,38 +286,48 @@ namespace MessengerTimer {
             Ao12ValueTextBlock.Text = ao12.ToString();
         }
 
-        private void RefreshStatusTextBlock() {
+        private void RefreshStatusTextBlock()
+        {
             StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
         }
 
-        private void StartHoldingTick() {
+        private void StartHoldingTick()
+        {
             IsHolding = true;
             TimerTextBlock.Foreground = YellowBrush;
             HoldingCheckTimer.Start();
         }
 
-        private void StartTimer() {
+        private void StartTimer()
+        {
             StartTime = DateTime.Now;
             RefreshTimeTimer.Start();
         }
 
-        private void RefreshTimeTimer_Tick(object sender, object e) {
+        private void RefreshTimeTimer_Tick(object sender, object e)
+        {
             EndTime = DateTime.Now;
             DisplayTime(EndTime - StartTime);
         }
 
-        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-            if (args.IsSettingsInvoked) {
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.IsSettingsInvoked)
+            {
                 //Todo
             }
-            else {
-                switch (args.InvokedItem) {
+            else
+            {
+                switch (args.InvokedItem)
+                {
                     case "Results":
-                        if (infoFrameStatus == InfoFrameStatus.Result) {
+                        if (infoFrameStatus == InfoFrameStatus.Result)
+                        {
                             InfoFrame.Navigate(typeof(EmptyPage));
                             infoFrameStatus = InfoFrameStatus.Empty;
                         }
-                        else {
+                        else
+                        {
                             InfoFrame.Navigate(typeof(ResultPage));
                             infoFrameStatus = InfoFrameStatus.Result;
                         }
