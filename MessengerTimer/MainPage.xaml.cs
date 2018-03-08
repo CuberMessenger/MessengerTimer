@@ -188,8 +188,6 @@ namespace MessengerTimer {
                     DataGroups[appSettings.CurrentDataGroupIndex].Results.Add(item);
             }
 
-            //DataGroups[appSettings.CurrentDataGroupIndex].Count = DataGroups[appSettings.CurrentDataGroupIndex].Results.Count;
-
             StringBuilder buffer = new StringBuilder();
             buffer.Append(DataGroups.Count);
 
@@ -221,39 +219,55 @@ namespace MessengerTimer {
             RefreshTimeTimer.Stop();
 
             UpdateResult(EndTime - StartTime);
+        }
+
+        public void RefreshAoNResults() {
+            try {
+                Ao5ValueTextBlock.Text = Results.First().Ao5Value.ToString();
+                Ao12ValueTextBlock.Text = Results.First().Ao12Value.ToString();
+            }
+            catch (Exception) {
+                Ao5ValueTextBlock.Text = double.NaN.ToString();
+                Ao12ValueTextBlock.Text = double.NaN.ToString();
+            }
+        }
+
+        private double CalcAoNValue(int startIndex, int N) {
+            double aoN = 0;
+
+            if (Results.Count - startIndex >= N) {
+                for (int i = 0; i < N; i++)
+                    aoN += Results[i + startIndex].ResultValue;
+                aoN = Math.Round(aoN / N, 3);
+            }
+            else
+                aoN = double.NaN;
+
+            return aoN;
+        }
+
+        private void RefreshListOfResult(int index) {
+            for (int i = index; i >= 0; i--) {
+                Results[i].Id = Results.Count - i;
+                Results[i].Ao5Value = CalcAoNValue(i, 5);
+                Results[i].Ao12Value = CalcAoNValue(i, 12);
+            }
+
+            RefreshAoNResults();
+        }
+
+        private void UpdateResult(TimeSpan result, int index = 0) {
+            Results.Insert(index, new Result(result, Results.Count + 1));
+
+            RefreshListOfResult(index);
             SaveDataAsync(false);
         }
 
-        public void RefreshAoNResults(double ao5, double ao12) {
-            Ao5ValueTextBlock.Text = ao5.ToString();
-            Ao12ValueTextBlock.Text = ao12.ToString();
-        }
+        public void DeleteResult(int index) {
+            Results.RemoveAt(index--);
 
-        private void UpdateResult(TimeSpan result) {
-            Results.Insert(0, new Result(result, Results.Count + 1));
-
-            double ao5 = 0, ao12 = 0;
-
-            if (Results.Count >= 5) {
-                for (int i = 0; i < 5; i++)
-                    ao5 += Results[i].ResultValue;
-                ao5 = Math.Round(ao5 / 5, 3);
-            }
-            else
-                ao5 = double.NaN;
-
-            if (Results.Count >= 12) {
-                for (int i = 0; i < 12; i++)
-                    ao12 += Results[i].ResultValue;
-                ao12 = Math.Round(ao12 / 12, 3);
-            }
-            else
-                ao12 = double.NaN;
-
-            Results.First().Ao5Value = ao5;
-            Results.First().Ao12Value = ao12;
-
-            RefreshAoNResults(ao5, ao12);
+            RefreshListOfResult(index);
+            SaveDataAsync(false);
         }
 
         private void RefreshStatusTextBlock() {

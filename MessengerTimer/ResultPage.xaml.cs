@@ -36,12 +36,7 @@ namespace MessengerTimer {
                 RefreshMainPageDotResults();
                 DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
 
-                try {
-                    ((Window.Current.Content as Frame).Content as MainPage).RefreshAoNResults(DataGroup.CurrentDataGroup.Results[0].Ao5Value, DataGroup.CurrentDataGroup.Results[0].Ao12Value);
-                }
-                catch (Exception) {
-                    ((Window.Current.Content as Frame).Content as MainPage).RefreshAoNResults(double.NaN, double.NaN);
-                }
+                ((Window.Current.Content as Frame).Content as MainPage).RefreshAoNResults();
             }
         }
 
@@ -67,6 +62,7 @@ namespace MessengerTimer {
             else
                 ShowAlertDialog("Invalid DataGroup Name!");
 
+            NewDataGroupNameTextBox.Text = String.Empty;
             AddDataGroupButton.Flyout.Hide();
         }
 
@@ -84,6 +80,30 @@ namespace MessengerTimer {
             GroupComboBox.SelectedIndex = -1;
 
             DeleteCurrentDataGroupButton.Flyout.Hide();
+        }
+
+        private void StackPanel_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e) {
+            MenuFlyout menuFlyout = new MenuFlyout();
+
+            var currentResult = (sender as FrameworkElement).DataContext;
+            MenuFlyoutItem modifyFlyoutItem = new MenuFlyoutItem { Text = "Modify", Tag = MainPage.Results.IndexOf(currentResult as Result) };
+            MenuFlyoutItem deleteFlyoutItem = new MenuFlyoutItem { Text = "Delete", Tag = MainPage.Results.IndexOf(currentResult as Result) };
+
+            modifyFlyoutItem.Click += ModifyFlyoutItem_Click;
+            deleteFlyoutItem.Click += DeleteFlyoutItem_Click;
+
+            menuFlyout.Items.Add(modifyFlyoutItem);
+            menuFlyout.Items.Add(deleteFlyoutItem);
+
+            menuFlyout.ShowAt(sender as FrameworkElement);
+        }
+
+        private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
+            ((Window.Current.Content as Frame).Content as MainPage).DeleteResult((int)(sender as MenuFlyoutItem).Tag);
+        }
+
+        private void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e) {
+            ShowAlertDialog("ModifyClicked");
         }
     }
 }
