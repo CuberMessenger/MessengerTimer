@@ -1,7 +1,7 @@
 ﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:data="using:MessengerTimer.Models" mc:Ignorable="d">
+        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
@@ -27,6 +27,7 @@
         </Style>
     </Page.Resources>
 
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -34,6 +35,17 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <ContentDialog Title="Result"
+                       Name="EditDialog"
+                       PrimaryButtonText="Confirm"    
+                       CloseButtonText="Cancel"
+                       DefaultButton="Close">
+            <TextBox Name="EditTextBox"              
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center" 
+                     Width="150"/>
+        </ContentDialog>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
@@ -64,20 +76,15 @@
             <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" Style="{StaticResource ResultPageButton}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="*" />
-                            </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical">
 
-                            <TextBlock Text="Confirm delete current DataGroup?" Style="{StaticResource NormalText}" Grid.Row="0"
+                            <TextBlock Text="Confirm delete current DataGroup?" Style="{StaticResource NormalText}"
                                     HorizontalAlignment="Left" />
-                            <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}" Grid.Row="1"
+                            <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}" 
                                     HorizontalAlignment="Left" Margin="0 10" />
                             <Button Name="ConfirmDeleteCurrentDataGroupButton" Content="Delete" FontSize="20"
-                                    Click="ConfirmDeleteCurrentDataGroupButton_Click" Grid.Row="2" HorizontalAlignment="Right" />
-                        </Grid>
+                                    Click="ConfirmDeleteCurrentDataGroupButton_Click"  HorizontalAlignment="Right" />
+                        </StackPanel>
                     </Flyout>
                 </Button.Flyout>
             </Button>
