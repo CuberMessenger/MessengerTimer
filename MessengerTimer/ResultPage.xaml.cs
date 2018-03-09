@@ -46,7 +46,7 @@ namespace MessengerTimer
             }
         }
 
-        private async void ShowAlertDialog(string message)
+        private async void ShowAlertDialogAsync(string message)
         {
             ContentDialog contentDialog = new ContentDialog { Title = message, CloseButtonText = "OK" };
             await contentDialog.ShowAsync();
@@ -66,10 +66,10 @@ namespace MessengerTimer
 
                 DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
 
-                ShowAlertDialog($"{type} added!");
+                ShowAlertDialogAsync($"{type} added!");
             }
             else
-                ShowAlertDialog("Invalid DataGroup Name!");
+                ShowAlertDialogAsync("Invalid DataGroup Name!");
 
             NewDataGroupNameTextBox.Text = String.Empty;
             AddDataGroupButton.Flyout.Hide();
@@ -89,7 +89,7 @@ namespace MessengerTimer
             //4. Select another default content
             GroupComboBox.SelectedIndex = -1;
 
-            ShowAlertDialog("Results Deleted!");
+            ShowAlertDialogAsync("Results Deleted!");
 
             DeleteCurrentDataGroupButton.Flyout.Hide();
         }
@@ -118,13 +118,6 @@ namespace MessengerTimer
 
         private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e)
         {
-            ShowAlertDialog("ModifyClicked");
-
-            var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
-
-            //EditDialog dialog = new EditDialog();
-            
-
             //TextBox EditTextBox = new TextBox
             //{
             //    Text = Results[indexToModify].ResultValue.ToString(),
@@ -143,33 +136,36 @@ namespace MessengerTimer
 
             //dialog.Content = EditTextBox;
 
-            //    < !--< ContentDialog Title = "Result"
-            //               Name = "EditDialog"
-            //               PrimaryButtonText = "Confirm"
-            //               CloseButtonText = "Cancel"
-            //               DefaultButton = "Close" >
-            //    < TextBox Name = "EditTextBox"
-            //             HorizontalAlignment = "Left"
-            //             VerticalAlignment = "Center"
-            //             Width = "150" />
-            //</ ContentDialog > -->
+            var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
 
-            var result = await EditDialog.ShowAsync();
+            EditTextBox.Text = Results[indexToModify].ResultValue.ToString();
 
-            switch (result)
+            var dialogResult = await EditDialog.ShowAsync();
+
+            if (dialogResult == ContentDialogResult.Primary)
             {
-                case ContentDialogResult.None:
+                var result = Double.TryParse(EditTextBox.Text, out double value);
 
-                    break;
-                case ContentDialogResult.Primary:
+                if (result && value > 0)
+                {
+                    //1. Modify result in current memory
+                    //2. Modify result in MainPage memory Done by one line of code
+                    //MainPage.Results[indexToModify].ResultValue = value;
+                    Results[indexToModify].ResultValue = value;
 
-                    break;
-                case ContentDialogResult.Secondary:
+                    //3. Recalculate Ao5/Ao12 results
+                    for (int i = 0; i < Results.Count; i++)
+                    {
+                        ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(i);
+                    }
 
-                    break;
-
-                default:
-                    break;
+                    //4. Modify result in disk
+                    MainPage.SaveDataAsync(false);
+                }
+                else
+                {
+                    ShowAlertDialogAsync("Input Format Error!");
+                }
             }
         }
     }
