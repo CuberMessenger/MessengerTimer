@@ -28,8 +28,7 @@
         </Style>
     </Page.Resources>
 
-
-    <Grid Padding="5">
+    <Grid Padding="5" Width="auto">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
@@ -97,11 +96,11 @@
             <TextBlock Text="Ao12" Style="{StaticResource ResultText}" />
         </StackPanel>
 
-        <Canvas Grid.Row="2">
+        <Canvas Grid.Row="2" HorizontalAlignment="Stretch" Margin="-5,0,-5,0">
             <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
         </Canvas>
 
-        <ListView Name="ResultListView" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3" SelectionMode="Single">
+        <ListView Name="ResultListView" Margin="-5,0,-5,-5" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0" RightTapped="StackPanel_RightTapped">
