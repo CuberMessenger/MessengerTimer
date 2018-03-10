@@ -2,71 +2,54 @@
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 
-namespace MessengerTimer.DataModels
-{
-    public class AppSettings : INotifyPropertyChanged
-    {
+namespace MessengerTimer.DataModels {
+    public class AppSettings : INotifyPropertyChanged {
         //Config Var
-        public bool NeedObserving
-        {
-            get
-            {
+        public bool NeedObserving {
+            get {
                 return ReadSettings(nameof(NeedObserving), false);
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(NeedObserving), value);
                 NotifyPropertyChanged();
             }
         }
 
-        public long StartDelay
-        {
-            get
-            {
+        public long StartDelay {
+            get {
                 return ReadSettings(nameof(StartDelay), 3000000);
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(StartDelay), value);
                 NotifyPropertyChanged();
             }
         }
 
-        public string TimerFormat
-        {
-            get
-            {
+        public string TimerFormat {
+            get {
                 return ReadSettings(nameof(TimerFormat), "s.fff");
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(TimerFormat), value);
                 NotifyPropertyChanged();
             }
         }
 
-        public DisplayModeEnum DisplayMode
-        {
-            get
-            {
+        public DisplayModeEnum DisplayMode {
+            get {
                 return (DisplayModeEnum)ReadSettings(nameof(DisplayMode), 0);
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(DisplayModeEnum), value);
                 NotifyPropertyChanged();
             }
         }
 
-        public int CurrentDataGroupIndex
-        {
-            get
-            {
+        public int CurrentDataGroupIndex {
+            get {
                 return ReadSettings(nameof(CurrentDataGroupIndex), 0);
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(CurrentDataGroupIndex), value);
                 NotifyPropertyChanged();
             }
@@ -75,24 +58,19 @@ namespace MessengerTimer.DataModels
 
         public ApplicationDataContainer LocalSettings { get; set; }
 
-        public AppSettings()
-        {
+        public AppSettings() {
             LocalSettings = ApplicationData.Current.LocalSettings;
         }
 
-        private void SaveSettings(string key, object value)
-        {
+        private void SaveSettings(string key, object value) {
             LocalSettings.Values[key] = value;
         }
 
-        private T ReadSettings<T>(string key, T defaultValue)
-        {
-            if (LocalSettings.Values.ContainsKey(key))
-            {
+        private T ReadSettings<T>(string key, T defaultValue) {
+            if (LocalSettings.Values.ContainsKey(key)) {
                 return (T)LocalSettings.Values[key];
             }
-            if (null != defaultValue)
-            {
+            if (null != defaultValue) {
                 return defaultValue;
             }
             return default(T);
@@ -100,8 +78,7 @@ namespace MessengerTimer.DataModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged([CallerMemberName]string propName = "")
-        {
+        protected void NotifyPropertyChanged([CallerMemberName]string propName = "") {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
