@@ -45,7 +45,8 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="{ThemeResource SystemControlAcrylicElementBrush }"/>
+            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush }" />
 
             <Grid Grid.Column="1">
                 <Button Name="滴汤Button" Opacity="0" />
