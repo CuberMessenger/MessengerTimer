@@ -1,7 +1,8 @@
 ﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d">
+        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d" 
+     Loaded="Page_Loaded" >
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
@@ -28,7 +29,7 @@
     </Page.Resources>
 
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" Padding="5">
+    <Grid Padding="5">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
@@ -50,8 +51,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged"
-                    SelectedItem="{x:Bind DataGroups[0]}">
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged" >                
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:DataGroup">
                         <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type, Mode=OneWay}" FontSize="24" />

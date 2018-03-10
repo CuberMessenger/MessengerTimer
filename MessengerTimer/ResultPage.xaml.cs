@@ -22,8 +22,6 @@ namespace MessengerTimer
         public ResultPage()
         {
             this.InitializeComponent();
-
-            //GroupComboBox.SelectedIndex = GroupComboBox.Items.Count > 0 ? 0 : -1;
         }
 
         private void RefreshMainPageDotResults()
@@ -151,7 +149,7 @@ namespace MessengerTimer
                     //1. Modify result in current memory
                     //2. Modify result in MainPage memory Done by one line of code
                     //MainPage.Results[indexToModify].ResultValue = value;
-                    Results[indexToModify].ResultValue = value;
+                    Results[indexToModify].ResultValue = Math.Round(value, 3);
 
                     //3. Recalculate Ao5/Ao12 results
                     for (int i = 0; i < Results.Count; i++)
@@ -167,6 +165,11 @@ namespace MessengerTimer
                     ShowAlertDialogAsync("Input Format Error!");
                 }
             }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            GroupComboBox.SelectedIndex = MainPage.appSettings.CurrentDataGroupIndex;
         }
     }
 }
