@@ -187,5 +187,10 @@ namespace MessengerTimer
                     ShowAlertDialogAsync("Input Format Error!");
             }
         }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            GroupComboBox.SelectedIndex = MainPage.appSettings.CurrentDataGroupIndex;
+        }
     }
 }

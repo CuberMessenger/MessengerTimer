@@ -294,7 +294,7 @@ namespace MessengerTimer
             RefreshAoNResults();
         }
 
-        private void UpdateResult(TimeSpan result, int index = 0)
+        public void UpdateResult(object result, int index = 0)
         {
             Results.Insert(index, new Result(result, Results.Count + 1));
 
