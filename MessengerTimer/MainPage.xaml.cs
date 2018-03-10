@@ -140,7 +140,7 @@ namespace MessengerTimer
             //appSettings.CurrentDataGroupIndex = 0;
             await ReadSaveDataAsync();
 
-            FillResult(DataGroups.First());
+            FillResult(DataGroups[appSettings.CurrentDataGroupIndex]);
         }
 
         private void Init()
