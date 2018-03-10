@@ -41,7 +41,7 @@ namespace MessengerTimer
         private DispatcherTimer RefreshTimeTimer { get; set; }
         private DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
-        private InfoFrameStatus infoFrameStatus { get; set; }
+        private InfoFrameStatus CurentInfoFrameStatus { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -72,7 +72,7 @@ namespace MessengerTimer
             StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
 
-            infoFrameStatus = InfoFrameStatus.Null;
+            CurentInfoFrameStatus = InfoFrameStatus.Null;
         }
 
         private void ParseSaveData(string raw)
@@ -345,15 +345,15 @@ namespace MessengerTimer
                 switch (args.InvokedItem)
                 {
                     case "Results":
-                        if (infoFrameStatus == InfoFrameStatus.Result)
+                        if (CurentInfoFrameStatus == InfoFrameStatus.Result)
                         {
                             InfoFrame.Navigate(typeof(EmptyPage));
-                            infoFrameStatus = InfoFrameStatus.Empty;
+                            CurentInfoFrameStatus = InfoFrameStatus.Empty;
                         }
                         else
                         {
                             InfoFrame.Navigate(typeof(ResultPage));
-                            infoFrameStatus = InfoFrameStatus.Result;
+                            CurentInfoFrameStatus = InfoFrameStatus.Result;
                         }
                         break;
                     default:

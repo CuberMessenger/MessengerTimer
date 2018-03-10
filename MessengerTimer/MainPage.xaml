@@ -1,7 +1,6 @@
 ﻿<Page x:Class="MessengerTimer.MainPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:Windows10FallCreatorsUpdate="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
         mc:Ignorable="d">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="MainPageLargerTextBlock">
@@ -41,7 +40,7 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="{ThemeResource SystemControlAcrylicElementBrush }"/>
+            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Center" Background="{ThemeResource SystemControlAcrylicElementBrush }"/>
 
             <Grid Grid.Column="1">
                 <Button Name="滴汤Button" Opacity="0" />
@@ -52,10 +51,10 @@
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>                        
+                    <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>                    
+                    </Grid.ColumnDefinitions>
 
                     <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                         Style="{StaticResource MainPageLargerTextBlock}" />
