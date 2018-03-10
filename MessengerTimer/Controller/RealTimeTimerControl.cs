@@ -3,16 +3,11 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace MessengerTimer
-{
-    public sealed partial class MainPage : Page
-    {
-        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey == VirtualKey.Space)
-            {
-                switch (TimerStatus)
-                {
+namespace MessengerTimer {
+    public sealed partial class MainPage : Page {
+        private void RealTimeSpaceKeyDown(CoreWindow sender, KeyEventArgs args) {
+            if (args.VirtualKey == VirtualKey.Space) {
+                switch (TimerStatus) {
                     case TimerStatus.Timing:
                         TimerStatus = TimerStatus.Display;
                         StopTimer();
@@ -41,15 +36,11 @@ namespace MessengerTimer
             }
         }
 
-        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args)
-        {
-            if (args.VirtualKey == VirtualKey.Space)
-            {
-                switch (TimerStatus)
-                {
+        private void RealTimeSpaceKeyUp(CoreWindow sender, KeyEventArgs args) {
+            if (args.VirtualKey == VirtualKey.Space) {
+                switch (TimerStatus) {
                     case TimerStatus.Waiting:
-                        if (appSettings.NeedObserving)
-                        {
+                        if (appSettings.NeedObserving) {
                             TimerStatus = TimerStatus.Observing;
 
                             ResetTimer();

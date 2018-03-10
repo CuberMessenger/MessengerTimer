@@ -43,7 +43,7 @@
             <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
         </ContentDialog>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 5">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
             <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0"
@@ -80,7 +80,7 @@
                             <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}"
                                     HorizontalAlignment="Left" Margin="0 10" />
                             <Button Name="ConfirmDeleteCurrentDataGroupButton" Content="Delete" FontSize="20"
-                                    Click="ConfirmDeleteCurrentDataGroupButton_Click"  HorizontalAlignment="Right" />
+                                    Click="ConfirmDeleteCurrentDataGroupButton_Click" HorizontalAlignment="Right" />
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>

@@ -48,12 +48,14 @@ namespace MessengerTimer.DataModels
 
         public Result(object resultValue, int id)
         {
+
             Id = id;
             if (resultValue is double)
                 ResultValue = (double)resultValue;
             else if (resultValue is TimeSpan)
                 ResultValue = double.Parse(new DateTime(((TimeSpan)resultValue).Ticks).ToString("s.fff"));
         }
+
 
         public Result(int Id, double resultValue, double ao5Value, double ao12Value)
         {

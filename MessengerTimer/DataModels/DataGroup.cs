@@ -2,18 +2,14 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace MessengerTimer.DataModels
-{
-    public class DataGroup : INotifyPropertyChanged
-    {
+namespace MessengerTimer.DataModels {
+    public class DataGroup : INotifyPropertyChanged {
         public ObservableCollection<Result> Results { get; set; }
 
         private string _type;
-        public string Type
-        {
+        public string Type {
             get => _type;
-            set
-            {
+            set {
                 _type = value;
                 NotifyPropertyChanged();
             }
@@ -23,8 +19,7 @@ namespace MessengerTimer.DataModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged([CallerMemberName]string propName = "")
-        {
+        protected void NotifyPropertyChanged([CallerMemberName]string propName = "") {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
     }
