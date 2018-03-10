@@ -60,7 +60,7 @@ namespace MessengerTimer
         {
             var image = new ImageBrush
             {
-                ImageSource = new BitmapImage(new Uri(await BingImage.FetchUrlAsync(), UriKind.Absolute)),
+                ImageSource = await BingImage.GetImageAsync(),
                 Stretch = Stretch.UniformToFill
             };
             BackGroundGrid.Background = image;
@@ -227,18 +227,7 @@ namespace MessengerTimer
                     buffer.Append(" " + DataGroups[i].Results[j].ResultValue + " " + DataGroups[i].Results[j].Ao5Value + " " + DataGroups[i].Results[j].Ao12Value);
             }
 
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile file;
-
-            try
-            {
-                file = await storageFolder.GetFileAsync("SaveData");
-            }
-            catch (FileNotFoundException)
-            {
-                await storageFolder.CreateFileAsync("SaveData");
-                file = await storageFolder.GetFileAsync("SaveData");
-            }
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
             await FileIO.WriteTextAsync(file, buffer.ToString());
         }

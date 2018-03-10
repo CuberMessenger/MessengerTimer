@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 
@@ -69,6 +70,18 @@ namespace MessengerTimer.DataModels
             {
                 SaveSettings(nameof(CurrentDataGroupIndex), value);
                 NotifyPropertyChanged();
+            }
+        }
+
+        public DateTime LastUpdateImageTime
+        {
+            get
+            {
+                return ReadSettings(nameof(LastUpdateImageTime), DateTimeOffset.MinValue).DateTime;
+            }
+            set
+            {
+                SaveSettings(nameof(LastUpdateImageTime), (DateTimeOffset)value);
             }
         }
 
