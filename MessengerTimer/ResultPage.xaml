@@ -1,8 +1,7 @@
 ﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d" 
-     Loaded="Page_Loaded" >
+        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d" Loaded="Page_Loaded">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
@@ -28,22 +27,15 @@
         </Style>
     </Page.Resources>
 
-    <Grid Padding="5" Width="auto">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="40" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
+    <StackPanel Padding="5" Width="auto">
         <ContentDialog Title="Result" Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel" DefaultButton="Close">
-            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
+            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" KeyUp="EditTextBox_KeyUp" />
         </ContentDialog>
 
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 5">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged" >                
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:DataGroup">
                         <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type, Mode=OneWay}" FontSize="24" />
@@ -57,7 +49,7 @@
                         <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 10">
                             <TextBlock Text="New: " Style="{StaticResource NormalText}" Margin="0 10" />
 
-                            <TextBox Name="NewDataGroupNameTextBox" FontSize="20" Width="150" Margin="10 0" />
+                            <TextBox Name="NewDataGroupNameTextBox" FontSize="20" Width="150" Margin="10 0" KeyUp="NewDataGroupNameTextBox_KeyUp" />
 
                             <Button Name="ConfirmAddDataGroupButton" Content="Add" FontSize="20" Click="ConfirmAddDataGroupButton_Click" />
                         </StackPanel>
@@ -81,18 +73,26 @@
             </Button>
         </StackPanel>
 
-        <StackPanel Style="{StaticResource ResultPageStackPanel}" Grid.Row="1">
+        <Canvas HorizontalAlignment="Stretch" Margin="5 10">
+            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="2.5" />
+        </Canvas>
+
+        <StackPanel Style="{StaticResource ResultPageStackPanel}" >
             <TextBlock Text="Id" Style="{StaticResource ResultText}" Width="30" />
             <TextBlock Text="Result" Style="{StaticResource ResultText}" />
             <TextBlock Text="Ao5" Style="{StaticResource ResultText}" />
             <TextBlock Text="Ao12" Style="{StaticResource ResultText}" />
         </StackPanel>
 
-        <Canvas Grid.Row="2" HorizontalAlignment="Stretch" Margin="-5,0,-5,0">
-            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="1" />
+        <Canvas HorizontalAlignment="Stretch" Margin="5 10">
+            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="0.7" />
         </Canvas>
 
-        <ListView Name="ResultListView" Margin="-5,0,-5,-5" ItemsSource="{x:Bind Results, Mode=OneWay}" Grid.Row="3" SelectionMode="Single">
+        <StackPanel Name="AddResultStackPanel" Style="{StaticResource ResultPageStackPanel}" HorizontalAlignment="Center" Margin="0">
+            <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe" Width="340" Click="AddResultButton_Click"/>
+        </StackPanel>
+
+        <ListView Name="ResultListView" Margin="-5,0,-5,-5" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0" RightTapped="StackPanel_RightTapped">
@@ -104,5 +104,5 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-    </Grid>
+    </StackPanel>
 </Page>

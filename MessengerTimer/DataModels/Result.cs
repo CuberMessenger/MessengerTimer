@@ -36,13 +36,16 @@ namespace MessengerTimer.DataModels {
 
         public Result() { }
 
-        public Result(TimeSpan timeSpan, int id) {
+        public Result(object resultValue, int id) {
             Id = id;
-            ResultValue = double.Parse(new DateTime(timeSpan.Ticks).ToString("s.fff"));
+            if (resultValue is double)
+                ResultValue = (double)resultValue;
+            else if (resultValue is TimeSpan)
+                ResultValue = double.Parse(new DateTime(((TimeSpan)resultValue).Ticks).ToString("s.fff"));
         }
 
-        public Result(int Id, double resultValue, double ao5Value, double ao12Value) {
-            this.Id = Id;
+        public Result(int id, double resultValue, double ao5Value, double ao12Value) {
+            Id = id;
             ResultValue = resultValue;
             Ao5Value = ao5Value;
             Ao12Value = ao12Value;

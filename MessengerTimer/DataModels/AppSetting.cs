@@ -55,7 +55,6 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-
         public ApplicationDataContainer LocalSettings { get; set; }
 
         public AppSettings() {

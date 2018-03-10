@@ -103,24 +103,6 @@ namespace MessengerTimer {
         }
 
         private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e) {
-            //TextBox EditTextBox = new TextBox
-            //{
-            //    Text = Results[indexToModify].ResultValue.ToString(),
-            //    HorizontalAlignment = HorizontalAlignment.Left,
-            //    VerticalAlignment = VerticalAlignment.Center,
-            //    Width = 150
-            //};
-
-            //ContentDialog dialog = new ContentDialog()
-            //{
-            //    PrimaryButtonText = "Confirm",
-            //    CloseButtonText = "Close",
-            //    Title = "Result",
-            //    DefaultButton = ContentDialogButton.Close
-            //};
-
-            //dialog.Content = EditTextBox;
-
             var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
 
             EditTextBox.Text = Results[indexToModify].ResultValue.ToString();
@@ -137,22 +119,45 @@ namespace MessengerTimer {
                     Results[indexToModify].ResultValue = Math.Round(value, 3);
 
                     //3. Recalculate Ao5/Ao12 results
-                    for (int i = 0; i < Results.Count; i++) {
-                        ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(i);
-                    }
+                    ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(indexToModify);
 
                     //4. Modify result in disk
                     MainPage.SaveDataAsync(false);
                 }
-                else {
+                else
                     ShowAlertDialogAsync("Input Format Error!");
-                }
             }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e)
-        {
+        private void Page_Loaded(object sender, RoutedEventArgs e) {
             GroupComboBox.SelectedIndex = MainPage.appSettings.CurrentDataGroupIndex;
+        }
+
+        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+            if (e.Key == Windows.System.VirtualKey.Enter) {
+                ConfirmAddDataGroupButton_Click(null, null);
+            }
+        }
+
+        private void EditTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+            if (e.Key == Windows.System.VirtualKey.Enter) {
+                //Problem
+            }
+        }
+
+        private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
+            EditTextBox.Text = String.Empty;
+
+            var dialogResult = await EditDialog.ShowAsync();
+
+            if (dialogResult == ContentDialogResult.Primary) {
+                var result = Double.TryParse(EditTextBox.Text, out double value);
+
+                if (result && value > 0)
+                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(value);
+                else
+                    ShowAlertDialogAsync("Input Format Error!");
+            }
         }
     }
 }

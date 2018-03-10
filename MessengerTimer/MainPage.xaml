@@ -30,7 +30,7 @@
         </Style>
     </Page.Resources>
 
-    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" ItemInvoked="MainPageNavigationView_ItemInvoked">
+    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200">
         <NavigationView.MenuItems>
             <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Results" Tag="results" />
         </NavigationView.MenuItems>
