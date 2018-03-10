@@ -1,6 +1,7 @@
 ﻿<Page x:Class="MessengerTimer.MainPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:Windows10FallCreatorsUpdate="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract, 5)"
         mc:Ignorable="d">
     <Page.Resources>
@@ -30,35 +31,41 @@
         </Style>
     </Page.Resources>
 
-    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200">
+    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280"
+            ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200">
         <NavigationView.MenuItems>
             <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Results" Tag="results" />
         </NavigationView.MenuItems>
 
         <Grid Name="BackGroundGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Left" Background="{ThemeResource SystemControlAcrylicElementBrush }"/>
+            <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Left"
+                    Background="{ThemeResource SystemControlAcrylicElementBrush }" />
 
             <Grid Grid.Column="1">
                 <Button Name="滴汤Button" Opacity="0" />
 
-                <Grid Name="MainGrid" Background="#A5FFFFFF" Padding="20" >
+                <Grid Name="MainGrid" Background="#A5FFFFFF" Padding="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="2*" />
                     </Grid.RowDefinitions>
 
-                    <Grid.ColumnDefinitions>                        
+                    <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2*" />
                         <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>                    
+                    </Grid.ColumnDefinitions>
 
                     <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                        Style="{StaticResource MainPageLargerTextBlock}" />
+                            Style="{StaticResource MainPageLargerTextBlock}" />
 
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
@@ -68,17 +75,21 @@
 
                         <StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                                <TextBlock Name="Ao5ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                                <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Name="Ao5ValueTextBlock" Margin="30 0 0 0"
+                                        Style="{StaticResource MainPageLargerTextBlock}" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                                <TextBlock Name="Ao12ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                                <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Name="Ao12ValueTextBlock" Margin="30 0 0 0"
+                                        Style="{StaticResource MainPageLargerTextBlock}" />
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center" Margin="0 35 0 0"
-                            VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
+                        <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center"
+                                Margin="0 35 0 0" VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
                     </Grid>
                 </Grid>
             </Grid>

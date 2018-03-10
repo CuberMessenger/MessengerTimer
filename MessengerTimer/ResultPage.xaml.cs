@@ -139,12 +139,6 @@ namespace MessengerTimer {
             }
         }
 
-        private void EditTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
-            if (e.Key == Windows.System.VirtualKey.Enter) {
-                //Problem
-            }
-        }
-
         private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
             EditTextBox.Text = String.Empty;
 
