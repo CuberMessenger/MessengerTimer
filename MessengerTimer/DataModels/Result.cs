@@ -1,24 +1,83 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Globalization;
 using System.Runtime.CompilerServices;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace MessengerTimer.DataModels
 {
+    public class AllResults
+    {
+        [JsonProperty(nameof(ResultGroups))]
+        public ObservableCollection<ResultGroup> ResultGroups { get; set; }
+
+        public static AllResults FromJson(string json) => JsonConvert.DeserializeObject<AllResults>(json, Converter.Settings);
+    }
+
+    public class ResultGroup : INotifyPropertyChanged
+    {
+        private string _groupName;
+
+        [JsonProperty(nameof(GroupName))]
+        public string GroupName
+        {
+            get => _groupName;
+            set
+            {
+                _groupName = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [JsonProperty(nameof(Results))]
+        public ObservableCollection<Result> Results { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        public ResultGroup() { }
+
+        protected void NotifyPropertyChanged([CallerMemberName]string propName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
+        }
+    }
+
+    public enum Punishment { None, PlusTwo, DNF }
+
     public class Result : INotifyPropertyChanged
     {
         private int _id;
         private double _ao5Value;
         private double _ao12Value;
         private double _resultValue;
+        private Punishment _resltPunishment;
 
+        [JsonProperty(nameof(ResultValue))]
         public double ResultValue
         {
-            get => _resultValue; set
+            get => _resultValue;
+            set
             {
                 _resultValue = value;
                 NotifyPropertyChanged();
             }
         }
+
+        [JsonProperty(nameof(ResultPunishment))]
+        public Punishment ResultPunishment
+        {
+            get => _resltPunishment;
+            set
+            {
+                _resltPunishment = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        [JsonProperty(nameof(Id))]
         public int Id
         {
             get => _id; set
@@ -27,6 +86,8 @@ namespace MessengerTimer.DataModels
                 NotifyPropertyChanged();
             }
         }
+
+        [JsonProperty(nameof(Ao5Value))]
         public double Ao5Value
         {
             get => _ao5Value; set
@@ -35,6 +96,8 @@ namespace MessengerTimer.DataModels
                 NotifyPropertyChanged();
             }
         }
+
+        [JsonProperty(nameof(Ao12Value))]
         public double Ao12Value
         {
             get => _ao12Value; set
@@ -46,14 +109,12 @@ namespace MessengerTimer.DataModels
 
         public Result() { }
 
-        public Result(object resultValue, int id)
+        public Result(double resultValue, int id)
         {
 
             Id = id;
-            if (resultValue is double)
-                ResultValue = (double)resultValue;
-            else if (resultValue is TimeSpan)
-                ResultValue = double.Parse(new DateTime(((TimeSpan)resultValue).Ticks).ToString("s.fff"));
+            ResultPunishment = Punishment.None;
+            ResultValue = Math.Round(resultValue, 3);
         }
 
 
@@ -71,5 +132,22 @@ namespace MessengerTimer.DataModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+    }
+
+    public static class Serialize
+    {
+        public static string ToJson(this AllResults self) => JsonConvert.SerializeObject(self, Converter.Settings);
+    }
+
+    internal class Converter
+    {
+        public static readonly JsonSerializerSettings Settings = new JsonSerializerSettings
+        {
+            MetadataPropertyHandling = MetadataPropertyHandling.Ignore,
+            DateParseHandling = DateParseHandling.None,
+            Converters = {
+                new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
+            },
+        };
     }
 }
