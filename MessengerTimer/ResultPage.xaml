@@ -26,11 +26,6 @@
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
             <Setter Property="FontSize" Value="24" />
         </Style>
-
-        <ContentDialog Title="Result"  x:Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
-                DefaultButton="Primary">
-            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
-        </ContentDialog>
     </Page.Resources>
 
     <Grid Padding="5" Width="auto">
@@ -42,6 +37,11 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <ContentDialog Title="Result"  Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
+                DefaultButton="Primary">
+            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
+        </ContentDialog>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />

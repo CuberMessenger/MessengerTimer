@@ -92,7 +92,18 @@ namespace MessengerTimer
 
             if (String.IsNullOrWhiteSpace(data))
             {
-                allResult = new AllResults();
+                allResult = new AllResults
+                {
+                    ResultGroups = new ObservableCollection<ResultGroup>()
+                    {
+                        new ResultGroup()
+                        {
+                            GroupName = "3x3",
+                            Results = new ObservableCollection<Result>()
+                        }
+                    }
+                };
+
             }
             else
             {
