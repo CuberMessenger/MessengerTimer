@@ -46,13 +46,16 @@ namespace MessengerTimer.DataModels
                 {
                     IInputStream inputStream = await GetStreamAsync(link);
 
-                    var sb = await GetBitmapFromStreamAsync(inputStream);
+                    IRandomAccessStream memStream = new InMemoryRandomAccessStream();
+                    await RandomAccessStream.CopyAsync(inputStream, memStream);
+
+                    var sb = await GetBitmapFromStreamAsync(memStream);
 
                     await WriteToFileAsync(folder, sb, "Cache.jpg");
 
                     return await ConvertSoftwareBitmap(sb);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     return null;
                 }
@@ -81,17 +84,7 @@ namespace MessengerTimer.DataModels
 
         private static async Task<SoftwareBitmap> GetBitmapFromStreamAsync(IRandomAccessStream stream)
         {
-            IRandomAccessStream memStream = new InMemoryRandomAccessStream();
-            await RandomAccessStream.CopyAsync(stream, memStream);
-            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(memStream);
-            return await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
-        }
-
-        private static async Task<SoftwareBitmap> GetBitmapFromStreamAsync(IInputStream stream)
-        {
-            IRandomAccessStream memStream = new InMemoryRandomAccessStream();
-            await RandomAccessStream.CopyAsync(stream, memStream);
-            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(memStream);
+            BitmapDecoder decoder = await BitmapDecoder.CreateAsync(stream);
             return await decoder.GetSoftwareBitmapAsync(BitmapPixelFormat.Bgra8, BitmapAlphaMode.Premultiplied);
         }
 
@@ -110,7 +103,6 @@ namespace MessengerTimer.DataModels
                 }
             }
         }
-
 
         private static async Task<IInputStream> GetStreamAsync(string url)
         {

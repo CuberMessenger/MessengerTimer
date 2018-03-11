@@ -26,6 +26,11 @@
             <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
             <Setter Property="FontSize" Value="24" />
         </Style>
+
+        <ContentDialog Title="Result"  x:Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
+                DefaultButton="Primary">
+            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
+        </ContentDialog>
     </Page.Resources>
 
     <Grid Padding="5" Width="auto">
@@ -38,19 +43,14 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ContentDialog Title="Result" Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
-                DefaultButton="Primary">
-            <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
-        </ContentDialog>
-
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0 5">
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind DataGroups}" Margin="5 0"
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind ResultGroups}" Margin="5 0"
                     SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80">
                 <ComboBox.ItemTemplate>
-                    <DataTemplate x:DataType="data:DataGroup">
-                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind Type, Mode=OneWay}" FontSize="24" />
+                    <DataTemplate x:DataType="data:ResultGroup">
+                        <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind GroupName, Mode=OneWay}" FontSize="24" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>

@@ -6,56 +6,67 @@ using Windows.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-namespace MessengerTimer {
+namespace MessengerTimer
+{
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ResultPage : Page {
+    public sealed partial class ResultPage : Page
+    {
         public ObservableCollection<Result> Results = MainPage.Results;
 
-        public ObservableCollection<DataGroup> DataGroups = MainPage.DataGroups;
+        public ObservableCollection<ResultGroup> ResultGroups = MainPage.allResult.ResultGroups;
 
-        public DataGroup CurrentDataGroup = DataGroup.CurrentDataGroup;
+        public ResultGroup CurrentResultGroup = MainPage.allResult.ResultGroups[appSettings.CurrentDataGroupIndex];
 
-        public ResultPage() {
+        private static AppSettings appSettings = new AppSettings();
+
+        public ResultPage()
+        {
             this.InitializeComponent();
         }
 
-        private void RefreshMainPageDotResults() {
+        private void RefreshMainPageDotResults()
+        {
             MainPage.Results.Clear();
-            for (int i = 0; i < MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex].Results.Count; i++)
-                MainPage.Results.Add(MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex].Results[i]);
+            for (int i = 0; i < ResultGroups[appSettings.CurrentDataGroupIndex].Results.Count; i++)
+                MainPage.Results.Add(ResultGroups[appSettings.CurrentDataGroupIndex].Results[i]);
         }
 
-        private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var cg = (sender as ComboBox).SelectedItem;
-            MainPage.appSettings.CurrentDataGroupIndex = MainPage.DataGroups.IndexOf(cg as DataGroup);
-            if (MainPage.appSettings.CurrentDataGroupIndex >= 0) {
+            appSettings.CurrentDataGroupIndex = ResultGroups.IndexOf(cg as ResultGroup);
+            if (appSettings.CurrentDataGroupIndex >= 0)
+            {
                 RefreshMainPageDotResults();
-                DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
+                CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
                 ((Window.Current.Content as Frame).Content as MainPage).RefreshAoNResults();
             }
         }
 
-        private async void ShowAlertDialogAsync(string message) {
+        private async void ShowAlertDialogAsync(string message)
+        {
             ContentDialog contentDialog = new ContentDialog { Title = message, CloseButtonText = "OK" };
             await contentDialog.ShowAsync();
         }
 
-        private void ConfirmAddDataGroupButton_Click(object sender, RoutedEventArgs e) {
-            string type = NewDataGroupNameTextBox.Text;
-            if (!String.IsNullOrWhiteSpace(type)) {
-                MainPage.DataGroups.Add(new DataGroup { Results = new ObservableCollection<Result>(), Type = type });
-                MainPage.appSettings.CurrentDataGroupIndex = MainPage.DataGroups.Count - 1;
+        private void ConfirmAddDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            string groupName = NewDataGroupNameTextBox.Text;
+            if (!String.IsNullOrWhiteSpace(groupName))
+            {
+                ResultGroups.Add(new ResultGroup { Results = new ObservableCollection<Result>(), GroupName = groupName });
+                appSettings.CurrentDataGroupIndex = ResultGroups.Count - 1;
                 RefreshMainPageDotResults();
                 MainPage.SaveDataAsync(false);
 
                 GroupComboBox.SelectedIndex = GroupComboBox.Items.Count - 1;
 
-                DataGroup.CurrentDataGroup = MainPage.DataGroups[MainPage.appSettings.CurrentDataGroupIndex];
+                CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
-                ShowAlertDialogAsync($"{type} added!");
+                ShowAlertDialogAsync($"{groupName} added!");
             }
             else
                 ShowAlertDialogAsync("Invalid DataGroup Name!");
@@ -64,9 +75,10 @@ namespace MessengerTimer {
             AddDataGroupButton.Flyout.Hide();
         }
 
-        private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
             //1. Delete content from memory
-            MainPage.DataGroups.RemoveAt(MainPage.appSettings.CurrentDataGroupIndex);
+            MainPage.allResult.ResultGroups.RemoveAt(appSettings.CurrentDataGroupIndex);
 
             //2. Delete content from disk
             MainPage.SaveDataAsync(true);
@@ -82,7 +94,8 @@ namespace MessengerTimer {
             DeleteCurrentDataGroupButton.Flyout.Hide();
         }
 
-        private void StackPanel_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e) {
+        private void StackPanel_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
             MenuFlyout menuFlyout = new MenuFlyout();
 
             var currentResult = (sender as FrameworkElement).DataContext;
@@ -98,21 +111,25 @@ namespace MessengerTimer {
             menuFlyout.ShowAt(sender as FrameworkElement);
         }
 
-        private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
             ((Window.Current.Content as Frame).Content as MainPage).DeleteResult((int)(sender as MenuFlyoutItem).Tag);
         }
 
-        private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
             var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
 
             EditTextBox.Text = Results[indexToModify].ResultValue.ToString();
 
             var dialogResult = await EditDialog.ShowAsync();
 
-            if (dialogResult == ContentDialogResult.Primary) {
+            if (dialogResult == ContentDialogResult.Primary)
+            {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
-                if (result && value > 0) {
+                if (result && value > 0)
+                {
                     //1. Modify result in current memory
                     //2. Modify result in MainPage memory Done by one line of code
                     //MainPage.Results[indexToModify].ResultValue = value;
@@ -129,18 +146,22 @@ namespace MessengerTimer {
             }
         }
 
-        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
-            if (e.Key == Windows.System.VirtualKey.Enter) {
+        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
+            if (e.Key == Windows.System.VirtualKey.Enter)
+            {
                 ConfirmAddDataGroupButton_Click(null, null);
             }
         }
 
-        private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
+        private async void AddResultButton_Click(object sender, RoutedEventArgs e)
+        {
             EditTextBox.Text = String.Empty;
 
             var dialogResult = await EditDialog.ShowAsync();
 
-            if (dialogResult == ContentDialogResult.Primary) {
+            if (dialogResult == ContentDialogResult.Primary)
+            {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
                 if (result && value > 0)
@@ -152,28 +173,7 @@ namespace MessengerTimer {
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            GroupComboBox.SelectedIndex = MainPage.appSettings.CurrentDataGroupIndex;
-        }
-
-        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
-            if (e.Key == Windows.System.VirtualKey.Enter) {
-                ConfirmAddDataGroupButton_Click(null, null);
-            }
-        }
-
-        private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
-            EditTextBox.Text = String.Empty;
-
-            var dialogResult = await EditDialog.ShowAsync();
-
-            if (dialogResult == ContentDialogResult.Primary) {
-                var result = Double.TryParse(EditTextBox.Text, out double value);
-
-                if (result && value > 0)
-                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(value);
-                else
-                    ShowAlertDialogAsync("Input Format Error!");
-            }
+            GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
         }
     }
 }
