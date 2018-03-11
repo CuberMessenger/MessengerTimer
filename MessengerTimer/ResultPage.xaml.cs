@@ -129,7 +129,29 @@ namespace MessengerTimer {
             }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e) {
+        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+            if (e.Key == Windows.System.VirtualKey.Enter) {
+                ConfirmAddDataGroupButton_Click(null, null);
+            }
+        }
+
+        private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
+            EditTextBox.Text = String.Empty;
+
+            var dialogResult = await EditDialog.ShowAsync();
+
+            if (dialogResult == ContentDialogResult.Primary) {
+                var result = Double.TryParse(EditTextBox.Text, out double value);
+
+                if (result && value > 0)
+                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(value);
+                else
+                    ShowAlertDialogAsync("Input Format Error!");
+            }
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             GroupComboBox.SelectedIndex = MainPage.appSettings.CurrentDataGroupIndex;
         }
 

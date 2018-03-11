@@ -39,7 +39,7 @@ namespace MessengerTimer {
         private DispatcherTimer RefreshTimeTimer { get; set; }
         private DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
-        private InfoFrameStatus infoFrameStatus { get; set; }
+        private InfoFrameStatus CurentInfoFrameStatus { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -53,9 +53,11 @@ namespace MessengerTimer {
             Init();
         }
 
-        private async void InitBingBackgroundAsync() {
-            var image = new ImageBrush {
-                ImageSource = new BitmapImage(new Uri(await BingImage.FetchUrlAsync(), UriKind.Absolute)),
+        private async void InitBingBackgroundAsync()
+        {
+            var image = new ImageBrush
+            {
+                ImageSource = await BingImage.GetImageAsync(),
                 Stretch = Stretch.UniformToFill
             };
             BackGroundGrid.Background = image;
@@ -66,7 +68,7 @@ namespace MessengerTimer {
             StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
 
-            infoFrameStatus = InfoFrameStatus.Null;
+            CurentInfoFrameStatus = InfoFrameStatus.Null;
         }
 
         private void ParseSaveData(string raw) {
@@ -199,16 +201,7 @@ namespace MessengerTimer {
                     buffer.Append(" " + DataGroups[i].Results[j].ResultValue + " " + DataGroups[i].Results[j].Ao5Value + " " + DataGroups[i].Results[j].Ao12Value);
             }
 
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            StorageFile file;
-
-            try {
-                file = await storageFolder.GetFileAsync("SaveData");
-            }
-            catch (FileNotFoundException) {
-                await storageFolder.CreateFileAsync("SaveData");
-                file = await storageFolder.GetFileAsync("SaveData");
-            }
+            var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
             await FileIO.WriteTextAsync(file, buffer.ToString());
         }
@@ -256,7 +249,8 @@ namespace MessengerTimer {
             RefreshAoNResults();
         }
 
-        public void UpdateResult(object result, int index = 0) {
+        public void UpdateResult(object result, int index = 0)
+        {
             Results.Insert(index, new Result(result, Results.Count + 1));
 
             RefreshListOfResult(index);
@@ -297,13 +291,16 @@ namespace MessengerTimer {
             else {
                 switch (args.InvokedItem) {
                     case "Results":
-                        if (infoFrameStatus == InfoFrameStatus.Result) {
+
+                        if (CurentInfoFrameStatus == InfoFrameStatus.Result)
+                        {
+
                             InfoFrame.Navigate(typeof(EmptyPage));
-                            infoFrameStatus = InfoFrameStatus.Empty;
+                            CurentInfoFrameStatus = InfoFrameStatus.Empty;
                         }
                         else {
                             InfoFrame.Navigate(typeof(ResultPage));
-                            infoFrameStatus = InfoFrameStatus.Result;
+                            CurentInfoFrameStatus = InfoFrameStatus.Result;
                         }
                         break;
                     default:
