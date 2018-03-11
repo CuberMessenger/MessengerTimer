@@ -8,7 +8,7 @@ namespace MessengerTimer.DataModels {
         //Config Var
         public bool NeedObserving {
             get {
-                return ReadSettings(nameof(NeedObserving), false);
+                return ReadSettings(nameof(NeedObserving), true);
             }
             set {
                 SaveSettings(nameof(NeedObserving), value);
@@ -26,9 +26,9 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public string TimerFormat {
+        public TimerFormat TimerFormat {
             get {
-                return ReadSettings(nameof(TimerFormat), "s.fff");
+                return ReadSettings(nameof(TimerFormat), TimerFormat.SSFFF);
             }
             set {
                 SaveSettings(nameof(TimerFormat), value);
@@ -56,14 +56,11 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public DateTime LastUpdateImageTime
-        {
-            get
-            {
+        public DateTime LastUpdateImageTime {
+            get {
                 return ReadSettings(nameof(LastUpdateImageTime), DateTimeOffset.MinValue).DateTime;
             }
-            set
-            {
+            set {
                 SaveSettings(nameof(LastUpdateImageTime), (DateTimeOffset)value);
             }
         }

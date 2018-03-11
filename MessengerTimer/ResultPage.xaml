@@ -38,7 +38,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ContentDialog Title="Result"  Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
+        <ContentDialog Title="Result" Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
                 DefaultButton="Primary">
             <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
         </ContentDialog>
@@ -116,11 +116,11 @@
                             RightTapped="StackPanel_RightTapped">
                         <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}"
                                 Width="30" />
-                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultValue, Mode=OneWay}"
+                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultString, Mode=OneWay}"
                                 Style="{StaticResource ResultText}" />
-                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5Value, Mode=OneWay}"
+                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5String, Mode=OneWay}"
                                 Style="{StaticResource ResultText}" />
-                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12Value, Mode=OneWay}"
+                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12String, Mode=OneWay}"
                                 Style="{StaticResource ResultText}" />
                     </StackPanel>
                 </DataTemplate>
