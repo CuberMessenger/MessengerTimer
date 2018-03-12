@@ -10,23 +10,23 @@ namespace CSMin2Phase {
         static CubieCube[] CubeSym = new CubieCube[16];
 
         //18 moves
-        static CubieCube[] moveCube = new CubieCube[18];
+        public static CubieCube[] moveCube = new CubieCube[18];
 
-        static long[] moveCubeSym = new long[18];
-        static int[] firstMoveSym = new int[48];
+        public static long[] moveCubeSym = new long[18];
+        public static int[] firstMoveSym = new int[48];
 
-        static int[,] SymMult = new int[16, 16];
-        static int[,] SymMultInv = new int[16, 16];
-        static int[,] SymMove = new int[16, 18];
-        static int[,] SymMoveUD = new int[16, 18];
-        static int[] Sym8Move = new int[8 * 18];
+        public static int[,] SymMult = new int[16, 16];
+        public static int[,] SymMultInv = new int[16, 16];
+        public static int[,] SymMove = new int[16, 18];
+        public static int[,] SymMoveUD = new int[16, 18];
+        public static int[] Sym8Move = new int[8 * 18];
 
         //ClassIndexToRepresentantArrays
-        static char[] FlipS2R = new char[336];
-        static char[] TwistS2R = new char[324];
-        static char[] EPermS2R = new char[2768];
-        static byte[] Perm2Comb = new byte[2768];
-        static char[] PermInvEdgeSym = new char[2768];
+        public static char[] FlipS2R = new char[336];
+        public static char[] TwistS2R = new char[324];
+        public static char[] EPermS2R = new char[2768];
+        public static sbyte[] Perm2Comb = new sbyte[2768];
+        public static char[] PermInvEdgeSym = new char[2768];
 
         /*
         * Notice that Edge Perm Coordnate and Corner Perm Coordnate are the same symmetry structure.
@@ -34,54 +34,58 @@ namespace CSMin2Phase {
         * And when x is RawEdgePermCoordnate, y*16+k is SymEdgePermCoordnate, y*16+(k^e2c[k]) will
         * be the SymCornerPermCoordnate of the State whose RawCornerPermCoordnate is x.
         */
-        static int SYM_E2C_MAGIC = 0x00DDDD00;
-        static int ESym2CSym(int idx) => idx ^ (SYM_E2C_MAGIC >> ((idx & 0xf) << 1) & 3);
+        public static int SYM_E2C_MAGIC = 0x00DDDD00;
+        public static int ESym2CSym(int idx) => idx ^ (SYM_E2C_MAGIC >> ((idx & 0xf) << 1) & 3);
 
-        static char[] MtoEperm = new char[40320];
+        public static char[] MtoEPerm = new char[40320];
 
         //Raw-Coordnate to Sym-Coordnate, only for speeding up initializaion.
-        static char[] FlipR2S;// = new char[2048];
-        static char[] TwistR2S;// = new char[2187];
-        static char[] EPermR2S;// = new char[40320];
-        static char[] FlipS2RF = Search.USE_TWIST_FLIP_PRUN ? new char[336 * 8] : null;
+        public static char[] FlipR2S;// = new char[2048];
+        public static char[] TwistR2S;// = new char[2187];
+        public static char[] EPermR2S;// = new char[40320];
+        public static char[] FlipS2RF = Search.USE_TWIST_FLIP_PRUN ? new char[336 * 8] : null;
 
-        static char[] SymStateTwist = new char[324];
-        static char[] SymStateFlip = new char[336];
-        static char[] SymStatePerm = new char[2768];
+        public static char[] SymStateTwist = new char[324];
+        public static char[] SymStateFlip = new char[336];
+        public static char[] SymStatePerm = new char[2768];
 
-        static CubieCube urf1 = new CubieCube(2531, 1373, 67026819, 1367);
-        static CubieCube urf2 = new CubieCube(2089, 1906, 322752913, 2040);
+        public static CubieCube urf1 = new CubieCube(2531, 1373, 67026819, 1367);
+        public static CubieCube urf2 = new CubieCube(2089, 1906, 322752913, 2040);
 
-        static byte[,] urfMove = new byte[,] {
+        public static sbyte[,] urfMove = new sbyte[,] {
         {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17},
         {6, 7, 8, 0, 1, 2, 3, 4, 5, 15, 16, 17, 9, 10, 11, 12, 13, 14},
         {3, 4, 5, 6, 7, 8, 0, 1, 2, 12, 13, 14, 15, 16, 17, 9, 10, 11},
         {2, 1, 0, 5, 4, 3, 8, 7, 6, 11, 10, 9, 14, 13, 12, 17, 16, 15},
         {8, 7, 6, 2, 1, 0, 5, 4, 3, 17, 16, 15, 11, 10, 9, 14, 13, 12},
         {5, 4, 3, 8, 7, 6, 2, 1, 0, 14, 13, 12, 17, 16, 15, 11, 10, 9}
-    };
-        static byte[] preMove = { -1, Util.Rx1, Util.Rx3, Util.Fx1, Util.Fx3, Util.Lx1, Util.Lx3, Util.Bx1, Util.Bx3 };
-        static byte[][] preMoveList;
-        static char[] preMoveSym;
+        };
 
-        byte[] ca = { 0, 1, 2, 3, 4, 5, 6, 7 };
-        byte[] ea = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22 };
+        //CM
+        //Java byte is sbyte in C#
+        //CM
+        public static sbyte[] preMove = { -1, Util.Rx1, Util.Rx3, Util.Fx1, Util.Fx3, Util.Lx1, Util.Lx3, Util.Bx1, Util.Bx3 };
+        public static sbyte[][] preMoveList;
+        public static char[] preMoveSym;
+
+        public sbyte[] ca = { 0, 1, 2, 3, 4, 5, 6, 7 };
+        public sbyte[] ea = { 0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22 };
         CubieCube tempCube = null;
 
-        CubieCube() { }
+        public CubieCube() { }
 
-        CubieCube(int cperm, int twist, int eperm, int flip) {
-            this.setCPerm(cperm);
+        public CubieCube(int cperm, int twist, int eperm, int flip) {
+            setCPerm(cperm);
             setTwist(twist);
             Util.setNPerm(ea, eperm, 12, true);
             setFlip(flip);
         }
 
-        CubieCube(CubieCube c) {
+        public CubieCube(CubieCube c) {
             copy(c);
         }
 
-        void copy(CubieCube c) {
+        public void copy(CubieCube c) {
             for (int i = 0; i < 8; i++)
                 ca[i] = c.ca[i];
 
@@ -96,56 +100,56 @@ namespace CSMin2Phase {
         }
         //CM
 
-        void invCubieCube() {
+        public void invCubieCube() {
             GenerateTempCube();
 
-            for (byte edge = 0; edge < 12; edge++)
-                tempCube.ea[ea[edge] >> 1] = (byte)(edge << 1 | ea[edge] & 1);
+            for (sbyte edge = 0; edge < 12; edge++)
+                tempCube.ea[ea[edge] >> 1] = (sbyte)(edge << 1 | ea[edge] & 1);
 
-            for (byte corn = 0; corn < 8; corn++)
-                tempCube.ca[ca[corn] & 0x7] = (byte)(corn | 0x20 >> (ca[corn] >> 3) & 0x18);
+            for (sbyte corn = 0; corn < 8; corn++)
+                tempCube.ca[ca[corn] & 0x7] = (sbyte)((int)corn | 0x20 >> (ca[corn] >> 3) & 0x18);
 
             copy(tempCube);
         }
 
         //prod = a * b, Corner Only.
-        static void CornMult(CubieCube a, CubieCube b, CubieCube prod) {
+        public static void CornMult(CubieCube a, CubieCube b, CubieCube prod) {
             for (int corn = 0; corn < 8; corn++) {
                 int oriA = a.ca[b.ca[corn] & 7] >> 3;
                 int oriB = b.ca[corn] >> 3;
                 int ori = oriA + ((oriA < 3) ? oriB : 6 - oriB);
                 ori = ori % 3 + ((oriA < 3) == (oriB < 3) ? 0 : 3);
-                prod.ca[corn] = (byte)(a.ca[b.ca[corn] & 7] & 7 | ori << 3);
+                prod.ca[corn] = (sbyte)(a.ca[b.ca[corn] & 7] & 7 | ori << 3);
             }
         }
 
         //prod = a* b, Edge Only.
-        static void EdgeMult(CubieCube a, CubieCube b, CubieCube prod) {
+        public static void EdgeMult(CubieCube a, CubieCube b, CubieCube prod) {
             for (int ed = 0; ed < 12; ed++)
-                prod.ea[ed] = (byte)(a.ea[b.ea[ed] >> 1] ^ (b.ea[ed] & 1));
+                prod.ea[ed] = (sbyte)(a.ea[b.ea[ed] >> 1] ^ (b.ea[ed] & 1));
         }
 
         //b = S_idx^-1 * a * S_idx, Corner Only.
-        static void CornConjugate(CubieCube a, int idx, CubieCube b) {
+        public static void CornConjugate(CubieCube a, int idx, CubieCube b) {
             CubieCube sinv = CubeSym[SymMultInv[0, idx]];
             CubieCube s = CubeSym[idx];
             for (int corn = 0; corn < 8; corn++) {
                 int oriA = sinv.ca[a.ca[s.ca[corn] & 7] & 7] >> 3;
                 int oriB = a.ca[s.ca[corn] & 7] >> 3;
                 int ori = (oriA < 3) ? oriB : (3 - oriB) % 3;
-                b.ca[corn] = (byte)(sinv.ca[a.ca[s.ca[corn] & 7] & 7] & 7 | ori << 3);
+                b.ca[corn] = (sbyte)(sinv.ca[a.ca[s.ca[corn] & 7] & 7] & 7 | ori << 3);
             }
         }
 
         //b = S_idx^-1 * a * S_idx, Edge Only.
-        static void EdgeConjugate(CubieCube a, int idx, CubieCube b) {
+        public static void EdgeConjugate(CubieCube a, int idx, CubieCube b) {
             CubieCube sinv = CubeSym[SymMultInv[0, idx]];
             CubieCube s = CubeSym[idx];
             for (int ed = 0; ed < 12; ed++)
-                b.ea[ed] = (byte)(sinv.ea[a.ea[s.ea[ed] >> 1] >> 1] ^ (a.ea[s.ea[ed] >> 1] & 1) ^ (s.ea[ed] & 1));
+                b.ea[ed] = (sbyte)(sinv.ea[a.ea[s.ea[ed] >> 1] >> 1] ^ (a.ea[s.ea[ed] >> 1] & 1) ^ (s.ea[ed] & 1));
         }
 
-        static int getPermSymInv(int idx, int sym, bool isCorner) {
+        public static int getPermSymInv(int idx, int sym, bool isCorner) {
             int idxi = PermInvEdgeSym[idx];
             if (isCorner)
                 idxi = ESym2CSym(idxi);
@@ -154,7 +158,7 @@ namespace CSMin2Phase {
         }
 
         //this = S_urf^-1 * this * S_urf.
-        void URFConjugate() {
+        public void URFConjugate() {
             GenerateTempCube();
 
             CornMult(urf2, this, tempCube);
@@ -177,16 +181,16 @@ namespace CSMin2Phase {
             return idx;
         }
 
-        void setFlip(int idx) {
+        public void setFlip(int idx) {
             int parity = 0, val;
             for (int i = 10; i >= 0; i--, idx >>= 1) {
                 parity ^= (val = idx & 1);
-                ea[i] = (byte)(ea[i] & 0xfe | val);
+                ea[i] = (sbyte)(ea[i] & 0xfe | val);
             }
-            ea[11] = (byte)(ea[11] & 0xfe | parity);
+            ea[11] = (sbyte)(ea[11] & 0xfe | parity);
         }
 
-        int getFlipSym() {
+        public int getFlipSym() {
             if (FlipR2S != null)
                 return FlipR2S[getFlip()];
 
@@ -211,16 +215,16 @@ namespace CSMin2Phase {
             return idx;
         }
 
-        void setTwist(int idx) {
+        public void setTwist(int idx) {
             int twst = 15, val;
             for (int i = 6; i >= 0; i--, idx /= 3) {
                 twst -= (val = idx % 3);
-                ca[i] = (byte)(ca[i] & 0x7 | val << 3);
+                ca[i] = (sbyte)(ca[i] & 0x7 | val << 3);
             }
-            ca[7] = (byte)(ca[7] & 0x7 | (twst % 3) << 3);
+            ca[7] = (sbyte)(ca[7] & 0x7 | (twst % 3) << 3);
         }
 
-        int getTwistSym() {
+        public int getTwistSym() {
             if (TwistR2S != null)
                 return TwistR2S[getTwist()];
 
@@ -237,13 +241,13 @@ namespace CSMin2Phase {
             return 0;
         }
 
-        int getUDSlice() => Util.getComb(ea, 8, true);
+        public int getUDSlice() => Util.getComb(ea, 8, true);
 
-        void setUDSlice(int idx) => Util.setComb(ea, idx, 8, true);
+        public void setUDSlice(int idx) => Util.setComb(ea, idx, 8, true);
 
-        int getU4Comb() => Util.getComb(ea, 0, true);
+        public int getU4Comb() => Util.getComb(ea, 0, true);
 
-        int getD4Comb() => Util.getComb(ea, 4, true);
+        public int getD4Comb() => Util.getComb(ea, 4, true);
 
         // ++++++++++++++++++++ Phase 2 Coordnates ++++++++++++++++++++
         // EPerm : Permutations of 8 UD Edges. Raw[0, 40320) Sym[0, 2187 * 16)
@@ -252,9 +256,9 @@ namespace CSMin2Phase {
 
         int getCPerm() => Util.getNPerm(ca, 8, false);
 
-        void setCPerm(int idx) => Util.setNPerm(ca, idx, 8, false);
+        public void setCPerm(int idx) => Util.setNPerm(ca, idx, 8, false);
 
-        int getCPermSym() {
+        public int getCPermSym() {
             if (EPermR2S != null)
                 return ESym2CSym(EPermR2S[getCPerm()]);
 
@@ -273,9 +277,9 @@ namespace CSMin2Phase {
 
         int getEPerm() => Util.getNPerm(ea, 8, true);
 
-        void setEPerm(int idx) => Util.setNPerm(ea, idx, 8, true);
+        public void setEPerm(int idx) => Util.setNPerm(ea, idx, 8, true);
 
-        int getEPermSym() {
+        public int getEPermSym() {
             if (EPermR2S != null)
                 return EPermR2S[getEPerm()];
 
@@ -290,13 +294,13 @@ namespace CSMin2Phase {
             return 0;
         }
 
-        int getMPerm() => Util.getComb(ea, 8, true) >> 9;
+        public int getMPerm() => Util.getComb(ea, 8, true) >> 9;
 
-        void setMPerm(int idx) => Util.setComb(ea, idx << 9, 8, true);
+        public void setMPerm(int idx) => Util.setComb(ea, idx << 9, 8, true);
 
-        int getCComb() => 69 - (Util.getComb(ca, 0, false) & 0x1ff);
+        public int getCComb() => 69 - (Util.getComb(ca, 0, false) & 0x1ff);
 
-        void setCComb(int idx) => Util.setComb(ca, 69 - idx, 0, false);
+        public void setCComb(int idx) => Util.setComb(ca, 69 - idx, 0, false);
 
         /*
          * Check a cubiecube for solvability. Return the error code.
@@ -308,10 +312,10 @@ namespace CSMin2Phase {
          * -6: Parity error: Two corners or two edges have to be exchanged
          */
         //CM
-        enum CubeError { Solvable, MissingEdges, FlipError, MissingCorners, TwistError, ParityError }
+        public enum CubeError { Solvable, MissingEdges, FlipError, MissingCorners, TwistError, ParityError, OtherError }
         //CM
 
-        CubeError verify() {
+        public CubeError verify() {
             int sum = 0;
             int edgeMask = 0;
             for (int e = 0; e < 12; e++) {
@@ -344,7 +348,7 @@ namespace CSMin2Phase {
             return CubeError.Solvable;// cube ok
         }
 
-        long selfSymmetry() {
+        public long selfSymmetry() {
             CubieCube c = new CubieCube(this);
             CubieCube d = new CubieCube();
             long sym = 0L;
@@ -364,6 +368,212 @@ namespace CSMin2Phase {
                     c.invCubieCube();
             }
             return sym;
+        }
+
+        // Initialization functions
+
+        public static void initMove() {
+            moveCube[0] = new CubieCube(15120, 0, 119750400, 0);
+            moveCube[3] = new CubieCube(21021, 1494, 323403417, 0);
+            moveCube[6] = new CubieCube(8064, 1236, 29441808, 550);
+            moveCube[9] = new CubieCube(9, 0, 5880, 0);
+            moveCube[12] = new CubieCube(1230, 412, 2949660, 0);
+            moveCube[15] = new CubieCube(224, 137, 328552, 137);
+            for (int a = 0; a < 18; a += 3) {
+                for (int p = 0; p < 2; p++) {
+                    moveCube[a + p + 1] = new CubieCube();
+                    EdgeMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+                    CornMult(moveCube[a + p], moveCube[a], moveCube[a + p + 1]);
+                }
+            }
+        }
+
+        public string toString() {
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < 8; i++)
+                sb.Append("|" + (ca[i] & 7) + " " + (ca[i] >> 3));
+
+            sb.Append("\n");
+
+            for (int i = 0; i < 12; i++)
+                sb.Append("|" + (ea[i] >> 1) + " " + (ea[i] & 1));
+            return sb.ToString();
+        }
+
+        public static void initSym() {
+            CubieCube c = new CubieCube();
+            CubieCube d = new CubieCube();
+            CubieCube t;
+
+            CubieCube f2 = new CubieCube(28783, 0, 259268407, 0);
+            CubieCube u4 = new CubieCube(15138, 0, 119765538, 7);
+            CubieCube lr2 = new CubieCube(5167, 0, 83473207, 0);
+
+            for (int i = 0; i < 8; i++)
+                lr2.ca[i] |= 3 << 3;
+
+            for (int i = 0; i < 16; i++) {
+                CubeSym[i] = new CubieCube(c);
+                CornMult(c, u4, d);
+                EdgeMult(c, u4, d);
+                t = d; d = c; c = t;
+
+                if (i % 4 == 3) {
+                    CornMult(c, lr2, d);
+                    EdgeMult(c, lr2, d);
+                    t = d; d = c; c = t;
+                }
+
+                if (i % 8 == 7) {
+                    CornMult(c, f2, d);
+                    EdgeMult(c, f2, d);
+                    t = d; d = c; c = t;
+                }
+            }
+
+            for (int i = 0; i < 16; i++) {
+                for (int j = 0; j < 16; j++) {
+                    CornMult(CubeSym[i], CubeSym[j], c);
+
+                    for (int k = 0; k < 16; k++) {
+                        if (Equals(CubeSym[k].ca, c.ca)) {
+                            SymMult[i, j] = k; // SymMult[i][j] = (k ^ i ^ j ^ (0x14ab4 >> j & i << 1 & 2)));
+                            SymMultInv[k, j] = i; // i * j = k => k * j^-1 = i
+                            break;
+                        }
+                    }
+                }
+            }
+
+            for (int j = 0; j < 18; j++) {
+                for (int s = 0; s < 16; s++) {
+                    CornConjugate(moveCube[j], SymMultInv[0, s], c);
+
+                    for (int m = 0; m < 18; m++) {
+                        if (Equals(moveCube[m].ca, c.ca)) {
+                            SymMove[s, j] = m;
+                            SymMoveUD[s, Util.std2ud[j]] = Util.std2ud[m];
+                            break;
+                        }
+                    }
+
+                    if (s % 2 == 0)
+                        Sym8Move[j << 3 | s >> 1] = SymMove[s, j];
+                }
+            }
+
+            for (int i = 0; i < 18; i++) {
+                moveCubeSym[i] = moveCube[i].selfSymmetry();
+                int j = i;
+
+                for (int s = 0; s < 48; s++) {
+                    if (SymMove[s % 16, j] < i)
+                        firstMoveSym[s] |= 1 << i;
+
+                    if (s % 16 == 15)
+                        j = urfMove[2, j];
+                }
+            }
+
+            preMoveList = new sbyte[113][];
+            preMoveSym = new char[113];
+            preMoveList[0] = new sbyte[0];
+            preMoveSym[0] = (char)0xFFFF;
+            int idx = 9;
+
+            for (int i = 1; i < 9; i++) {
+                preMoveList[i] = new sbyte[] { preMove[i] };
+                preMoveSym[i] = (char)moveCubeSym[preMove[i]];
+            }
+
+            for (sbyte m = 0; m < 18; m++) {
+                for (int i = 1; i < 9; i++) {
+                    sbyte n = preMove[i];
+                    int ma = m / 3;
+                    int na = n / 3;
+
+                    if ((ma == na) || ((ma % 3 == na % 3) && (ma >= na || m % 3 == 1)))
+                        continue;
+
+                    preMoveSym[idx] = (char)(CubieCube.moveCubeSym[m] & CubieCube.moveCubeSym[n]);
+                    preMoveList[idx++] = new sbyte[] { m, n };
+                }
+            }
+        }
+
+        static int initSym2Raw(int N_RAW, char[] Sym2Raw, char[] Raw2Sym, char[] SymState, int coord) {
+            CubieCube c = new CubieCube();
+            CubieCube d = new CubieCube();
+            int count = 0, idx = 0;
+            int sym_inc = coord >= 2 ? 1 : 2;
+            bool isEdge = coord != 1;
+
+            for (int i = 0; i < N_RAW; i++) {
+                if (Raw2Sym[i] != 0)
+                    continue;
+
+                switch (coord) {
+                    case 0:
+                        c.setFlip(i);
+                        break;
+                    case 1:
+                        c.setTwist(i);
+                        break;
+                    case 2:
+                        c.setEPerm(i);
+                        break;
+                }
+
+                for (int s = 0; s < 16; s += sym_inc) {
+                    if (isEdge)
+                        EdgeConjugate(c, s, d);
+                    else
+                        CornConjugate(c, s, d);
+
+                    switch (coord) {
+                        case 0:
+                            idx = d.getFlip();
+                            if (Search.USE_TWIST_FLIP_PRUN)
+                                FlipS2RF[count << 3 | s >> 1] = (char)idx;
+                            break;
+                        case 1:
+                            idx = d.getTwist();
+                            break;
+                        case 2:
+                            idx = d.getEPerm();
+                            int a = d.getU4Comb();
+                            int m = 494 - (a & 0x1ff) + (a >> 9) * 70 + (d.getD4Comb() >> 9) * 1680;
+                            MtoEPerm[m] = (char)(count << 4 | s);
+
+                            if (s == 0)
+                                Perm2Comb[count] = (sbyte)(494 - (a & 0x1ff));
+                            break;
+                    }
+
+                    if (idx == i)
+                        SymState[count] |= (char)(1 << (s / sym_inc));
+
+                    Raw2Sym[idx] = (char)((count << 4 | s) / sym_inc);
+                }
+
+                Sym2Raw[count++] = (char)i;
+            }
+            return count;
+        }
+
+        public static void initFlipSym2Raw() => initSym2Raw(2048, FlipS2R, FlipR2S = new char[2048], SymStateFlip, 0);
+
+        public static void initTwistSym2Raw() => initSym2Raw(2187, TwistS2R, TwistR2S = new char[2187], SymStateTwist, 1);
+
+        public static void initPermSym2Raw() {
+            initSym2Raw(40320, EPermS2R, EPermR2S = new char[40320], SymStatePerm, 2);
+            CubieCube cc = new CubieCube();
+
+            for (int i = 0; i < 2768; i++) {
+                cc.setEPerm(EPermS2R[i]);
+                cc.invCubieCube();
+                PermInvEdgeSym[i] = (char)cc.getEPermSym();
+            }
         }
     }
 }

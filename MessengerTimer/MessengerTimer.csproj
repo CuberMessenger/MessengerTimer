@@ -154,6 +154,12 @@
       <Version>11.0.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CSMin2Phase\CSMin2Phase.csproj">
+      <Project>{e8b5ffc5-d697-4dc2-b7f5-7c9c48058a76}</Project>
+      <Name>CSMin2Phase</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -62,7 +62,7 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <!--<Button Name="ScrambleTestButton" Content="ScrambleTest"  Click="ScrambleTestButton_Click"/>-->
+                    <Button Name="ScrambleTestButton" Content="ScrambleTest"  Click="ScrambleTestButton_Click"/>
 
                     <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Style="{StaticResource MainPageLargerTextBlock}" />
