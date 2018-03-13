@@ -155,8 +155,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSMin2Phase\theosZAMin2Phase.csproj">
-      <Project>{e8b5ffc5-d697-4dc2-b7f5-7c9c48058a76}</Project>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\theosZAMin2Phase\theosZAMin2Phase.csproj">
+      <Project>{89c5179a-367e-4b0f-908a-55e278c0fc8d}</Project>
       <Name>theosZAMin2Phase</Name>
     </ProjectReference>
   </ItemGroup>

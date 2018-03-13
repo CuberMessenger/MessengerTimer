@@ -304,7 +304,11 @@ namespace MessengerTimer {
 
         private async void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
             string cube = Tools.randomCube();
-            ContentDialog contentDialog = new ContentDialog { Title = cube, Content = new Search().solution(cube, 21, 100, 0, Search.APPEND_LENGTH | Search.INVERSE_SOLUTION), CloseButtonText = "OK" };
+            string solution = null;
+
+            solution = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
+
+            ContentDialog contentDialog = new ContentDialog { Title = cube, Content = solution, CloseButtonText = "OK" };
             await contentDialog.ShowAsync();
         }
     }
