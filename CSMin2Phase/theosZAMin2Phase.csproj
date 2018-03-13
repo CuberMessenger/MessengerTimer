@@ -107,6 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CoordCube.cs" />
+    <Compile Include="CoordCubeHuge.cs" />
     <Compile Include="CubieCube.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Search.cs" />
@@ -118,13 +119,6 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.0.8</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ChenShuangSourceCode\CoordCube.java" />
-    <Content Include="ChenShuangSourceCode\CubieCube.java" />
-    <Content Include="ChenShuangSourceCode\Search.java" />
-    <Content Include="ChenShuangSourceCode\Tools.java" />
-    <Content Include="ChenShuangSourceCode\Util.java" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

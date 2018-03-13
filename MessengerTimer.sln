@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengerTimer", "MessengerTimer\MessengerTimer.csproj", "{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSMin2Phase", "CSMin2Phase\CSMin2Phase.csproj", "{E8B5FFC5-D697-4DC2-B7F5-7C9C48058A76}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "theosZAMin2Phase", "CSMin2Phase\theosZAMin2Phase.csproj", "{E8B5FFC5-D697-4DC2-B7F5-7C9C48058A76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

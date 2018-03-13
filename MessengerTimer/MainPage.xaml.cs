@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using MessengerTimer.DataModels;
 using System.Text;
 using System.Collections.ObjectModel;
-using CSMin2Phase;
+using min2phase;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -303,7 +303,8 @@ namespace MessengerTimer {
         }
 
         private async void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
-            ContentDialog contentDialog = new ContentDialog { Title = Tools.randomCube(), CloseButtonText = "OK" };
+            string cube = Tools.randomCube();
+            ContentDialog contentDialog = new ContentDialog { Title = cube, Content = new Search().solution(cube, 21, 100, 0, Search.APPEND_LENGTH | Search.INVERSE_SOLUTION), CloseButtonText = "OK" };
             await contentDialog.ShowAsync();
         }
     }

@@ -155,9 +155,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CSMin2Phase\CSMin2Phase.csproj">
+    <ProjectReference Include="..\CSMin2Phase\theosZAMin2Phase.csproj">
       <Project>{e8b5ffc5-d697-4dc2-b7f5-7c9c48058a76}</Project>
-      <Name>CSMin2Phase</Name>
+      <Name>theosZAMin2Phase</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
