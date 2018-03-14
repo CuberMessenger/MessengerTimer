@@ -65,6 +65,15 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public bool ShowScrambleState {
+            get {
+                return ReadSettings(nameof(ShowScrambleState), true);
+            }
+            set {
+                SaveSettings(nameof(ShowScrambleState), value);
+            }
+        }
+
         public ApplicationDataContainer LocalSettings { get; set; }
 
         public AppSettings() {

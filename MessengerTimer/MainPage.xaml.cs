@@ -63,11 +63,13 @@ namespace MessengerTimer {
 
             InitBingBackgroundAsync();
 
-
             InitUI();
+
             InitResults();
 
             InitDisplay();
+
+            InitHotKeys();
         }
 
         private async void InitBingBackgroundAsync() {
@@ -84,6 +86,15 @@ namespace MessengerTimer {
             ResetTimer();
 
             CurentInfoFrameStatus = InfoFrameStatus.Null;
+
+            ScrambleFrame.Navigate(typeof(ScramblePage));
+
+            GenerateNewScramble();
+        }
+
+        private void InitHotKeys() {
+            //Hot Key
+            Window.Current.CoreWindow.KeyUp += EscapeKeyUp;
         }
 
         private async Task ReadSaveDataAsync() {
@@ -144,9 +155,6 @@ namespace MessengerTimer {
                 default:
                     break;
             }
-
-            //Hot Key
-            Window.Current.CoreWindow.KeyUp += EscapeKeyUp;
         }
 
         private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
@@ -207,6 +215,8 @@ namespace MessengerTimer {
 
             DisplayTime(result);
             UpdateResult(result);
+
+            GenerateNewScramble();
         }
 
         public void UpdateResult(Result result, int index = 0) {
@@ -285,9 +295,7 @@ namespace MessengerTimer {
             else {
                 switch (args.InvokedItem) {
                     case "Results":
-
                         if (CurentInfoFrameStatus == InfoFrameStatus.Result) {
-
                             InfoFrame.Navigate(typeof(EmptyPage));
                             CurentInfoFrameStatus = InfoFrameStatus.Empty;
                         }
@@ -302,14 +310,26 @@ namespace MessengerTimer {
             }
         }
 
-        private async void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
+        private void GenerateNewScramble() {
             string cube = Tools.randomCube();
-            string solution = null;
+            string scramble = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
 
-            solution = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
-
-            ContentDialog contentDialog = new ContentDialog { Title = cube, Content = solution, CloseButtonText = "OK" };
-            await contentDialog.ShowAsync();
+            ScrambleTextBlock.Text = scramble;
+            (ScrambleFrame.Content as ScramblePage).RefreshScramble(cube);
         }
+
+        private async void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
+            GenerateNewScramble();
+        }
+
+        private void ScrambleFrame_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.4;
+
+        private void ScrambleFrame_ManipulationDelta(object sender, Windows.UI.Xaml.Input.ManipulationDeltaRoutedEventArgs e) =>
+                ScrambleFrame.Margin = new Thickness(
+                ScrambleFrame.Margin.Left, ScrambleFrame.Margin.Top,
+                Math.Clamp(ScrambleFrame.Margin.Right - e.Delta.Translation.X, 0, MainGrid.ActualWidth - 360),
+                Math.Clamp(ScrambleFrame.Margin.Bottom - e.Delta.Translation.Y, 0, MainGrid.ActualHeight - 280));
+
+        private void ScrambleFrame_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.8;
     }
 }

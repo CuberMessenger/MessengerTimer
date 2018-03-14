@@ -58,11 +58,20 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="2.5*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Button Name="ScrambleTestButton" Content="ScrambleTest"  Click="ScrambleTestButton_Click"/>
+                    <!--<Button Name="ScrambleTestButton" Content="ScrambleTest" Click="ScrambleTestButton_Click" />-->
+
+                    <Frame Name="ScrambleFrame" Width="320" Height="240" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                            ManipulationMode="All" ManipulationStarted="ScrambleFrame_ManipulationStarted"
+                            ManipulationDelta="ScrambleFrame_ManipulationDelta"
+                            ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                            Canvas.ZIndex="10" />
+
+                    <TextBlock Name="ScrambleTextBlock" Style="{StaticResource MainPageSmallerTextBlock}" Grid.ColumnSpan="2"
+                            HorizontalAlignment="Center" Margin="5" />
 
                     <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
                             Style="{StaticResource MainPageLargerTextBlock}" />
@@ -89,8 +98,7 @@
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Name="TimerTextBlock" Text="0.000" Grid.Column="1" HorizontalAlignment="Center"
-                                Margin="0 35 0 0" VerticalAlignment="Top" 
-                                Style="{StaticResource MainPageLargerTextBlock}" />
+                                Margin="0 35 0 0" VerticalAlignment="Top" Style="{StaticResource MainPageLargerTextBlock}" />
                     </Grid>
                 </Grid>
             </Grid>

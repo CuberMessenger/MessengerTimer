@@ -1,0 +1,175 @@
+﻿<Page x:Class="MessengerTimer.ScramblePage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="Grid" x:Key="FaceGrid">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+
+        <Style TargetType="Rectangle" x:Key="StickerRectangle">
+            <Setter Property="Stroke" Value="Gray" />
+            <Setter Property="StrokeThickness" Value="0.5" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#66FFFFFF" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Name="UFaceGrid" Grid.Row="0" Grid.Column="1" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[0]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[1]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[2]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[3]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[4]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[5]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[6]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[7]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[8]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+
+        <Grid Name="RFaceGrid" Grid.Row="1" Grid.Column="2" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[9]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[10]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[11]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[12]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[13]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[14]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[15]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[16]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[17]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+
+        <Grid Name="FFaceGrid" Grid.Row="1" Grid.Column="1" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[18]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[19]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[20]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[21]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[22]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[23]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[24]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[25]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[26]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+
+        <Grid Name="DFaceGrid" Grid.Row="2" Grid.Column="1" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[27]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[28]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[29]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[30]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[31]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[32]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[33]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[34]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[35]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+
+        <Grid Name="LFaceGrid" Grid.Row="1" Grid.Column="0" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[36]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[37]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[38]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[39]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[40]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[41]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[42]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[43]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[44]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+
+        <Grid Name="BFaceGrid" Grid.Row="1" Grid.Column="3" Style="{StaticResource FaceGrid}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{x:Bind brushes[45]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="1" Fill="{x:Bind brushes[46]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="0" Grid.Column="2" Fill="{x:Bind brushes[47]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="0" Fill="{x:Bind brushes[48]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="1" Fill="{x:Bind brushes[49]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="1" Grid.Column="2" Fill="{x:Bind brushes[50]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="0" Fill="{x:Bind brushes[51]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="1" Fill="{x:Bind brushes[52]}" Style="{StaticResource StickerRectangle}" />
+            <Rectangle Grid.Row="2" Grid.Column="2" Fill="{x:Bind brushes[53]}" Style="{StaticResource StickerRectangle}" />
+        </Grid>
+    </Grid>
+</Page>
