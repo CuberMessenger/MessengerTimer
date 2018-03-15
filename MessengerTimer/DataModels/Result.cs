@@ -46,9 +46,11 @@ namespace MessengerTimer.DataModels {
         private double _ao5Value;
         private double _ao12Value;
         private double _resultValue;
-        private Punishment _resltPunishment;
+        private Punishment _resultPunishment;
 
-        public static string GetFormattedString(double value) {
+        public static string GetFormattedString(double value, Punishment punishment = Punishment.None) {
+            if (value < 0)
+                return "DNF";//when aoNValue need to be DNF, it will be assigned by -1
             switch (MainPage.appSettings.TimerFormat) {
                 case TimerFormat.MMSSFF:
                     //Todo
@@ -57,9 +59,27 @@ namespace MessengerTimer.DataModels {
                     //Todo
                     return string.Empty;
                 case TimerFormat.SSFF:
-                    return value.ToString("F2");
+                    switch (punishment) {
+                        case Punishment.None:
+                            return value.ToString("F2");
+                        case Punishment.PlusTwo:
+                            return (value + 2).ToString("F2") + "+";
+                        case Punishment.DNF:
+                            return "DNF";
+                        default:
+                            return value.ToString("F2");
+                    }
                 case TimerFormat.SSFFF:
-                    return value.ToString("F3");
+                    switch (punishment) {
+                        case Punishment.None:
+                            return value.ToString("F3");
+                        case Punishment.PlusTwo:
+                            return (value + 2).ToString("F3") + "+";
+                        case Punishment.DNF:
+                            return "DNF";
+                        default:
+                            return value.ToString("F3");
+                    }
                 default:
                     return string.Empty;
             }
@@ -67,7 +87,7 @@ namespace MessengerTimer.DataModels {
 
         [JsonProperty(nameof(ResultString))]
         public string ResultString {
-            get => GetFormattedString(ResultValue);
+            get => GetFormattedString(ResultValue, ResultPunishment);
         }
 
         [JsonProperty(nameof(Ao5String))]
@@ -91,10 +111,10 @@ namespace MessengerTimer.DataModels {
 
         [JsonProperty(nameof(ResultPunishment))]
         public Punishment ResultPunishment {
-            get => _resltPunishment;
+            get => _resultPunishment;
             set {
-                _resltPunishment = value;
-                NotifyPropertyChanged();
+                _resultPunishment = value;
+                NotifyPropertyChanged("ResultString");
             }
         }
 
@@ -124,9 +144,9 @@ namespace MessengerTimer.DataModels {
 
         public Result() { }
 
-        public Result(double resultValue, int id) {
+        public Result(double resultValue, int id, Punishment punishment) {
             Id = id;
-            ResultPunishment = Punishment.None;
+            ResultPunishment = punishment;
             ResultValue = Math.Round(resultValue, 3);
         }
 

@@ -11,6 +11,7 @@ using MessengerTimer.DataModels;
 using System.Text;
 using System.Collections.ObjectModel;
 using min2phase;
+using System.Collections.Generic;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -58,6 +59,7 @@ namespace MessengerTimer {
         private DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
         private InfoFrameStatus CurentInfoFrameStatus { get; set; }
+        private Punishment CurrentResultPunishment { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -90,7 +92,6 @@ namespace MessengerTimer {
             InitBingBackgroundAsync();
 
             TimerStatus = TimerStatus.Waiting;
-            StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
 
             CurentInfoFrameStatus = InfoFrameStatus.Null;
@@ -145,22 +146,13 @@ namespace MessengerTimer {
             HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay) };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
-            switch (appSettings.DisplayMode) {
-                case DisplayModeEnum.RealTime:
-                    RefreshTimeTimer = new DispatcherTimer {
-                        Interval = new TimeSpan(10000)
-                    };
-                    RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
+            RefreshTimeTimer = new DispatcherTimer {
+                Interval = new TimeSpan(10000)
+            };
+            RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
 
-                    Window.Current.CoreWindow.KeyUp += TimerControlSpaceKeyUp;
-                    Window.Current.CoreWindow.KeyDown += TimerControlSpaceKeyDown;
-                    break;
-                case DisplayModeEnum.OnlyOberving:
-                    //Todo
-                    break;
-                default:
-                    break;
-            }
+            Window.Current.CoreWindow.KeyUp += TimerControlSpaceKeyUp;
+            Window.Current.CoreWindow.KeyDown += TimerControlSpaceKeyDown;
         }
 
         private void ResetTimer() => DisplayTime(Result.GetFormattedString(0));
@@ -201,9 +193,24 @@ namespace MessengerTimer {
             double aoN = 0;
 
             if (Results.Count - startIndex >= N) {
-                for (int i = 0; i < N; i++)
-                    aoN += Results[i + startIndex].ResultValue;
-                aoN = Math.Round(aoN / N, 3);
+                List<Result> validResults = null;
+                var window = Results.Skip(startIndex).Take(N);
+                var NumOfDNF = window.Where(rst => rst.ResultPunishment == Punishment.DNF).Count();
+
+                if (NumOfDNF >= 2)
+                    return -1;//means DNF
+                else if (NumOfDNF == 1) {
+                    validResults = window.ToList();
+                    validResults.Remove(window.Where(rst => rst.ResultPunishment == Punishment.DNF).First());
+                }
+                else {
+                    validResults = window.OrderByDescending(rst => rst.ResultValue).ToList();
+                    validResults.RemoveAt(0);
+                }
+
+                for (int i = 0; i < N - 1; i++)
+                    aoN += validResults[i].ResultValue + (validResults[i].ResultPunishment == Punishment.PlusTwo ? 2 : 0);
+                aoN = aoN / (N - 1);
             }
             else
                 aoN = double.NaN;
@@ -258,7 +265,7 @@ namespace MessengerTimer {
             (ScrambleFrame.Content as ScramblePage).RefreshScramble(cube);
         }
 
-        private async void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
+        private void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
             GenerateNewScramble();
         }
 

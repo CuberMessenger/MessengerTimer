@@ -33,7 +33,6 @@ namespace MessengerTimer {
                             TimerTextBlock.Foreground = YellowBrush;
                         break;
                 }
-                //RefreshStatusTextBlock();
                 滴汤Button.Focus(FocusState.Keyboard);
             }
         }
@@ -55,7 +54,7 @@ namespace MessengerTimer {
                         TimerStatus = TimerStatus.Timing;
 
                         RefreshTimeTimer.Stop();
-                        var punish = TimerTextBlock.Text;
+                        CurrentResultPunishment = GetCurrentPunishment();
 
                         StartTimer();
                         break;
@@ -69,8 +68,15 @@ namespace MessengerTimer {
                         break;
                 }
                 TimerTextBlock.Foreground = BlackBrush;
-                //RefreshStatusTextBlock();
             }
+        }
+
+        private Punishment GetCurrentPunishment() {
+            if (TimerTextBlock.Text == "DNF")
+                return Punishment.DNF;
+            if (TimerTextBlock.Text == "+2")
+                return Punishment.PlusTwo;
+            return Punishment.None;
         }
 
         private void RefreshTimeTimer_Tick(object sender, object e) {
@@ -127,7 +133,7 @@ namespace MessengerTimer {
             EndTime = DateTime.Now;
             RefreshTimeTimer.Stop();
 
-            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2);
+            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2, CurrentResultPunishment);
 
             DisplayTime(result);
             UpdateResult(result);

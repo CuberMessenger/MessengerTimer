@@ -1,6 +1,7 @@
 ﻿using MessengerTimer.DataModels;
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -104,10 +105,32 @@ namespace MessengerTimer {
             ((Window.Current.Content as Frame).Content as MainPage).DeleteResult((int)(sender as MenuFlyoutItem).Tag);
         }
 
+        private void SetCheckedRadioButton(Punishment punishment) {
+            RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList()[(int)punishment].IsChecked = true;
+
+            //switch (punishment) {
+            //    case Punishment.None:
+            //        NonePunishmentRadioButton.IsChecked = true;
+            //        break;
+            //    case Punishment.PlusTwo:
+            //        PlusTwoPunishmentRadioButton.IsChecked = true;
+            //        break;
+            //    case Punishment.DNF:
+            //        DNFPunishmentRadioButton.IsChecked = true;
+            //        break;
+            //}
+        }
+
+        private Punishment GetCheckedPunishment() {
+            var radioButtons = RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList();
+            return (Punishment)radioButtons.IndexOf(radioButtons.First(rb => (bool)rb.IsChecked));
+        }
+
         private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e) {
             var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
 
             EditTextBox.Text = Results[indexToModify].ResultValue.ToString();
+            SetCheckedRadioButton(Results[indexToModify].ResultPunishment);
 
             var dialogResult = await EditDialog.ShowAsync();
 
@@ -118,7 +141,7 @@ namespace MessengerTimer {
                     //1. Modify result in current memory
                     //2. Modify result in MainPage memory Done by one line of code
                     MainPage.Results[indexToModify].ResultValue = value;
-                    //Results[indexToModify].ResultValue = value;
+                    MainPage.Results[indexToModify].ResultPunishment = GetCheckedPunishment();
 
                     //3. Recalculate Ao5/Ao12 results
                     ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(indexToModify);
@@ -139,6 +162,7 @@ namespace MessengerTimer {
 
         private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
             EditTextBox.Text = String.Empty;
+            NonePunishmentRadioButton.IsChecked = true;
 
             var dialogResult = await EditDialog.ShowAsync();
 
@@ -146,7 +170,7 @@ namespace MessengerTimer {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
                 if (result && value > 0)
-                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(new Result(value, MainPage.Results.Count + 2));
+                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(new Result(value, MainPage.Results.Count + 2, GetCheckedPunishment()));
                 else
                     ShowAlertDialogAsync("Input Format Error!");
             }
