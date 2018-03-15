@@ -21,7 +21,7 @@ namespace MessengerTimer {
 
     public enum TimerStatus { Waiting, Display, Observing, Holding, Timing }
 
-    public enum DisplayModeEnum { RealTime, OnlyOberving }
+    public enum DisplayModeEnum { RealTime, ToSecond, OnlyOberving, Hidden }
 
     public enum InfoFrameStatus { Null, Result, Empty, Setting }
 
@@ -45,7 +45,15 @@ namespace MessengerTimer {
         static public AllResults allResult;
 
         //Useful Var
-        private TimerStatus TimerStatus { get; set; }
+        private TimerStatus _timerStatus;
+        private TimerStatus TimerStatus {
+            get => _timerStatus;
+            set {
+                _timerStatus = value;
+                if (value != TimerStatus.Display)
+                    Bindings.Update();
+            }
+        }
         private DispatcherTimer RefreshTimeTimer { get; set; }
         private DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
@@ -60,8 +68,6 @@ namespace MessengerTimer {
 
         public MainPage() {
             InitializeComponent();
-
-            InitBingBackgroundAsync();
 
             InitUI();
 
@@ -81,6 +87,8 @@ namespace MessengerTimer {
         }
 
         private void InitUI() {
+            InitBingBackgroundAsync();
+
             TimerStatus = TimerStatus.Waiting;
             StatusTextBlock.Text = TimerStatus.ToString();
             ResetTimer();
@@ -134,9 +142,7 @@ namespace MessengerTimer {
         }
 
         private void InitDisplay() {
-            HoldingCheckTimer = new DispatcherTimer {
-                Interval = new TimeSpan(appSettings.StartDelay)
-            };
+            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay) };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
             switch (appSettings.DisplayMode) {
@@ -146,8 +152,8 @@ namespace MessengerTimer {
                     };
                     RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
 
-                    Window.Current.CoreWindow.KeyUp += RealTimeSpaceKeyUp;
-                    Window.Current.CoreWindow.KeyDown += RealTimeSpaceKeyDown;
+                    Window.Current.CoreWindow.KeyUp += TimerControlSpaceKeyUp;
+                    Window.Current.CoreWindow.KeyDown += TimerControlSpaceKeyDown;
                     break;
                 case DisplayModeEnum.OnlyOberving:
                     //Todo
@@ -155,20 +161,6 @@ namespace MessengerTimer {
                 default:
                     break;
             }
-        }
-
-        private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
-            if (args.VirtualKey == Windows.System.VirtualKey.Escape && TimerStatus == TimerStatus.Waiting)
-                ResetTimer();
-        }
-
-        private void HoldingCheckTimer_Tick(object sender, object e) {
-            if (IsHolding) {
-                TimerStatus = TimerStatus.Holding;
-                TimerTextBlock.Foreground = GreenBrush;
-            }
-            IsHolding = false;
-            HoldingCheckTimer.Stop();
         }
 
         private void ResetTimer() => DisplayTime(Result.GetFormattedString(0));
@@ -180,43 +172,11 @@ namespace MessengerTimer {
                     allResult.ResultGroups[appSettings.CurrentDataGroupIndex].Results.Add(item);
             }
 
-            //StringBuilder buffer = new StringBuilder();
-            //buffer.Append(DataGroups.Count);
-
-            //for (int i = 0; i < DataGroups.Count; i++)
-            //{
-            //    buffer.Append(" " + DataGroups[i].Type);
-            //    buffer.Append(" " + DataGroups[i].Results.Count);
-
-            //    for (int j = 0; j < DataGroups[i].Results.Count; j++)
-            //        buffer.Append(" " + DataGroups[i].Results[j].ResultValue + " " + DataGroups[i].Results[j].Ao5Value + " " + DataGroups[i].Results[j].Ao12Value);
-            //}
-
             string json = allResult.ToJson();
 
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
             await FileIO.WriteTextAsync(file, json);
-        }
-
-        private void DisplayTime(string time) {
-            TimerTextBlock.Text = time;
-        }
-
-        private void DisplayTime(Result result) {
-            TimerTextBlock.Text = result.ResultString;
-        }
-
-        private void StopTimer() {
-            EndTime = DateTime.Now;
-            RefreshTimeTimer.Stop();
-
-            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2);
-
-            DisplayTime(result);
-            UpdateResult(result);
-
-            GenerateNewScramble();
         }
 
         public void UpdateResult(Result result, int index = 0) {
@@ -266,26 +226,6 @@ namespace MessengerTimer {
 
             RefreshListOfResult(index);
             SaveDataAsync(false);
-        }
-
-        private void RefreshStatusTextBlock() {
-            StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
-        }
-
-        private void StartHoldingTick() {
-            IsHolding = true;
-            TimerTextBlock.Foreground = YellowBrush;
-            HoldingCheckTimer.Start();
-        }
-
-        private void StartTimer() {
-            StartTime = DateTime.Now;
-            RefreshTimeTimer.Start();
-        }
-
-        private void RefreshTimeTimer_Tick(object sender, object e) {
-            EndTime = DateTime.Now;
-            DisplayTime(Result.GetFormattedString((EndTime - StartTime).TotalSeconds));
         }
 
         private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {

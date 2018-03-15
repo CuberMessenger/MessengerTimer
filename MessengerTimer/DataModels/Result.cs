@@ -85,7 +85,7 @@ namespace MessengerTimer.DataModels {
             get => _resultValue;
             set {
                 _resultValue = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("ResultString");
             }
         }
 
@@ -110,7 +110,7 @@ namespace MessengerTimer.DataModels {
         public double Ao5Value {
             get => _ao5Value; set {
                 _ao5Value = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("Ao5String");
             }
         }
 
@@ -118,7 +118,7 @@ namespace MessengerTimer.DataModels {
         public double Ao12Value {
             get => _ao12Value; set {
                 _ao12Value = value;
-                NotifyPropertyChanged();
+                NotifyPropertyChanged("Ao12String");
             }
         }
 

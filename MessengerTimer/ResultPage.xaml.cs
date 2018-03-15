@@ -117,8 +117,8 @@ namespace MessengerTimer {
                 if (result && value > 0) {
                     //1. Modify result in current memory
                     //2. Modify result in MainPage memory Done by one line of code
-                    //MainPage.Results[indexToModify].ResultValue = value;
-                    Results[indexToModify].ResultValue = Math.Round(value, 3);
+                    MainPage.Results[indexToModify].ResultValue = value;
+                    //Results[indexToModify].ResultValue = value;
 
                     //3. Recalculate Ao5/Ao12 results
                     ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(indexToModify);

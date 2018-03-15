@@ -74,7 +74,7 @@
                             HorizontalAlignment="Center" Margin="5" />
 
                     <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Style="{StaticResource MainPageLargerTextBlock}" />
+                            Style="{StaticResource MainPageLargerTextBlock}" Text="{x:Bind TimerStatus}" />
 
                     <Grid Grid.Row="1" Grid.Column="0">
                         <Grid.ColumnDefinitions>
