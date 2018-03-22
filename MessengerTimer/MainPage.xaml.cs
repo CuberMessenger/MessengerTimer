@@ -42,8 +42,10 @@ namespace MessengerTimer {
         private static Brush RedBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
-        static public ObservableCollection<Result> Results = new ObservableCollection<Result>();
-        static public AllResults allResult;
+        private static TimeSpan OneMilliSecondTimeSpan = new TimeSpan(10000);
+
+        public static ObservableCollection<Result> Results = new ObservableCollection<Result>();
+        public static AllResults allResult;
 
         //Useful Var
         private TimerStatus _timerStatus;
@@ -60,17 +62,45 @@ namespace MessengerTimer {
         private bool IsHolding { get; set; }
         private InfoFrameStatus CurentInfoFrameStatus { get; set; }
         private Punishment CurrentResultPunishment { get; set; }
-        private ObservableCollection<TextBlock> ScrambleTextBlocks { get; set; }
+        /*
+            Open app -> Click NextScramble 3 Times -> Click PreviousScramble 1 Time -> Stacks looks like beneath
+            |       |       |       |
+            |  s3   |       |       |
+            |  s2   |       |       |
+            |  s1   |       |  s4   |
+            |____|       |____|
+            Before      After
+        */
+        private Stack<Tuple<string, string>> BeforeScramblesStack { get; set; }
+        private Stack<Tuple<string, string>> AfterScramblesStack { get; set; }
+        private DispatcherTimer TextBlockFadeOutTimer { get; set; }
+        private DispatcherTimer TextBlockFadeInTimer { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
         private DateTime EndTime { get; set; }
+        private string ScrambleToBeDisplay { get; set; }
 
         //Setting
         public static AppSettings appSettings = new AppSettings();
 
+        private void InitVars() {
+            TimerStatus = TimerStatus.Waiting;
+            RefreshTimeTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
+            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay) };
+            CurentInfoFrameStatus = InfoFrameStatus.Null;
+
+            BeforeScramblesStack = new Stack<Tuple<string, string>>();
+            AfterScramblesStack = new Stack<Tuple<string, string>>();
+
+            TextBlockFadeOutTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
+            TextBlockFadeInTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
+        }
+
         public MainPage() {
             InitializeComponent();
+
+            InitVars();
 
             InitUI();
 
@@ -92,15 +122,11 @@ namespace MessengerTimer {
         private void InitUI() {
             InitBingBackgroundAsync();
 
-            TimerStatus = TimerStatus.Waiting;
             ResetTimer();
-
-            CurentInfoFrameStatus = InfoFrameStatus.Null;
 
             ScrambleFrame.Navigate(typeof(ScramblePage));
 
-            ScrambleTextBlocks = new ObservableCollection<TextBlock>();
-            GenerateNewScramble();
+            NextScramble();
         }
 
         private void InitHotKeys() {
@@ -145,13 +171,12 @@ namespace MessengerTimer {
         }
 
         private void InitDisplay() {
-            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay) };
             HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
 
-            RefreshTimeTimer = new DispatcherTimer {
-                Interval = new TimeSpan(10000)
-            };
             RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
+
+            TextBlockFadeOutTimer.Tick += TextBlockFadeOutTimer_Tick;
+            TextBlockFadeInTimer.Tick += TextBlockFadeInTimer_Tick;
 
             Window.Current.CoreWindow.KeyUp += TimerControlSpaceKeyUp;
             Window.Current.CoreWindow.KeyDown += TimerControlSpaceKeyDown;
@@ -259,23 +284,67 @@ namespace MessengerTimer {
             }
         }
 
-        private void GenerateNewScramble() {
-            string cube = Tools.randomCube();
-            string scramble = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
-
-            ScrambleTextBlocks.Add(new TextBlock {
-                Text = scramble,
-                FontSize = 25,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            });
-            Bindings.Update();
-            //ScrambleTextBlock.Text = scramble;
-            (ScrambleFrame.Content as ScramblePage).RefreshScramble(cube);
+        private void SetScrambleTextBlockByAnimation(string scramble) {
+            ScrambleToBeDisplay = scramble;
+            TextBlockFadeOutTimer.Start();
         }
 
-        private void ScrambleTestButton_Click(object sender, RoutedEventArgs e) {
-            GenerateNewScramble();
+        private void TextBlockFadeInTimer_Tick(object sender, object e) {
+            if (ScrambleTextBlock.Opacity < 1)
+                ScrambleTextBlock.Opacity += 0.34;
+            else
+                TextBlockFadeInTimer.Stop();
+        }
+
+        private void TextBlockFadeOutTimer_Tick(object sender, object e) {
+            if (ScrambleTextBlock.Opacity > 0)
+                ScrambleTextBlock.Opacity -= 0.34;
+            else {
+                TextBlockFadeOutTimer.Stop();
+                ScrambleTextBlock.Text = ScrambleToBeDisplay;
+                TextBlockFadeInTimer.Start();
+            }
+        }
+
+        private void NavigateToCurrentScramble() {
+            var current = BeforeScramblesStack.Peek();
+            (ScrambleFrame.Content as ScramblePage).RefreshScramble(current.Item1);
+            //ScrambleTextBlock.Text = current.Item2;
+            SetScrambleTextBlockByAnimation(current.Item2);
+        }
+
+        private void NextScramble(bool needNew = false) {
+            if (ScrambleTextBlock.Opacity != 1)
+                return;
+
+            if (needNew && AfterScramblesStack.Count > 0) {
+                var current = BeforeScramblesStack.Pop();
+                while (AfterScramblesStack.Count > 0)
+                    BeforeScramblesStack.Push(AfterScramblesStack.Pop());
+                BeforeScramblesStack.Push(current);
+            }
+
+            BeforeScramblesStack.Push(AfterScramblesStack.Count == 0 ? GenerateNewScramble() : AfterScramblesStack.Pop());
+            NavigateToCurrentScramble();
+        }
+
+        private void PreviousScramble() {
+            if (ScrambleTextBlock.Opacity != 1)
+                return;
+
+            if (BeforeScramblesStack.Count == 1) {
+                AfterScramblesStack.Push(BeforeScramblesStack.Pop());
+                BeforeScramblesStack.Push(GenerateNewScramble());
+            }
+            else
+                AfterScramblesStack.Push(BeforeScramblesStack.Pop());
+            NavigateToCurrentScramble();
+        }
+
+        private Tuple<string, string> GenerateNewScramble() {
+            string cube = Tools.randomCube();
+            string scramble = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
+            return new Tuple<string, string>(cube, scramble);
         }
 
         private void ScrambleFrame_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.4;
@@ -288,20 +357,25 @@ namespace MessengerTimer {
 
         private void ScrambleFrame_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.8;
 
-        //private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
-        //    PreviousScrambleButton.Opacity = 1;
-        //    NextScrambleButton.Opacity = 1;
-        //}
+        private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+            PreviousScrambleButton.Opacity = 1;
+            NextScrambleButton.Opacity = 1;
+        }
 
-        //private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
-        //    PreviousScrambleButton.Opacity = 0;
-        //    NextScrambleButton.Opacity = 0;
-        //}
+        private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+            PreviousScrambleButton.Opacity = 0;
+            NextScrambleButton.Opacity = 0;
+        }
 
         private void ScrambleTextBlock_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
-            //e.Handled = true;
-            //ScrambleFlipView.
-            TestTTB.Text = e.GetCurrentPoint(ScrambleFlipView).Properties.MouseWheelDelta.ToString();
+            if (e.GetCurrentPoint(ScrambleRelativePanel).Properties.MouseWheelDelta < 0)
+                NextScramble();
+            else
+                PreviousScramble();
         }
+
+        private void PreviousScrambleButton_Click(object sender, RoutedEventArgs e) => PreviousScramble();
+
+        private void NextScrambleButton_Click(object sender, RoutedEventArgs e) => NextScramble();
     }
 }

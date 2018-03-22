@@ -138,7 +138,7 @@ namespace MessengerTimer {
             DisplayTime(result);
             UpdateResult(result);
 
-            GenerateNewScramble();
+            NextScramble(true);
         }
 
         private void RefreshStatusTextBlock() {
