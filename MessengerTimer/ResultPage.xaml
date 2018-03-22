@@ -45,7 +45,7 @@
 
                 <TextBlock Text="Punishment" FontSize="20" Margin="0 10" />
 
-                <StackPanel Name="RadioButtonsStackPanel" Orientation="Horizontal" >
+                <StackPanel Name="RadioButtonsStackPanel" Orientation="Horizontal">
                     <RadioButton Name="NonePunishmentRadioButton" Content="None" GroupName="PunishmentRadioButtonGroup" />
                     <RadioButton Name="PlusTwoPunishmentRadioButton" Content="+2" GroupName="PunishmentRadioButtonGroup" />
                     <RadioButton Name="DNFPunishmentRadioButton" Content="DNF" GroupName="PunishmentRadioButtonGroup" />
@@ -65,7 +65,8 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button Name="AddDataGroupButton" Content="&#xE710;" Style="{StaticResource ResultPageButton}" Margin="5 0">
+            <Button Name="AddDataGroupButton" Content="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="24"
+                    Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 10">
@@ -81,7 +82,8 @@
                 </Button.Flyout>
             </Button>
 
-            <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" Style="{StaticResource ResultPageButton}" Margin="5 0">
+            <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="24"
+                    Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel Orientation="Vertical">
@@ -115,7 +117,7 @@
         <StackPanel Name="AddResultStackPanel" Style="{StaticResource ResultPageStackPanel}" HorizontalAlignment="Center"
                 Margin="0" Grid.Row="4">
             <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe" Width="340"
-                    Click="AddResultButton_Click" />
+                    Style="{StaticResource ButtonRevealStyle}" Click="AddResultButton_Click" />
         </StackPanel>
 
         <ListView Name="ResultListView" Margin="-5 5" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single"

@@ -60,6 +60,7 @@ namespace MessengerTimer {
         private bool IsHolding { get; set; }
         private InfoFrameStatus CurentInfoFrameStatus { get; set; }
         private Punishment CurrentResultPunishment { get; set; }
+        private ObservableCollection<TextBlock> ScrambleTextBlocks { get; set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -98,6 +99,7 @@ namespace MessengerTimer {
 
             ScrambleFrame.Navigate(typeof(ScramblePage));
 
+            ScrambleTextBlocks = new ObservableCollection<TextBlock>();
             GenerateNewScramble();
         }
 
@@ -261,7 +263,14 @@ namespace MessengerTimer {
             string cube = Tools.randomCube();
             string scramble = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
 
-            ScrambleTextBlock.Text = scramble;
+            ScrambleTextBlocks.Add(new TextBlock {
+                Text = scramble,
+                FontSize = 25,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            });
+            Bindings.Update();
+            //ScrambleTextBlock.Text = scramble;
             (ScrambleFrame.Content as ScramblePage).RefreshScramble(cube);
         }
 
@@ -278,5 +287,21 @@ namespace MessengerTimer {
                 Math.Clamp(ScrambleFrame.Margin.Bottom - e.Delta.Translation.Y, 0, MainGrid.ActualHeight - 280));
 
         private void ScrambleFrame_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.8;
+
+        //private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+        //    PreviousScrambleButton.Opacity = 1;
+        //    NextScrambleButton.Opacity = 1;
+        //}
+
+        //private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+        //    PreviousScrambleButton.Opacity = 0;
+        //    NextScrambleButton.Opacity = 0;
+        //}
+
+        private void ScrambleTextBlock_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+            //e.Handled = true;
+            //ScrambleFlipView.
+            TestTTB.Text = e.GetCurrentPoint(ScrambleFlipView).Properties.MouseWheelDelta.ToString();
+        }
     }
 }

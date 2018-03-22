@@ -101,6 +101,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\HotKeys.cs" />
+    <Compile Include="DataModels\ScrambleFlipView.cs" />
     <Compile Include="EmptyPage.xaml.cs">
       <DependentUpon>EmptyPage.xaml</DependentUpon>
     </Compile>
