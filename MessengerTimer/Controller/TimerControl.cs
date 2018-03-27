@@ -47,8 +47,10 @@ namespace MessengerTimer {
                             StartTime = DateTime.Now;
                             RefreshTimeTimer.Start();
                         }
-                        else
+                        else {
                             IsHolding = false;
+                            HoldingCheckTimer.Stop();
+                        }
                         break;
                     case TimerStatus.Holding:
                         TimerStatus = TimerStatus.Timing;
@@ -60,6 +62,7 @@ namespace MessengerTimer {
                         break;
                     case TimerStatus.Observing:
                         IsHolding = false;
+                        HoldingCheckTimer.Stop();
                         break;
                     case TimerStatus.Display:
                         TimerStatus = TimerStatus.Waiting;
@@ -121,19 +124,15 @@ namespace MessengerTimer {
             HoldingCheckTimer.Stop();
         }
 
-        private void DisplayTime(string time) {
-            TimerTextBlock.Text = time;
-        }
+        private void DisplayTime(string time) => TimerTextBlock.Text = time;
 
-        private void DisplayTime(Result result) {
-            TimerTextBlock.Text = result.ResultString;
-        }
+        private void DisplayTime(Result result) => TimerTextBlock.Text = result.ResultString;
 
         private void StopTimer() {
             EndTime = DateTime.Now;
             RefreshTimeTimer.Stop();
 
-            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2, CurrentResultPunishment);
+            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2, appSettings.NeedObserving ? CurrentResultPunishment : Punishment.None);
 
             DisplayTime(result);
             UpdateResult(result);
@@ -141,9 +140,7 @@ namespace MessengerTimer {
             NextScramble(true);
         }
 
-        private void RefreshStatusTextBlock() {
-            StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
-        }
+        //private void RefreshStatusTextBlock() => StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
 
         private void StartHoldingTick() {
             IsHolding = true;

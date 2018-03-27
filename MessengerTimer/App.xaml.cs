@@ -16,6 +16,8 @@ namespace MessengerTimer {
         /// </summary>
         /// 
 
+        public static MainPage MainPageInstance;
+
         public App() {
             this.InitializeComponent();
             this.Suspending += OnSuspending;

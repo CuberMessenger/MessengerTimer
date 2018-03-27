@@ -58,9 +58,9 @@ namespace MessengerTimer {
             }
         }
         private DispatcherTimer RefreshTimeTimer { get; set; }
-        private DispatcherTimer HoldingCheckTimer { get; set; }
+        internal DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
-        private InfoFrameStatus CurentInfoFrameStatus { get; set; }
+        private InfoFrameStatus CurrentInfoFrameStatus { get; set; }
         private Punishment CurrentResultPunishment { get; set; }
         /*
             Open app -> Click NextScramble 3 Times -> Click PreviousScramble 1 Time -> Stacks looks like beneath
@@ -82,13 +82,15 @@ namespace MessengerTimer {
         private string ScrambleToBeDisplay { get; set; }
 
         //Setting
-        public static AppSettings appSettings = new AppSettings();
+        public AppSettings appSettings = new AppSettings();
 
         private void InitVars() {
+            App.MainPageInstance = this;
+
             TimerStatus = TimerStatus.Waiting;
             RefreshTimeTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
-            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay) };
-            CurentInfoFrameStatus = InfoFrameStatus.Null;
+            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay };
+            CurrentInfoFrameStatus = InfoFrameStatus.Null;
 
             BeforeScramblesStack = new Stack<Tuple<string, string>>();
             AfterScramblesStack = new Stack<Tuple<string, string>>();
@@ -186,9 +188,9 @@ namespace MessengerTimer {
 
         public static async void SaveDataAsync(bool isDelete) {
             if (!isDelete) {
-                allResult.ResultGroups[appSettings.CurrentDataGroupIndex].Results.Clear();
+                allResult.ResultGroups[App.MainPageInstance.appSettings.CurrentDataGroupIndex].Results.Clear();
                 foreach (var item in Results)
-                    allResult.ResultGroups[appSettings.CurrentDataGroupIndex].Results.Add(item);
+                    allResult.ResultGroups[App.MainPageInstance.appSettings.CurrentDataGroupIndex].Results.Add(item);
             }
 
             string json = allResult.ToJson();
@@ -262,25 +264,31 @@ namespace MessengerTimer {
             SaveDataAsync(false);
         }
 
+        private void WithdrawInfoFrame() {
+            InfoFrame.Navigate(typeof(EmptyPage));
+            CurrentInfoFrameStatus = InfoFrameStatus.Empty;
+        }
+
         private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-            if (args.IsSettingsInvoked) {
-                //Todo
-            }
-            else {
-                switch (args.InvokedItem) {
-                    case "Results":
-                        if (CurentInfoFrameStatus == InfoFrameStatus.Result) {
-                            InfoFrame.Navigate(typeof(EmptyPage));
-                            CurentInfoFrameStatus = InfoFrameStatus.Empty;
-                        }
-                        else {
-                            InfoFrame.Navigate(typeof(ResultPage));
-                            CurentInfoFrameStatus = InfoFrameStatus.Result;
-                        }
-                        break;
-                    default:
-                        break;
-                }
+            switch (args.InvokedItem) {
+                case "Result":
+                    if (CurrentInfoFrameStatus == InfoFrameStatus.Result)
+                        WithdrawInfoFrame();
+                    else {
+                        InfoFrame.Navigate(typeof(ResultPage));
+                        CurrentInfoFrameStatus = InfoFrameStatus.Result;
+                    }
+                    break;
+                case "Setting":
+                    if (CurrentInfoFrameStatus == InfoFrameStatus.Setting)
+                        WithdrawInfoFrame();
+                    else {
+                        InfoFrame.Navigate(typeof(SettingPage));
+                        CurrentInfoFrameStatus = InfoFrameStatus.Setting;
+                    }
+                    break;
+                default:
+                    break;
             }
         }
 

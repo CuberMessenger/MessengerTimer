@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace MessengerTimer.DataModels {
     public class AllResults {
@@ -51,7 +53,7 @@ namespace MessengerTimer.DataModels {
         public static string GetFormattedString(double value, Punishment punishment = Punishment.None) {
             if (value < 0)
                 return "DNF";//when aoNValue need to be DNF, it will be assigned by -1
-            switch (MainPage.appSettings.TimerFormat) {
+            switch (App.MainPageInstance.appSettings.TimerFormat) {
                 case TimerFormat.MMSSFF:
                     //Todo
                     return string.Empty;

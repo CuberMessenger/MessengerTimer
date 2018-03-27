@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
+using Windows.UI.Xaml;
 
 namespace MessengerTimer.DataModels {
     public class AppSettings : INotifyPropertyChanged {
@@ -18,7 +19,7 @@ namespace MessengerTimer.DataModels {
 
         public long StartDelay {
             get {
-                return ReadSettings(nameof(StartDelay), 3000000);
+                return ReadSettings(nameof(StartDelay), (long)3000000);
             }
             set {
                 SaveSettings(nameof(StartDelay), value);
@@ -38,7 +39,7 @@ namespace MessengerTimer.DataModels {
 
         public DisplayModeEnum DisplayMode {
             get {
-                return (DisplayModeEnum)ReadSettings(nameof(DisplayMode), 0);
+                return ReadSettings(nameof(DisplayMode), DisplayModeEnum.RealTime);
             }
             set {
                 SaveSettings(nameof(DisplayModeEnum), value);

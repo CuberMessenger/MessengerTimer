@@ -37,7 +37,7 @@ namespace MessengerTimer {
                 RefreshMainPageDotResults();
                 CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
-                ((Window.Current.Content as Frame).Content as MainPage).RefreshAoNResults();
+                App.MainPageInstance.RefreshAoNResults();
             }
         }
 
@@ -102,7 +102,7 @@ namespace MessengerTimer {
         }
 
         private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
-            ((Window.Current.Content as Frame).Content as MainPage).DeleteResult((int)(sender as MenuFlyoutItem).Tag);
+            App.MainPageInstance.DeleteResult((int)(sender as MenuFlyoutItem).Tag);
         }
 
         private void SetCheckedRadioButton(Punishment punishment) {
@@ -144,7 +144,7 @@ namespace MessengerTimer {
                     MainPage.Results[indexToModify].ResultPunishment = GetCheckedPunishment();
 
                     //3. Recalculate Ao5/Ao12 results
-                    ((Window.Current.Content as Frame).Content as MainPage).RefreshListOfResult(indexToModify);
+                    App.MainPageInstance.RefreshListOfResult(indexToModify);
 
                     //4. Modify result in disk
                     MainPage.SaveDataAsync(false);
@@ -170,7 +170,7 @@ namespace MessengerTimer {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
                 if (result && value > 0)
-                    ((Window.Current.Content as Frame).Content as MainPage).UpdateResult(new Result(value, MainPage.Results.Count + 2, GetCheckedPunishment()));
+                    App.MainPageInstance.UpdateResult(new Result(value, MainPage.Results.Count + 2, GetCheckedPunishment()));
                 else
                     ShowAlertDialogAsync("Input Format Error!");
             }

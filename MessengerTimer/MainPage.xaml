@@ -29,9 +29,11 @@
     </Page.Resources>
 
     <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280"
-            ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200">
+            ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200" AlwaysShowHeader="False"
+            IsSettingsVisible="False">
         <NavigationView.MenuItems>
-            <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Results" Tag="results" />
+            <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Result" />
+            <NavigationViewItem Name="SettingNavigationItem" Icon="Setting" Content="Setting" />
         </NavigationView.MenuItems>
 
         <Grid Name="BackGroundGrid">
@@ -65,7 +67,8 @@
                             ManipulationMode="All" ManipulationStarted="ScrambleFrame_ManipulationStarted"
                             ManipulationDelta="ScrambleFrame_ManipulationDelta"
                             ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                            Canvas.ZIndex="10" Background="Transparent" />
+                            Canvas.ZIndex="10" Background="Transparent"
+                           Visibility="{x:Bind appSettings.ShowScrambleState}"/>
 
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 
