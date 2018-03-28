@@ -17,16 +17,25 @@ namespace MessengerTimer.DataModels {
         //UI: TimerFormat, ShowScambleState
 
         //ToggleSwitch Slider ComboBox 
+        private static AppSettings appSettings = App.MainPageInstance.appSettings;
+
+        private static List<string> displayModeEnums = new List<string>
+        { DisplayModeEnum.RealTime.ToString(), DisplayModeEnum.ToSecond.ToString(), DisplayModeEnum.OnlyOberving.ToString(), DisplayModeEnum.Hidden.ToString() };
+
+        private static List<string> timerFormats = new List<string>
+        { TimerFormat.MMSSFF.ToString(), TimerFormat.MMSSFFF.ToString(), TimerFormat.SSFF.ToString(), TimerFormat.SSFFF.ToString() };
+
         private static InputControlTypes[] ICTs = new InputControlTypes[] { InputControlTypes.ToggleSwitch, InputControlTypes.Slider, InputControlTypes.ComboBox };
         public string Title { get; set; }
         public Dictionary<InputControlTypes, Visibility> InputControlVisibility { get; set; }
+
         public bool IsToggleSwitchOn {
             get {
                 switch (Title) {
                     case "NeedObserving: ":
-                        return App.MainPageInstance.appSettings.NeedObserving;
+                        return appSettings.NeedObserving;
                     case "ShowScambleState: ":
-                        return App.MainPageInstance.appSettings.ShowScrambleState;
+                        return appSettings.ShowScrambleState;
                     default:
                         return false;
                 }
@@ -34,10 +43,10 @@ namespace MessengerTimer.DataModels {
             set {
                 switch (Title) {
                     case "NeedObserving: ":
-                        App.MainPageInstance.appSettings.NeedObserving = value;
+                        appSettings.NeedObserving = value;
                         break;
                     case "ShowScambleState: ":
-                        App.MainPageInstance.appSettings.ShowScrambleState = value;
+                        appSettings.ShowScrambleState = value;
                         break;
                     default:
                         break;
@@ -49,7 +58,7 @@ namespace MessengerTimer.DataModels {
             get {
                 switch (Title) {
                     case "StartDelay: ":
-                        return App.MainPageInstance.appSettings.StartDelay / 10000000.0;
+                        return appSettings.StartDelay / 10000000.0;
                     default:
                         return 0;
                 }
@@ -57,8 +66,45 @@ namespace MessengerTimer.DataModels {
             set {
                 switch (Title) {
                     case "StartDelay: ":
-                        App.MainPageInstance.appSettings.StartDelay = (long)(value * 10000000);
-                        App.MainPageInstance.HoldingCheckTimer.Interval = new TimeSpan((long)(value * 10000000));
+                        appSettings.StartDelay = (long)(value * 10000000);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public object ComboBoxItemSource {
+            get {
+                switch (Title) {
+                    case "DisplayMode: ":
+                        return displayModeEnums;
+                    case "TimerFormat: ":
+                        return timerFormats;
+                    default:
+                        return null;
+                }
+            }
+        }
+
+        public int ComboBoxSelectedIndex {
+            get {
+                switch (Title) {
+                    case "DisplayMode: ":
+                        return displayModeEnums.IndexOf(appSettings.DisplayMode.ToString());
+                    case "TimerFormat: ":
+                        return timerFormats.IndexOf(appSettings.TimerFormat.ToString());
+                    default:
+                        return 0;
+                }
+            }
+            set {
+                switch (Title) {
+                    case "DisplayMode: ":
+                        appSettings.DisplayMode = (DisplayModeEnum)value;
+                        break;
+                    case "TimerFormat: ":
+                        appSettings.TimerFormat = (TimerFormat)value;
                         break;
                     default:
                         break;

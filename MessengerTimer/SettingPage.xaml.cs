@@ -37,5 +37,21 @@ namespace MessengerTimer {
         }
 
         private void ListView_GotFocus(object sender, RoutedEventArgs e) => SettingSemanticZoom.StartBringIntoView();
+
+        private void ComboBox_Loaded(object sender, RoutedEventArgs e) {
+            var s = sender as ComboBox;
+            var i = s.DataContext as SettingItem;
+            s.SelectedItem = s.Items[i.ComboBoxSelectedIndex];
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var s = sender as ComboBox;
+            var i = s.DataContext as SettingItem;
+            i.ComboBoxSelectedIndex = s.SelectedIndex;
+            if (i.Title == "TimerFormat: ") {
+                App.MainPageInstance.RefreshAoNResults();
+                App.MainPageInstance.ResetTimer();
+            }
+        }
     }
 }

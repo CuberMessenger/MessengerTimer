@@ -1,5 +1,7 @@
 ﻿using MessengerTimer.DataModels;
 using System;
+using System.Threading;
+using System.Timers;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -47,10 +49,8 @@ namespace MessengerTimer {
                             StartTime = DateTime.Now;
                             RefreshTimeTimer.Start();
                         }
-                        else {
+                        else
                             IsHolding = false;
-                            HoldingCheckTimer.Stop();
-                        }
                         break;
                     case TimerStatus.Holding:
                         TimerStatus = TimerStatus.Timing;
@@ -62,7 +62,6 @@ namespace MessengerTimer {
                         break;
                     case TimerStatus.Observing:
                         IsHolding = false;
-                        HoldingCheckTimer.Stop();
                         break;
                     case TimerStatus.Display:
                         TimerStatus = TimerStatus.Waiting;
@@ -87,7 +86,7 @@ namespace MessengerTimer {
             if (TimerStatus == TimerStatus.Observing || TimerStatus == TimerStatus.Holding) {
                 switch (appSettings.DisplayMode) {
                     case DisplayModeEnum.Hidden:
-                        DisplayTime("Observing");
+                        DisplayTime(TimerStatus.ToString());
                         break;
                     default:
                         var timeLeft = 15 - ((int)(EndTime - StartTime).TotalSeconds);
@@ -115,13 +114,12 @@ namespace MessengerTimer {
             }
         }
 
-        private void HoldingCheckTimer_Tick(object sender, object e) {
+        private void HoldingCheck() {
             if (IsHolding) {
                 TimerStatus = TimerStatus.Holding;
                 TimerTextBlock.Foreground = GreenBrush;
             }
             IsHolding = false;
-            HoldingCheckTimer.Stop();
         }
 
         private void DisplayTime(string time) => TimerTextBlock.Text = time;
@@ -140,12 +138,20 @@ namespace MessengerTimer {
             NextScramble(true);
         }
 
-        //private void RefreshStatusTextBlock() => StatusTextBlock.Text = TimerStatus.ToString() == TimerStatus.Display.ToString() ? TimerStatus.Waiting.ToString() : TimerStatus.ToString();
-
         private void StartHoldingTick() {
-            IsHolding = true;
-            TimerTextBlock.Foreground = YellowBrush;
-            HoldingCheckTimer.Start();
+            if (appSettings.StartDelay > 0) {
+                IsHolding = true;
+                TimerTextBlock.Foreground = YellowBrush;
+
+                var holdingStartDateTime = DateTime.Now;
+                new Thread(async () => {
+                    while ((DateTime.Now - holdingStartDateTime).Ticks < appSettings.StartDelay)
+                        Thread.Sleep(50);
+                    await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => { HoldingCheck(); });
+                }).Start();
+            }
+            else
+                HoldingCheck();
         }
 
         private void StartTimer() {

@@ -12,6 +12,8 @@ using System.Text;
 using System.Collections.ObjectModel;
 using min2phase;
 using System.Collections.Generic;
+using System.Threading;
+using Windows.UI.Xaml.Media.Animation;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -42,7 +44,7 @@ namespace MessengerTimer {
         private static Brush RedBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
 
-        private static TimeSpan OneMilliSecondTimeSpan = new TimeSpan(10000);
+        private static TimeSpan MilliSecondTimeSpan = new TimeSpan(100000);
 
         public static ObservableCollection<Result> Results = new ObservableCollection<Result>();
         public static AllResults allResult;
@@ -58,7 +60,6 @@ namespace MessengerTimer {
             }
         }
         private DispatcherTimer RefreshTimeTimer { get; set; }
-        internal DispatcherTimer HoldingCheckTimer { get; set; }
         private bool IsHolding { get; set; }
         private InfoFrameStatus CurrentInfoFrameStatus { get; set; }
         private Punishment CurrentResultPunishment { get; set; }
@@ -88,15 +89,14 @@ namespace MessengerTimer {
             App.MainPageInstance = this;
 
             TimerStatus = TimerStatus.Waiting;
-            RefreshTimeTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
-            HoldingCheckTimer = new DispatcherTimer { Interval = new TimeSpan(appSettings.StartDelay };
+            RefreshTimeTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
             CurrentInfoFrameStatus = InfoFrameStatus.Null;
 
             BeforeScramblesStack = new Stack<Tuple<string, string>>();
             AfterScramblesStack = new Stack<Tuple<string, string>>();
 
-            TextBlockFadeOutTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
-            TextBlockFadeInTimer = new DispatcherTimer { Interval = OneMilliSecondTimeSpan };
+            TextBlockFadeOutTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
+            TextBlockFadeInTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
         }
 
         public MainPage() {
@@ -111,6 +111,10 @@ namespace MessengerTimer {
             InitDisplay();
 
             InitHotKeys();
+        }
+
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
+            throw new NotImplementedException();
         }
 
         private async void InitBingBackgroundAsync() {
@@ -128,7 +132,12 @@ namespace MessengerTimer {
 
             ScrambleFrame.Navigate(typeof(ScramblePage));
 
+            InfoFrame.Navigate(typeof(EmptyPage));
+            CurrentInfoFrameStatus = InfoFrameStatus.Empty;
+
             NextScramble();
+
+            滴汤Button.Focus(FocusState.Keyboard);
         }
 
         private void InitHotKeys() {
@@ -173,8 +182,6 @@ namespace MessengerTimer {
         }
 
         private void InitDisplay() {
-            HoldingCheckTimer.Tick += HoldingCheckTimer_Tick;
-
             RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
 
             TextBlockFadeOutTimer.Tick += TextBlockFadeOutTimer_Tick;
@@ -184,7 +191,7 @@ namespace MessengerTimer {
             Window.Current.CoreWindow.KeyDown += TimerControlSpaceKeyDown;
         }
 
-        private void ResetTimer() => DisplayTime(Result.GetFormattedString(0));
+        public void ResetTimer() => DisplayTime(Result.GetFormattedString(0));
 
         public static async void SaveDataAsync(bool isDelete) {
             if (!isDelete) {
@@ -204,7 +211,8 @@ namespace MessengerTimer {
             Results.Insert(index, result);
 
             RefreshListOfResult(index);
-            SaveDataAsync(false);
+
+            new Thread(() => { SaveDataAsync(false); }).Start();
         }
 
         public void RefreshAoNResults() {
@@ -265,7 +273,7 @@ namespace MessengerTimer {
         }
 
         private void WithdrawInfoFrame() {
-            InfoFrame.Navigate(typeof(EmptyPage));
+            InfoFrame.Navigate(typeof(EmptyPage), null, new EntranceNavigationTransitionInfo());
             CurrentInfoFrameStatus = InfoFrameStatus.Empty;
         }
 
@@ -275,7 +283,7 @@ namespace MessengerTimer {
                     if (CurrentInfoFrameStatus == InfoFrameStatus.Result)
                         WithdrawInfoFrame();
                     else {
-                        InfoFrame.Navigate(typeof(ResultPage));
+                        InfoFrame.Navigate(typeof(ResultPage), null, new EntranceNavigationTransitionInfo());
                         CurrentInfoFrameStatus = InfoFrameStatus.Result;
                     }
                     break;
@@ -283,7 +291,7 @@ namespace MessengerTimer {
                     if (CurrentInfoFrameStatus == InfoFrameStatus.Setting)
                         WithdrawInfoFrame();
                     else {
-                        InfoFrame.Navigate(typeof(SettingPage));
+                        InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
                         CurrentInfoFrameStatus = InfoFrameStatus.Setting;
                     }
                     break;

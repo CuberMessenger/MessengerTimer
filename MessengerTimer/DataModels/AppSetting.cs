@@ -32,7 +32,7 @@ namespace MessengerTimer.DataModels {
                 return ReadSettings(nameof(TimerFormat), TimerFormat.SSFFF);
             }
             set {
-                SaveSettings(nameof(TimerFormat), value);
+                SaveSettings(nameof(TimerFormat), (int)value);
                 NotifyPropertyChanged();
             }
         }
@@ -42,7 +42,7 @@ namespace MessengerTimer.DataModels {
                 return ReadSettings(nameof(DisplayMode), DisplayModeEnum.RealTime);
             }
             set {
-                SaveSettings(nameof(DisplayModeEnum), value);
+                SaveSettings(nameof(DisplayMode), (int)value);
                 NotifyPropertyChanged();
             }
         }

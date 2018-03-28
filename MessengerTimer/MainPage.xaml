@@ -47,7 +47,13 @@
             </Grid.ColumnDefinitions>
 
             <Frame Grid.Column="0" Name="InfoFrame" VerticalAlignment="Stretch" HorizontalAlignment="Left"
-                    Background="{ThemeResource SystemControlAcrylicElementBrush }" />
+                    Background="{ThemeResource SystemControlAcrylicElementBrush }">
+                <Frame.ContentTransitions>
+                    <TransitionCollection>
+                        <EntranceThemeTransition />
+                    </TransitionCollection>
+                </Frame.ContentTransitions>
+            </Frame>
 
             <Grid Grid.Column="1">
                 <Button Name="滴汤Button" Opacity="0" />
@@ -67,8 +73,7 @@
                             ManipulationMode="All" ManipulationStarted="ScrambleFrame_ManipulationStarted"
                             ManipulationDelta="ScrambleFrame_ManipulationDelta"
                             ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2" Grid.ColumnSpan="2"
-                            Canvas.ZIndex="10" Background="Transparent"
-                           Visibility="{x:Bind appSettings.ShowScrambleState}"/>
+                            Canvas.ZIndex="10" Background="Transparent" Visibility="{x:Bind appSettings.ShowScrambleState}" />
 
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 

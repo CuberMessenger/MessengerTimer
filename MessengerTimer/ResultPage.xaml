@@ -7,7 +7,7 @@
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
             <Setter Property="Margin" Value="10 0 10 0" />
-            <Setter Property="Width" Value="70" />
+            <!--<Setter Property="Width" Value="Auto" />-->
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
 
@@ -57,7 +57,7 @@
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
             <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind ResultGroups}" Margin="5 0"
-                    SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80">
+                    SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80" ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:ResultGroup">
                         <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind GroupName, Mode=OneWay}" FontSize="24" />
@@ -126,8 +126,7 @@
                 <DataTemplate x:DataType="data:Result">
                     <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0"
                             RightTapped="StackPanel_RightTapped">
-                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}"
-                                Width="30" />
+                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}" />
                         <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultString, Mode=OneWay}"
                                 Style="{StaticResource ResultText}" />
                         <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5String, Mode=OneWay}"
