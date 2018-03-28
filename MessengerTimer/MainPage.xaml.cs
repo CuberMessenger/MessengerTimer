@@ -137,7 +137,7 @@ namespace MessengerTimer {
 
             NextScramble();
 
-            滴汤Button.Focus(FocusState.Keyboard);
+            滴汤Button.Focus(FocusState.Pointer);
         }
 
         private void InitHotKeys() {
