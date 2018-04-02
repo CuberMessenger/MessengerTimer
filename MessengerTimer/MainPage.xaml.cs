@@ -215,6 +215,9 @@ namespace MessengerTimer {
             RefreshListOfResult(index);
 
             new Thread(() => { SaveDataAsync(false); }).Start();
+
+            if (InfoFrame.Content is ResultPage)
+                (InfoFrame.Content as ResultPage).UpdateWidth();
         }
 
         public void RefreshAoNResults() {

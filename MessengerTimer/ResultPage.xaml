@@ -100,35 +100,29 @@
             </Button>
         </StackPanel>
 
-        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="1">
-            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="2.5" />
-        </Canvas>
+        <MenuFlyoutSeparator Grid.Row="1" Padding="0 5" />
 
         <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe"
-                Width="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Style="{StaticResource ButtonRevealStyle}"
-                Click="AddResultButton_Click" Grid.Row="2" />
+                Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}" Style="{StaticResource ButtonRevealStyle}"
+                Click="AddResultButton_Click" Grid.Row="2" HorizontalAlignment="Center" />
 
-        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="3">
-            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="0.7" />
-        </Canvas>
+        <MenuFlyoutSeparator Name="SomeSeparator" Grid.Row="3"  Padding="0 5"/>
 
-        <Grid Grid.Row="4" Width="{x:Bind ResultListView.ActualWidth, Mode=OneWay}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <Grid Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}" Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <TextBlock Text="Id" Style="{StaticResource NormalText}" Grid.Column="0" />
-            <TextBlock Text="Result" Style="{StaticResource NormalText}" Grid.Column="1" />
-            <TextBlock Text="Ao5" Style="{StaticResource NormalText}" Grid.Column="2" />
-            <TextBlock Text="Ao12" Style="{StaticResource NormalText}" Grid.Column="3" />
-        </Grid>
+                <TextBlock Text="Id" Style="{StaticResource NormalText}" Margin="10 0 0 0" Grid.Column="0" />
+                <TextBlock Text="Result" Style="{StaticResource NormalText}" Margin="0" Grid.Column="1" />
+                <TextBlock Text="Ao5" Style="{StaticResource NormalText}" Margin="0" Grid.Column="2" />
+                <TextBlock Text="Ao12" Style="{StaticResource NormalText}" Margin="0" Grid.Column="3" />
+            </Grid>
 
-        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="5">
-            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="0.7" />
-        </Canvas>
+        <MenuFlyoutSeparator Grid.Row="5" Padding="0 5" />
 
         <ListView Name="ResultListView" Width="Auto" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single"
                 Grid.Row="6">

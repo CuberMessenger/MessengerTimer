@@ -26,14 +26,14 @@ namespace MessengerTimer {
             this.InitializeComponent();
             this.Loaded += ResultPage_Loaded;
 
-            DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(100000) };
-            dispatcherTimer.Tick += DispatcherTimer_Tick;
-            dispatcherTimer.Start();
+            //DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(100000) };
+            //dispatcherTimer.Tick += DispatcherTimer_Tick;
+            //dispatcherTimer.Start();
         }
 
-        private void DispatcherTimer_Tick(object sender, object e) {
-            AddResultButton.Content = ResultListView.ActualWidth.ToString();
-        }
+        //private void DispatcherTimer_Tick(object sender, object e) {
+        //    AddResultButton.Content = AddResultButton.ActualWidth.ToString() + ", " + SomeSeparator.ActualWidth.ToString();
+        //}
 
         private void ResultPage_Loaded(object sender, RoutedEventArgs e) => Bindings.Update();
 
@@ -199,6 +199,10 @@ namespace MessengerTimer {
         private void Page_Loaded(object sender, RoutedEventArgs e) {
             NeedReload = false;
             GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
+        }
+
+        public void UpdateWidth() {
+            Bindings.Update();
         }
     }
 }
