@@ -150,8 +150,10 @@ namespace MessengerTimer {
                     await Dispatcher.RunAsync(CoreDispatcherPriority.High, () => { HoldingCheck(); });
                 }).Start();
             }
-            else
+            else {
+                IsHolding = true;
                 HoldingCheck();
+            }
         }
 
         private void StartTimer() {

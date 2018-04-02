@@ -137,8 +137,10 @@ namespace MessengerTimer {
 
             NextScramble();
 
-            滴汤Button.Focus(FocusState.Pointer);
+            this.Loaded += MainPage_Loaded;
         }
+
+        private void MainPage_Loaded(object sender, RoutedEventArgs e) => 滴汤Button.Focus(FocusState.Keyboard);
 
         private void InitHotKeys() {
             //Hot Key
@@ -393,5 +395,7 @@ namespace MessengerTimer {
         private void PreviousScrambleButton_Click(object sender, RoutedEventArgs e) => PreviousScramble();
 
         private void NextScrambleButton_Click(object sender, RoutedEventArgs e) => NextScramble();
+
+        public void ReloadInfoFramePage(Type page) => InfoFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
     }
 }

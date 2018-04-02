@@ -6,8 +6,7 @@
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
-            <Setter Property="Margin" Value="10 0 10 0" />
-            <!--<Setter Property="Width" Value="Auto" />-->
+            <Setter Property="Margin" Value="20 0 0 0" />
             <Setter Property="HorizontalAlignment" Value="Center" />
         </Style>
 
@@ -28,8 +27,9 @@
         </Style>
     </Page.Resources>
 
-    <Grid Padding="5" Width="auto">
+    <Grid Padding="5" Width="Auto">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -57,7 +57,8 @@
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
             <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind ResultGroups}" Margin="5 0"
-                    SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80" ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}">
+                    SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80"
+                    ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:ResultGroup">
                         <TextBlock Name="DataGroupNameTextBlock" Text="{x:Bind GroupName, Mode=OneWay}" FontSize="24" />
@@ -99,41 +100,57 @@
             </Button>
         </StackPanel>
 
-        <Canvas HorizontalAlignment="Stretch" Margin="5 10" Grid.Row="1">
-            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="2.5" />
+        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="1">
+            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="2.5" />
         </Canvas>
 
-        <StackPanel Style="{StaticResource ResultPageStackPanel}" Grid.Row="2">
-            <TextBlock Text="Id" Style="{StaticResource ResultText}" Width="30" />
-            <TextBlock Text="Result" Style="{StaticResource ResultText}" />
-            <TextBlock Text="Ao5" Style="{StaticResource ResultText}" />
-            <TextBlock Text="Ao12" Style="{StaticResource ResultText}" />
-        </StackPanel>
+        <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe"
+                Width="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Style="{StaticResource ButtonRevealStyle}"
+                Click="AddResultButton_Click" Grid.Row="2" />
 
-        <Canvas HorizontalAlignment="Stretch" Margin="5 10" Grid.Row="3">
-            <Line X1="0" Y1="0" X2="340" Y2="0" Stroke="Black" StrokeThickness="0.7" />
+        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="3">
+            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="0.7" />
         </Canvas>
 
-        <StackPanel Name="AddResultStackPanel" Style="{StaticResource ResultPageStackPanel}" HorizontalAlignment="Center"
-                Margin="0" Grid.Row="4">
-            <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe" Width="340"
-                    Style="{StaticResource ButtonRevealStyle}" Click="AddResultButton_Click" />
-        </StackPanel>
+        <Grid Grid.Row="4" Width="{x:Bind ResultListView.ActualWidth, Mode=OneWay}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <ListView Name="ResultListView" Margin="-5 5" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single"
-                Grid.Row="5">
+            <TextBlock Text="Id" Style="{StaticResource NormalText}" Grid.Column="0" />
+            <TextBlock Text="Result" Style="{StaticResource NormalText}" Grid.Column="1" />
+            <TextBlock Text="Ao5" Style="{StaticResource NormalText}" Grid.Column="2" />
+            <TextBlock Text="Ao12" Style="{StaticResource NormalText}" Grid.Column="3" />
+        </Grid>
+
+        <Canvas HorizontalAlignment="Stretch" Margin="0 5" Grid.Row="5">
+            <Line X1="0" Y1="0" X2="{x:Bind ResultListView.ActualWidth, Mode=OneWay}" Y2="0" Stroke="Black" StrokeThickness="0.7" />
+        </Canvas>
+
+        <ListView Name="ResultListView" Width="Auto" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single"
+                Grid.Row="6">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
-                    <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 0 15 0"
-                            RightTapped="StackPanel_RightTapped">
-                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}" />
+                    <Grid Margin="0 0 15 0" RightTapped="Grid_RightTapped" Width="Auto">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}"
+                                Grid.Column="0" />
                         <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultString, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" />
+                                Style="{StaticResource ResultText}" Grid.Column="1" />
                         <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5String, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" />
+                                Style="{StaticResource ResultText}" Grid.Column="2" />
                         <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12String, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" />
-                    </StackPanel>
+                                Style="{StaticResource ResultText}" Grid.Column="3" />
+                    </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

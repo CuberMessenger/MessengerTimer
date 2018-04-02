@@ -78,11 +78,11 @@
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 
                     <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center"
-                            Margin="0 0 0 150" Height="50" PointerEntered="RelativePanel_PointerEntered"
+                            Margin="0 0 0 150"  PointerEntered="RelativePanel_PointerEntered"
                             PointerExited="RelativePanel_PointerExited"
                             PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged">
                         <TextBlock Name="ScrambleTextBlock" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center"
-                                Margin="40 10" Text="D' U B2 L2 R2 D R2 U R2 U2 F' L' F2 R' D2 B' F' D' R' D'" />
+                                Margin="40 10" Text="D' U B2 L2 R2 D R2 U R2 U2 F' L' F2 R' D2 B' F' D' R' D'" TextWrapping="WrapWholeWords"/>
 
                         <Button Name="PreviousScrambleButton" Style="{ThemeResource ButtonRevealStyle}"
                                 RelativePanel.AlignBottomWith="ScrambleTextBlock" RelativePanel.AlignTopWith="ScrambleTextBlock"

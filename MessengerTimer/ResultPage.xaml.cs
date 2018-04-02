@@ -20,9 +20,22 @@ namespace MessengerTimer {
 
         private static AppSettings appSettings = new AppSettings();
 
+        private bool NeedReload = true;
+
         public ResultPage() {
             this.InitializeComponent();
+            this.Loaded += ResultPage_Loaded;
+
+            DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(100000) };
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Start();
         }
+
+        private void DispatcherTimer_Tick(object sender, object e) {
+            AddResultButton.Content = ResultListView.ActualWidth.ToString();
+        }
+
+        private void ResultPage_Loaded(object sender, RoutedEventArgs e) => Bindings.Update();
 
         private void RefreshMainPageDotResults() {
             MainPage.Results.Clear();
@@ -32,13 +45,17 @@ namespace MessengerTimer {
 
         private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var cg = (sender as ComboBox).SelectedItem;
-            appSettings.CurrentDataGroupIndex = ResultGroups.IndexOf(cg as ResultGroup);
+            appSettings.CurrentDataGroupIndex = Math.Max(0, ResultGroups.IndexOf(cg as ResultGroup));
             if (appSettings.CurrentDataGroupIndex >= 0) {
                 RefreshMainPageDotResults();
                 CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
                 App.MainPageInstance.RefreshAoNResults();
             }
+
+            if (NeedReload)
+                App.MainPageInstance.ReloadInfoFramePage(typeof(ResultPage));
+            NeedReload = true;
         }
 
         private async void ShowAlertDialogAsync(string message) {
@@ -59,6 +76,9 @@ namespace MessengerTimer {
                 CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
                 ShowAlertDialogAsync($"{groupName} added!");
+
+                if (NeedReload)
+                    App.MainPageInstance.ReloadInfoFramePage(typeof(ResultPage));
             }
             else
                 ShowAlertDialogAsync("Invalid DataGroup Name!");
@@ -85,7 +105,7 @@ namespace MessengerTimer {
             DeleteCurrentDataGroupButton.Flyout.Hide();
         }
 
-        private void StackPanel_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e) {
+        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e) {
             MenuFlyout menuFlyout = new MenuFlyout();
 
             var currentResult = (sender as FrameworkElement).DataContext;
@@ -177,6 +197,7 @@ namespace MessengerTimer {
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e) {
+            NeedReload = false;
             GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
         }
     }
