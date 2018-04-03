@@ -12,30 +12,20 @@ namespace MessengerTimer {
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
     public sealed partial class ResultPage : Page {
+        private static AppSettings appSettings = App.MainPageInstance.appSettings;
+
         public ObservableCollection<Result> Results = MainPage.Results;
 
         public ObservableCollection<ResultGroup> ResultGroups = MainPage.allResult.ResultGroups;
-
-        public ResultGroup CurrentResultGroup = MainPage.allResult.ResultGroups[appSettings.CurrentDataGroupIndex];
-
-        private static AppSettings appSettings = new AppSettings();
 
         private bool NeedReload = true;
 
         public ResultPage() {
             this.InitializeComponent();
             this.Loaded += ResultPage_Loaded;
-
-            //DispatcherTimer dispatcherTimer = new DispatcherTimer { Interval = new TimeSpan(100000) };
-            //dispatcherTimer.Tick += DispatcherTimer_Tick;
-            //dispatcherTimer.Start();
         }
 
-        //private void DispatcherTimer_Tick(object sender, object e) {
-        //    AddResultButton.Content = AddResultButton.ActualWidth.ToString() + ", " + SomeSeparator.ActualWidth.ToString();
-        //}
-
-        private void ResultPage_Loaded(object sender, RoutedEventArgs e) => Bindings.Update();
+        private void ResultPage_Loaded(object sender, RoutedEventArgs e) => UpdateUI();
 
         private void RefreshMainPageDotResults() {
             MainPage.Results.Clear();
@@ -48,7 +38,6 @@ namespace MessengerTimer {
             appSettings.CurrentDataGroupIndex = Math.Max(0, ResultGroups.IndexOf(cg as ResultGroup));
             if (appSettings.CurrentDataGroupIndex >= 0) {
                 RefreshMainPageDotResults();
-                CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
                 App.MainPageInstance.RefreshAoNResults();
             }
@@ -72,8 +61,6 @@ namespace MessengerTimer {
                 MainPage.SaveDataAsync(false);
 
                 GroupComboBox.SelectedIndex = GroupComboBox.Items.Count - 1;
-
-                CurrentResultGroup = ResultGroups[appSettings.CurrentDataGroupIndex];
 
                 ShowAlertDialogAsync($"{groupName} added!");
 
@@ -123,23 +110,10 @@ namespace MessengerTimer {
 
         private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
             App.MainPageInstance.DeleteResult((int)(sender as MenuFlyoutItem).Tag);
+            UpdateTotalStatistics();
         }
 
-        private void SetCheckedRadioButton(Punishment punishment) {
-            RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList()[(int)punishment].IsChecked = true;
-
-            //switch (punishment) {
-            //    case Punishment.None:
-            //        NonePunishmentRadioButton.IsChecked = true;
-            //        break;
-            //    case Punishment.PlusTwo:
-            //        PlusTwoPunishmentRadioButton.IsChecked = true;
-            //        break;
-            //    case Punishment.DNF:
-            //        DNFPunishmentRadioButton.IsChecked = true;
-            //        break;
-            //}
-        }
+        private void SetCheckedRadioButton(Punishment punishment) => RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList()[(int)punishment].IsChecked = true;
 
         private Punishment GetCheckedPunishment() {
             var radioButtons = RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList();
@@ -171,13 +145,14 @@ namespace MessengerTimer {
                 }
                 else
                     ShowAlertDialogAsync("Input Format Error!");
+
+                UpdateTotalStatistics();
             }
         }
 
         private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
-            if (e.Key == Windows.System.VirtualKey.Enter) {
+            if (e.Key == Windows.System.VirtualKey.Enter)
                 ConfirmAddDataGroupButton_Click(null, null);
-            }
         }
 
         private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
@@ -193,6 +168,8 @@ namespace MessengerTimer {
                     App.MainPageInstance.UpdateResult(new Result(value, MainPage.Results.Count + 2, GetCheckedPunishment()));
                 else
                     ShowAlertDialogAsync("Input Format Error!");
+
+                UpdateTotalStatistics();
             }
         }
 
@@ -201,8 +178,29 @@ namespace MessengerTimer {
             GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
         }
 
-        public void UpdateWidth() {
+        private void UpdateTotalStatistics() {
+            BestStringTextBlock.Text = Results.Count > 0
+                ? Result.GetFormattedString(Results
+                    .Where(r => r.ResultPunishment != Punishment.DNF)
+                    .Min(r => r.ResultValue + (r.ResultPunishment == Punishment.PlusTwo ? 2 : 0)))
+                : double.NaN.ToString();
+
+            WorstStringTextBlock.Text = Results.Count > 0
+                ? Result.GetFormattedString(Results
+                    .Where(r => r.ResultPunishment != Punishment.DNF)
+                    .Max(r => r.ResultValue + (r.ResultPunishment == Punishment.PlusTwo ? 2 : 0)))
+                : double.NaN.ToString();
+
+            AverageStringTextBlock.Text = Results.Count > 0
+                ? Result.GetFormattedString(Results
+                    .Where(r => r.ResultPunishment != Punishment.DNF)
+                    .Average(r => r.ResultPunishment == Punishment.None ? r.ResultValue : r.ResultValue + 2))
+                : double.NaN.ToString();
+        }
+
+        public void UpdateUI() {
             Bindings.Update();
+            UpdateTotalStatistics();
         }
     }
 }

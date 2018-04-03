@@ -66,12 +66,19 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public Visibility ScrambleVisibility {
+            get {
+                return ShowScrambleState ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
         public bool ShowScrambleState {
             get {
                 return ReadSettings(nameof(ShowScrambleState), true);
             }
             set {
                 SaveSettings(nameof(ShowScrambleState), value);
+                NotifyPropertyChanged("ScrambleVisibility");
             }
         }
 

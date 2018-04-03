@@ -14,6 +14,7 @@ using min2phase;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.UI.Xaml.Media.Animation;
+using System.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
@@ -180,7 +181,18 @@ namespace MessengerTimer {
         private async void InitResults() {
             await ReadSaveDataAsync();
 
-            FillResult(allResult.ResultGroups[appSettings.CurrentDataGroupIndex]);
+            FillStart:
+            try {
+                if (appSettings.CurrentDataGroupIndex >= 0 && appSettings.CurrentDataGroupIndex < allResult.ResultGroups.Count)
+                    FillResult(allResult.ResultGroups[appSettings.CurrentDataGroupIndex]);
+                else {
+                    appSettings.CurrentDataGroupIndex = 0;
+                    goto FillStart;
+                }
+            }
+            catch (Exception) {
+                Debug.Assert(false, "SaveData seems broken");
+            }
         }
 
         private void InitDisplay() {
@@ -217,7 +229,7 @@ namespace MessengerTimer {
             new Thread(() => { SaveDataAsync(false); }).Start();
 
             if (InfoFrame.Content is ResultPage)
-                (InfoFrame.Content as ResultPage).UpdateWidth();
+                (InfoFrame.Content as ResultPage).UpdateUI();
         }
 
         public void RefreshAoNResults() {

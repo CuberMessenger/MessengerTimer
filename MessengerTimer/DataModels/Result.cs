@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -87,20 +88,11 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        [JsonProperty(nameof(ResultString))]
-        public string ResultString {
-            get => GetFormattedString(ResultValue, ResultPunishment);
-        }
+        public string ResultString => GetFormattedString(ResultValue, ResultPunishment);
 
-        [JsonProperty(nameof(Ao5String))]
-        public string Ao5String {
-            get => GetFormattedString(Ao5Value);
-        }
+        public string Ao5String => GetFormattedString(Ao5Value);
 
-        [JsonProperty(nameof(Ao12String))]
-        public string Ao12String {
-            get => GetFormattedString(Ao12Value);
-        }
+        public string Ao12String => GetFormattedString(Ao12Value);
 
         [JsonProperty(nameof(ResultValue))]
         public double ResultValue {

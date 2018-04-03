@@ -1,8 +1,6 @@
-﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:MessengerTimer"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:data="using:MessengerTimer.DataModels"
-        mc:Ignorable="d" Loaded="Page_Loaded">
+﻿<Page x:Class="MessengerTimer.ResultPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:MessengerTimer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:data="using:MessengerTimer.DataModels" mc:Ignorable="d" Loaded="Page_Loaded">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="ResultText">
             <Setter Property="FontSize" Value="24" />
@@ -35,11 +33,12 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <ContentDialog Title="Result" Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel"
-                DefaultButton="Primary">
+        <ContentDialog Title="Result" Name="EditDialog" PrimaryButtonText="Confirm" CloseButtonText="Cancel" DefaultButton="Primary">
             <StackPanel>
                 <TextBox Name="EditTextBox" HorizontalAlignment="Left" VerticalAlignment="Center" Width="150" />
 
@@ -56,8 +55,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="Group: " Style="{StaticResource ResultText}" Margin="5 0" />
 
-            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind ResultGroups}" Margin="5 0"
-                    SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80"
+            <ComboBox Name="GroupComboBox" ItemsSource="{x:Bind ResultGroups}" Margin="5 0" SelectionChanged="GroupComboBox_SelectionChanged" Height="40" Width="80"
                     ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}">
                 <ComboBox.ItemTemplate>
                     <DataTemplate x:DataType="data:ResultGroup">
@@ -66,34 +64,28 @@
                 </ComboBox.ItemTemplate>
             </ComboBox>
 
-            <Button Name="AddDataGroupButton" Content="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="24"
-                    Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
+            <Button Name="AddDataGroupButton" Content="&#xE710;" FontFamily="Segoe MDL2 Assets" FontSize="24" Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel Style="{StaticResource ResultPageStackPanel}" Margin="0 10">
                             <TextBlock Text="New: " Style="{StaticResource NormalText}" Margin="0 10" />
 
-                            <TextBox Name="NewDataGroupNameTextBox" FontSize="20" Width="150" Margin="10 0"
-                                    KeyUp="NewDataGroupNameTextBox_KeyUp" />
+                            <TextBox Name="NewDataGroupNameTextBox" FontSize="20" Width="150" Margin="10 0" KeyUp="NewDataGroupNameTextBox_KeyUp" />
 
-                            <Button Name="ConfirmAddDataGroupButton" Content="Add" FontSize="20"
-                                    Click="ConfirmAddDataGroupButton_Click" />
+                            <Button Name="ConfirmAddDataGroupButton" Content="Add" FontSize="20" Click="ConfirmAddDataGroupButton_Click" />
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
             </Button>
 
-            <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="24"
-                    Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
+            <Button Name="DeleteCurrentDataGroupButton" Content="&#xE74D;" FontFamily="Segoe MDL2 Assets" FontSize="24" Style="{StaticResource ButtonRevealStyle}" Margin="5 0">
                 <Button.Flyout>
                     <Flyout>
                         <StackPanel Orientation="Vertical">
-                            <TextBlock Text="Confirm delete current DataGroup?" Style="{StaticResource NormalText}"
-                                    HorizontalAlignment="Left" />
-                            <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}"
-                                    HorizontalAlignment="Left" Margin="0 10" />
-                            <Button Name="ConfirmDeleteCurrentDataGroupButton" Content="Delete" FontSize="20"
-                                    Click="ConfirmDeleteCurrentDataGroupButton_Click" HorizontalAlignment="Right" />
+                            <TextBlock Text="Confirm delete current DataGroup?" Style="{StaticResource NormalText}" HorizontalAlignment="Left" />
+                            <TextBlock Text="This operation cannot be undo." Foreground="Red" Style="{StaticResource NormalText}" HorizontalAlignment="Left" Margin="0 10" />
+                            <Button Name="ConfirmDeleteCurrentDataGroupButton" Content="Delete" FontSize="20" Click="ConfirmDeleteCurrentDataGroupButton_Click"
+                                    HorizontalAlignment="Right" />
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
@@ -102,30 +94,51 @@
 
         <MenuFlyoutSeparator Grid.Row="1" Padding="0 5" />
 
-        <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe"
-                Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}" Style="{StaticResource ButtonRevealStyle}"
-                Click="AddResultButton_Click" Grid.Row="2" HorizontalAlignment="Center" />
+        <Button Name="AddResultButton" Content="Add Result" FontSize="20" FontFamily="Segoe" Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}"
+                Style="{StaticResource ButtonRevealStyle}" Click="AddResultButton_Click" Grid.Row="2" HorizontalAlignment="Center" />
 
-        <MenuFlyoutSeparator Name="SomeSeparator" Grid.Row="3"  Padding="0 5"/>
+        <MenuFlyoutSeparator Name="SomeSeparator" Grid.Row="3" Padding="0 5" />
 
-            <Grid Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}" Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
+        <Grid Grid.Row="4">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-                <TextBlock Text="Id" Style="{StaticResource NormalText}" Margin="10 0 0 0" Grid.Column="0" />
-                <TextBlock Text="Result" Style="{StaticResource NormalText}" Margin="0" Grid.Column="1" />
-                <TextBlock Text="Ao5" Style="{StaticResource NormalText}" Margin="0" Grid.Column="2" />
-                <TextBlock Text="Ao12" Style="{StaticResource NormalText}" Margin="0" Grid.Column="3" />
-            </Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Style="{StaticResource NormalText}" HorizontalAlignment="Right" Text="Best: " Grid.Row="0" Grid.Column="0" />
+            <TextBlock Style="{StaticResource NormalText}" HorizontalAlignment="Right" Text="Worst: " Grid.Row="1" Grid.Column="0" />
+            <TextBlock Style="{StaticResource NormalText}" HorizontalAlignment="Right" Text="Average: " Grid.Row="2" Grid.Column="0" />
+
+            <TextBlock Name="BestStringTextBlock" Style="{StaticResource ResultText}" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="1" />
+            <TextBlock Name="WorstStringTextBlock" Style="{StaticResource ResultText}" HorizontalAlignment="Left" Grid.Row="1" Grid.Column="1" />
+            <TextBlock Name="AverageStringTextBlock" Style="{StaticResource ResultText}" HorizontalAlignment="Left" Grid.Row="2" Grid.Column="1" />
+        </Grid>
 
         <MenuFlyoutSeparator Grid.Row="5" Padding="0 5" />
 
-        <ListView Name="ResultListView" Width="Auto" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single"
-                Grid.Row="6">
+        <Grid Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}" Grid.Row="6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="Id" Style="{StaticResource NormalText}" Margin="10 0 0 0" Grid.Column="0" />
+            <TextBlock Text="Result" Style="{StaticResource NormalText}" Margin="0" Grid.Column="1" />
+            <TextBlock Text="Ao5" Style="{StaticResource NormalText}" Margin="0" Grid.Column="2" />
+            <TextBlock Text="Ao12" Style="{StaticResource NormalText}" Margin="0" Grid.Column="3" />
+        </Grid>
+
+        <MenuFlyoutSeparator Grid.Row="7" Padding="0 5" />
+
+        <ListView Name="ResultListView" Width="Auto" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single" Grid.Row="8">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
                     <Grid Margin="0 0 15 0" RightTapped="Grid_RightTapped" Width="Auto">
@@ -136,14 +149,10 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}"
-                                Grid.Column="0" />
-                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultString, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" Grid.Column="1" />
-                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5String, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" Grid.Column="2" />
-                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12String, Mode=OneWay}"
-                                Style="{StaticResource ResultText}" Grid.Column="3" />
+                        <TextBlock Name="ResultIdTextBlock" Text="{x:Bind Id, Mode=OneWay }" Style="{StaticResource ResultText}" Grid.Column="0" />
+                        <TextBlock Name="ResultTextBlock" Text="{x:Bind ResultString, Mode=OneWay}" Style="{StaticResource ResultText}" Grid.Column="1" />
+                        <TextBlock Name="ResultAo5TextBlock" Text="{x:Bind Ao5String, Mode=OneWay}" Style="{StaticResource ResultText}" Grid.Column="2" />
+                        <TextBlock Name="ResultAo12TextBlock" Text="{x:Bind Ao12String, Mode=OneWay}" Style="{StaticResource ResultText}" Grid.Column="3" />
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
