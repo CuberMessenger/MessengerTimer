@@ -33,6 +33,11 @@
             IsSettingsVisible="False">
         <NavigationView.MenuItems>
             <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Result" />
+            <NavigationViewItem Name="FormulaNavigationItem" Content="Formula">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xEBC3;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
             <NavigationViewItem Name="SettingNavigationItem" Icon="Setting" Content="Setting" />
         </NavigationView.MenuItems>
 

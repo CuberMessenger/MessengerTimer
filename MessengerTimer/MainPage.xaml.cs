@@ -27,7 +27,7 @@ namespace MessengerTimer {
 
     public enum DisplayModeEnum { RealTime, ToSecond, OnlyOberving, Hidden }
 
-    public enum InfoFrameStatus { Null, Result, Empty, Setting }
+    public enum InfoFrameStatus { Null, Result, Empty, Setting, Formula }
 
     /*
      * Examples:
@@ -294,27 +294,59 @@ namespace MessengerTimer {
             CurrentInfoFrameStatus = InfoFrameStatus.Empty;
         }
 
-        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-            switch (args.InvokedItem) {
-                case "Result":
-                    if (CurrentInfoFrameStatus == InfoFrameStatus.Result)
-                        WithdrawInfoFrame();
-                    else {
-                        InfoFrame.Navigate(typeof(ResultPage), null, new EntranceNavigationTransitionInfo());
-                        CurrentInfoFrameStatus = InfoFrameStatus.Result;
-                    }
-                    break;
-                case "Setting":
-                    if (CurrentInfoFrameStatus == InfoFrameStatus.Setting)
-                        WithdrawInfoFrame();
-                    else {
-                        InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
-                        CurrentInfoFrameStatus = InfoFrameStatus.Setting;
-                    }
-                    break;
-                default:
-                    break;
+        private static Dictionary<string, InfoFrameStatus> StringToInfoFrameStatus = new Dictionary<string, InfoFrameStatus> {
+            { "Result", InfoFrameStatus.Result },
+            { "Setting", InfoFrameStatus.Setting },
+            { "Formula", InfoFrameStatus.Formula}
+        };
+
+        private static Dictionary<string, Type> StringToPageType = new Dictionary<string, Type> {
+            { "Result", typeof(ResultPage) },
+            { "Setting", typeof(SettingPage) },
+            { "Formula", typeof(FormulaPage) }
+        };
+
+        private void NavigateOrWithdraw(InfoFrameStatus pageStatusEnum, Type page) {
+            if (CurrentInfoFrameStatus == pageStatusEnum)
+                WithdrawInfoFrame();
+            else {
+                InfoFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
+                CurrentInfoFrameStatus = pageStatusEnum;
             }
+        }
+
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
+            if (args.InvokedItem != null) {
+                NavigateOrWithdraw(StringToInfoFrameStatus[args.InvokedItem as string], StringToPageType[args.InvokedItem as string]);
+            }
+            //switch (args.InvokedItem) {
+            //    case "Result":
+            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Result)
+            //            WithdrawInfoFrame();
+            //        else {
+            //            InfoFrame.Navigate(typeof(ResultPage), null, new EntranceNavigationTransitionInfo());
+            //            CurrentInfoFrameStatus = InfoFrameStatus.Result;
+            //        }
+            //        break;
+            //    case "Setting":
+            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Setting)
+            //            WithdrawInfoFrame();
+            //        else {
+            //            InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
+            //            CurrentInfoFrameStatus = InfoFrameStatus.Setting;
+            //        }
+            //        break;
+            //    case "Formula":
+            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Formula)
+            //            WithdrawInfoFrame();
+            //        else {
+            //            InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
+            //            CurrentInfoFrameStatus = InfoFrameStatus.Formula;
+            //        }
+            //        break;
+            //    default:
+            //        break;
+            //}
         }
 
         private void SetScrambleTextBlockByAnimation(string scramble) {
