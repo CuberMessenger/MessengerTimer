@@ -56,11 +56,33 @@ namespace MessengerTimer.DataModels {
                 return "DNF";//when aoNValue need to be DNF, it will be assigned by -1
             switch (App.MainPageInstance.appSettings.TimerFormat) {
                 case TimerFormat.MMSSFF:
-                    //Todo
-                    return string.Empty;
+                    if (double.IsNaN(value)) {
+                        return double.NaN.ToString();
+                    }
+                    switch (punishment) {
+                        case Punishment.None:
+                            return TimeSpan.FromSeconds(value).ToString("mmssff").Insert(2, ":").Insert(5, ".");
+                        case Punishment.PlusTwo:
+                            return TimeSpan.FromSeconds(value + 2).ToString("mmssff").Insert(2, ":").Insert(5, ".") + "+";
+                        case Punishment.DNF:
+                            return "DNF";
+                        default:
+                            return TimeSpan.FromSeconds(value).ToString("mmssfff").Insert(2, ":").Insert(5, ".");
+                    }
                 case TimerFormat.MMSSFFF:
-                    //Todo
-                    return string.Empty;
+                    if (double.IsNaN(value)) {
+                        return double.NaN.ToString();
+                    }
+                    switch (punishment) {
+                        case Punishment.None:
+                            return TimeSpan.FromSeconds(value).ToString("mmssfff").Insert(2, ":").Insert(5, ".");
+                        case Punishment.PlusTwo:
+                            return TimeSpan.FromSeconds(value + 2).ToString("mmssfff").Insert(2, ":").Insert(5, ".") + "+";
+                        case Punishment.DNF:
+                            return "DNF";
+                        default:
+                            return TimeSpan.FromSeconds(value).ToString("mmssfff").Insert(2, ":").Insert(5, ".");
+                    }
                 case TimerFormat.SSFF:
                     switch (punishment) {
                         case Punishment.None:

@@ -141,7 +141,7 @@
         <ListView Name="ResultListView" Width="Auto" ItemsSource="{x:Bind Results, Mode=OneWay}" SelectionMode="Single" Grid.Row="8">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
-                    <Grid Margin="0 0 15 0" RightTapped="Grid_RightTapped" Width="Auto">
+                    <Grid Margin="0 0 15 0" RightTapped="Grid_RightTapped" Width="Auto" Background="Transparent">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
