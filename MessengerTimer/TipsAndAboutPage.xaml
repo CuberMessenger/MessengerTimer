@@ -1,0 +1,44 @@
+﻿<Page x:Class="MessengerTimer.TipsAndAboutPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="using:MessengerTimer" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style TargetType="TextBlock" x:Key="PartTitleText">
+            <Setter Property="FontSize" Value="24" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="10" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="TextBlock" x:Key="DescriptionText">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
+
+        <Style TargetType="Rectangle" x:Key="PointPrefix">
+            <Setter Property="Fill" Value="Black" />
+            <Setter Property="Width" Value="5" />
+            <Setter Property="Height" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="15 5" />
+        </Style>
+    </Page.Resources>
+
+    <StackPanel Orientation="Vertical" Width="450">
+        <TextBlock Text="About" Style="{StaticResource PartTitleText}" />
+        <MenuFlyoutSeparator />
+        
+        
+        <TextBlock  Text="Tips" Style="{StaticResource PartTitleText}" />
+        <MenuFlyoutSeparator />
+        
+        <StackPanel Orientation="Horizontal">
+            <Rectangle Style="{StaticResource PointPrefix}"/>
+            <TextBlock Text="The Scramble State Frame is dragable." Style="{StaticResource DescriptionText}" />
+        </StackPanel>
+        <Image Source="Assets/ScrambleStateDrag.gif" Width="400" HorizontalAlignment="Left" Margin="30 10"/>
+
+    </StackPanel>
+</Page>

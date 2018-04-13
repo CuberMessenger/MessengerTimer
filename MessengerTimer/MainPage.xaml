@@ -37,6 +37,11 @@
                 </NavigationViewItem.Icon>
             </NavigationViewItem>
             <NavigationViewItem Name="SettingNavigationItem" Icon="Setting" Content="Setting" />
+            <NavigationViewItem Name="TipsAndAboutNavigationItem" Content="Tips and About">
+                <NavigationViewItem.Icon>
+                    <FontIcon Glyph="&#xE82F;" />
+                </NavigationViewItem.Icon>
+            </NavigationViewItem>
         </NavigationView.MenuItems>
 
         <Grid Name="BackGroundGrid">

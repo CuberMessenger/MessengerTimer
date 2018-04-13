@@ -27,7 +27,7 @@ namespace MessengerTimer {
 
     public enum DisplayModeEnum { RealTime, ToSecond, OnlyOberving, Hidden }
 
-    public enum InfoFrameStatus { Null, Result, Empty, Setting, Formula }
+    public enum InfoFrameStatus { Null, Result, Empty, Setting, Formula, TipsAndAbout }
 
     /*
      * Examples:
@@ -300,13 +300,15 @@ namespace MessengerTimer {
         private static Dictionary<string, InfoFrameStatus> StringToInfoFrameStatus = new Dictionary<string, InfoFrameStatus> {
             { "Result", InfoFrameStatus.Result },
             { "Setting", InfoFrameStatus.Setting },
-            { "Formula", InfoFrameStatus.Formula}
+            { "Formula", InfoFrameStatus.Formula},
+            { "Tips and About", InfoFrameStatus.TipsAndAbout}
         };
 
         private static Dictionary<string, Type> StringToPageType = new Dictionary<string, Type> {
             { "Result", typeof(ResultPage) },
             { "Setting", typeof(SettingPage) },
-            { "Formula", typeof(FormulaPage) }
+            { "Formula", typeof(FormulaPage) },
+            { "Tips and About",typeof(TipsAndAboutPage)}
         };
 
         private void NavigateOrWithdraw(InfoFrameStatus pageStatusEnum, Type page) {
