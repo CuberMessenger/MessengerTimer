@@ -54,11 +54,52 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public double SliderMinimum {
+            get {
+                switch (Title) {
+                    case "StartDelay: ":
+                        return 0.0;
+                    case "BackgroundTransparency: ":
+                        return 0;
+                    default:
+                        return 0.0;
+                }
+            }
+        }
+
+        public double SliderMaximum {
+            get {
+                switch (Title) {
+                    case "StartDelay: ":
+                        return 3.0;
+                    case "BackgroundTransparency: ":
+                        return 255;
+                    default:
+                        return 0.0;
+                }
+            }
+        }
+
+        public double SliderStepFrequency {
+            get {
+                switch (Title) {
+                    case "StartDelay: ":
+                        return 0.05;
+                    case "BackgroundTransparency: ":
+                        return 1;
+                    default:
+                        return 0.1;
+                }
+            }
+        }
+
         public double SliderValue {
             get {
                 switch (Title) {
                     case "StartDelay: ":
                         return appSettings.StartDelay / 10000000.0;
+                    case "BackgroundTransparency: ":
+                        return appSettings.MainGridBackgroudAlpha;
                     default:
                         return 0;
                 }
@@ -67,6 +108,9 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         appSettings.StartDelay = (long)(value * 10000000);
+                        break;
+                    case "BackgroundTransparency: ":
+                        appSettings.MainGridBackgroudAlpha = (byte)value;
                         break;
                     default:
                         break;
@@ -149,6 +193,7 @@ namespace MessengerTimer.DataModels {
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
             userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
+            userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTransparency: ", visibleControl: InputControlTypes.Slider));
 
             Instance.Add(timingGroup);
             Instance.Add(scrambleGroup);

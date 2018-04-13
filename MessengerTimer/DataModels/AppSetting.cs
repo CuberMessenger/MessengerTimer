@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 
 namespace MessengerTimer.DataModels {
     public class AppSettings : INotifyPropertyChanged {
@@ -79,6 +80,19 @@ namespace MessengerTimer.DataModels {
             set {
                 SaveSettings(nameof(ShowScrambleState), value);
                 NotifyPropertyChanged("ScrambleVisibility");
+            }
+        }
+
+        public SolidColorBrush MainGridBackgroudBrush => 
+            new SolidColorBrush(Windows.UI.Color.FromArgb(MainGridBackgroudAlpha, 0xFF, 0xFF, 0xFF));
+
+        public byte MainGridBackgroudAlpha {
+            get {
+                return ReadSettings(nameof(MainGridBackgroudAlpha), (byte)0xA5);
+            }
+            set {
+                SaveSettings(nameof(MainGridBackgroudAlpha), value);
+                NotifyPropertyChanged("MainGridBackgroudBrush");
             }
         }
 

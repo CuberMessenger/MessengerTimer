@@ -60,7 +60,7 @@
             <Grid Grid.Column="1">
                 <Button Name="滴汤Button" Opacity="0" />
 
-                <Grid Name="MainGrid" Background="#A5FFFFFF" Padding="20">
+                <Grid Name="MainGrid" Background="{x:Bind appSettings.MainGridBackgroudBrush, Mode=OneWay}" Padding="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="2*" />
