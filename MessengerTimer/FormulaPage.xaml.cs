@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -23,12 +26,6 @@ namespace MessengerTimer {
     public sealed partial class FormulaPage : Page {
         public FormulaPage() {
             this.InitializeComponent();
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e) {
-            base.OnNavigatedTo(e);
-
-            FormulaWebView.Navigate(new Uri("http://algdb.net/"));
         }
     }
 }

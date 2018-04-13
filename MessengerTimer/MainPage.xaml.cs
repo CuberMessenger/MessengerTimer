@@ -77,6 +77,7 @@ namespace MessengerTimer {
         private Stack<Tuple<string, string>> AfterScramblesStack { get; set; }
         private DispatcherTimer TextBlockFadeOutTimer { get; set; }
         private DispatcherTimer TextBlockFadeInTimer { get; set; }
+        public Grid MainGridPointer { get; private set; }
 
         //Display Var
         private DateTime StartTime { get; set; }
@@ -98,6 +99,8 @@ namespace MessengerTimer {
 
             TextBlockFadeOutTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
             TextBlockFadeInTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
+
+            MainGridPointer = MainGrid;
         }
 
         public MainPage() {
@@ -319,34 +322,6 @@ namespace MessengerTimer {
             if (args.InvokedItem != null) {
                 NavigateOrWithdraw(StringToInfoFrameStatus[args.InvokedItem as string], StringToPageType[args.InvokedItem as string]);
             }
-            //switch (args.InvokedItem) {
-            //    case "Result":
-            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Result)
-            //            WithdrawInfoFrame();
-            //        else {
-            //            InfoFrame.Navigate(typeof(ResultPage), null, new EntranceNavigationTransitionInfo());
-            //            CurrentInfoFrameStatus = InfoFrameStatus.Result;
-            //        }
-            //        break;
-            //    case "Setting":
-            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Setting)
-            //            WithdrawInfoFrame();
-            //        else {
-            //            InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
-            //            CurrentInfoFrameStatus = InfoFrameStatus.Setting;
-            //        }
-            //        break;
-            //    case "Formula":
-            //        if (CurrentInfoFrameStatus == InfoFrameStatus.Formula)
-            //            WithdrawInfoFrame();
-            //        else {
-            //            InfoFrame.Navigate(typeof(SettingPage), null, new EntranceNavigationTransitionInfo());
-            //            CurrentInfoFrameStatus = InfoFrameStatus.Formula;
-            //        }
-            //        break;
-            //    default:
-            //        break;
-            //}
         }
 
         private void SetScrambleTextBlockByAnimation(string scramble) {
