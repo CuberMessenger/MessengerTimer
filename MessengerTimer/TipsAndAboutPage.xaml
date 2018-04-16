@@ -14,6 +14,8 @@
             <Setter Property="FontSize" Value="16" />
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="WrapWholeWords"/>
+            <Setter Property="Width" Value="400"/>
         </Style>
 
         <Style TargetType="Rectangle" x:Key="PointPrefix">
@@ -22,23 +24,45 @@
             <Setter Property="Height" Value="5" />
             <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="VerticalAlignment" Value="Center" />
-            <Setter Property="Margin" Value="15 5" />
         </Style>
     </Page.Resources>
 
-    <StackPanel Orientation="Vertical" Width="450">
-        <TextBlock Text="About" Style="{StaticResource PartTitleText}" />
-        <MenuFlyoutSeparator />
-        
-        
-        <TextBlock  Text="Tips" Style="{StaticResource PartTitleText}" />
-        <MenuFlyoutSeparator />
-        
-        <StackPanel Orientation="Horizontal">
-            <Rectangle Style="{StaticResource PointPrefix}"/>
-            <TextBlock Text="The Scramble State Frame is dragable." Style="{StaticResource DescriptionText}" />
-        </StackPanel>
-        <Image Source="Assets/ScrambleStateDrag.gif" Width="400" HorizontalAlignment="Left" Margin="30 10"/>
+    <ScrollViewer VerticalScrollMode="Enabled">
+        <StackPanel Orientation="Vertical" Width="450">
+            <TextBlock Text="About" Style="{StaticResource PartTitleText}"/>
+            <MenuFlyoutSeparator />
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Style="{StaticResource PointPrefix}" VerticalAlignment="Top" Margin="15 10"/>
+                <TextBlock Text="MessengerTimer is made by CuberMessenger
+                       (cuber_messenger@hotmail.com) and 
+                       Aceralon(aceralon@live.com).
+                       
+                       Please send any report(bug/advice) to us.
+                       We will glad to hear from you." Style="{StaticResource DescriptionText}" />
+            </StackPanel>
 
-    </StackPanel>
+            <TextBlock  Text="Tips" Style="{StaticResource PartTitleText}" />
+            <MenuFlyoutSeparator />
+
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Style="{StaticResource PointPrefix}" Margin="15 0 15 15"/>
+                <TextBlock Text="If you want to stop current timing(while Observing/Holding), you can press Esc to stop." Style="{StaticResource DescriptionText}" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Style="{StaticResource PointPrefix}" Margin="15 5"/>
+                <TextBlock Text="The Scramble State Frame is dragable." Style="{StaticResource DescriptionText}" />
+            </StackPanel>
+            <Image Source="Assets/ScrambleStateDrag.gif" Width="400" HorizontalAlignment="Left" Margin="30 10"/>
+
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Style="{StaticResource PointPrefix}" VerticalAlignment="Top" Margin="15 10"/>
+                <TextBlock Text="The Scramble Text can switch by WheelDown/Up.
+                       Or just click the buttons appear when your pointer 
+                       hover on scramble area." Style="{StaticResource DescriptionText}" />
+            </StackPanel>
+            <Image Source="Assets/WheelControlScrambleSwitch.gif" Width="400" HorizontalAlignment="Left" Margin="30 10"/>
+
+        </StackPanel>
+    </ScrollViewer>
 </Page>

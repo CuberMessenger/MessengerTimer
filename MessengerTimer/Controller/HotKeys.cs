@@ -7,9 +7,17 @@ using Windows.UI.Xaml.Controls;
 
 namespace MessengerTimer {
     public sealed partial class MainPage : Page {
-        private void EscapeKeyUp(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args) {
-            if (args.VirtualKey == Windows.System.VirtualKey.Escape && TimerStatus == TimerStatus.Waiting)
-                ResetTimer();
+        private void EscapeKeyUp(CoreWindow sender, KeyEventArgs args) {
+            if (args.VirtualKey == VirtualKey.Escape) {
+                if (TimerStatus == TimerStatus.Holding) {
+                    TimerStatus = TimerStatus.Display;
+                    ResetTimer();
+                }
+                else if (TimerStatus == TimerStatus.Observing) {
+                    TimerStatus = TimerStatus.Waiting;
+                    ResetTimer();
+                }
+            }
         }
     }
 }
