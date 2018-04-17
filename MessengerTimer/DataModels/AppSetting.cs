@@ -83,7 +83,7 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public SolidColorBrush MainGridBackgroudBrush => 
+        public SolidColorBrush MainGridBackgroudBrush =>
             new SolidColorBrush(Windows.UI.Color.FromArgb(MainGridBackgroudAlpha, 0xFF, 0xFF, 0xFF));
 
         public byte MainGridBackgroudAlpha {
@@ -93,6 +93,16 @@ namespace MessengerTimer.DataModels {
             set {
                 SaveSettings(nameof(MainGridBackgroudAlpha), value);
                 NotifyPropertyChanged("MainGridBackgroudBrush");
+            }
+        }
+
+        public AverageType AverageType {
+            get {
+                return ReadSettings(nameof(AverageType), AverageType.Average);
+            }
+            set {
+                SaveSettings(nameof(AverageType), (int)value);
+                NotifyPropertyChanged("AverageType");
             }
         }
 

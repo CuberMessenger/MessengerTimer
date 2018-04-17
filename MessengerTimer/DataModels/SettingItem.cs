@@ -25,6 +25,9 @@ namespace MessengerTimer.DataModels {
         private static List<string> timerFormats = new List<string>
         { TimerFormat.MMSSFF.ToString(), TimerFormat.MMSSFFF.ToString(), TimerFormat.SSFF.ToString(), TimerFormat.SSFFF.ToString() };
 
+        private static List<string> averageTypes = new List<string>
+        {AverageType.Average.ToString(), AverageType.Mean.ToString() };
+
         private static InputControlTypes[] ICTs = new InputControlTypes[] { InputControlTypes.ToggleSwitch, InputControlTypes.Slider, InputControlTypes.ComboBox };
         public string Title { get; set; }
         public Dictionary<InputControlTypes, Visibility> InputControlVisibility { get; set; }
@@ -125,6 +128,8 @@ namespace MessengerTimer.DataModels {
                         return displayModeEnums;
                     case "TimerFormat: ":
                         return timerFormats;
+                    case "AverageType: ":
+                        return averageTypes;
                     default:
                         return null;
                 }
@@ -138,6 +143,8 @@ namespace MessengerTimer.DataModels {
                         return displayModeEnums.IndexOf(appSettings.DisplayMode.ToString());
                     case "TimerFormat: ":
                         return timerFormats.IndexOf(appSettings.TimerFormat.ToString());
+                    case "AverageType: ":
+                        return averageTypes.IndexOf(appSettings.AverageType.ToString());
                     default:
                         return 0;
                 }
@@ -149,6 +156,10 @@ namespace MessengerTimer.DataModels {
                         break;
                     case "TimerFormat: ":
                         appSettings.TimerFormat = (TimerFormat)value;
+                        break;
+                    case "AverageType: ":
+                        appSettings.AverageType = (AverageType)value;
+                        App.MainPageInstance.ReCalcAllAoN();
                         break;
                     default:
                         break;
@@ -187,7 +198,7 @@ namespace MessengerTimer.DataModels {
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
-            //statisticsGroup.Items.Add(new SettingItem(titile: "TestInput: ", visibleControl: InputControlTypes.Slider));
+            statisticsGroup.Items.Add(new SettingItem(titile: "AverageType: ", visibleControl: InputControlTypes.ComboBox));
 
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };

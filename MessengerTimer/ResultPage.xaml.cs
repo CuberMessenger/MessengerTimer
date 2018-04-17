@@ -138,7 +138,7 @@ namespace MessengerTimer {
                     MainPage.Results[indexToModify].ResultPunishment = GetCheckedPunishment();
 
                     //3. Recalculate Ao5/Ao12 results
-                    App.MainPageInstance.RefreshListOfResult(indexToModify);
+                    App.MainPageInstance.RefreshListOfResult(indexToModify, MainPage.Results);
 
                     //4. Modify result in disk
                     MainPage.SaveDataAsync(false);

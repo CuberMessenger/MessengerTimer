@@ -29,6 +29,8 @@ namespace MessengerTimer {
 
     public enum InfoFrameStatus { Null, Result, Empty, Setting, Formula, TipsAndAbout }
 
+    public enum AverageType { Average, Mean }
+
     /*
      * Examples:
      * MMSSFF ->  12:34.56
@@ -227,7 +229,7 @@ namespace MessengerTimer {
         public void UpdateResult(Result result, int index = 0) {
             Results.Insert(index, result);
 
-            RefreshListOfResult(index);
+            RefreshListOfResult(index, Results);
 
             new Thread(() => { SaveDataAsync(false); }).Start();
 
@@ -246,28 +248,36 @@ namespace MessengerTimer {
             }
         }
 
-        private double CalcAoNValue(int startIndex, int N) {
+        private double CalcAoNValue(int startIndex, int N, ObservableCollection<Result> source) {
             double aoN = 0;
 
-            if (Results.Count - startIndex >= N) {
+            if (source.Count - startIndex >= N) {
                 List<Result> validResults = null;
-                var window = Results.Skip(startIndex).Take(N);
+                var window = source.Skip(startIndex).Take(N);
                 var NumOfDNF = window.Where(rst => rst.ResultPunishment == Punishment.DNF).Count();
 
                 if (NumOfDNF >= 2)
                     return -1;//means DNF
                 else if (NumOfDNF == 1) {
-                    validResults = window.ToList();
-                    validResults.Remove(window.Where(rst => rst.ResultPunishment == Punishment.DNF).First());
+                    switch (appSettings.AverageType) {
+                        case AverageType.Average:
+                            validResults = window.ToList();
+                            validResults.Remove(window.Where(rst => rst.ResultPunishment == Punishment.DNF).First());
+                            break;
+                        case AverageType.Mean:
+                            return -1;//means DNF
+                    }
                 }
                 else {
                     validResults = window.OrderByDescending(rst => rst.ResultValue).ToList();
-                    validResults.RemoveAt(0);
+                    if (appSettings.AverageType == AverageType.Average) {
+                        validResults.RemoveAt(0);
+                    }
                 }
 
-                for (int i = 0; i < N - 1; i++)
+                for (int i = 0; i < validResults.Count; i++)
                     aoN += validResults[i].ResultValue + (validResults[i].ResultPunishment == Punishment.PlusTwo ? 2 : 0);
-                aoN = aoN / (N - 1);
+                aoN /= validResults.Count;
             }
             else
                 aoN = double.NaN;
@@ -275,20 +285,27 @@ namespace MessengerTimer {
             return aoN;
         }
 
-        public void RefreshListOfResult(int index) {
+        public void RefreshListOfResult(int index, ObservableCollection<Result> source) {
             for (int i = index; i >= 0; i--) {
-                Results[i].Id = Results.Count - i;
-                Results[i].Ao5Value = CalcAoNValue(i, 5);
-                Results[i].Ao12Value = CalcAoNValue(i, 12);
+                source[i].Id = source.Count - i;
+                source[i].Ao5Value = CalcAoNValue(i, 5, source);
+                source[i].Ao12Value = CalcAoNValue(i, 12, source);
             }
 
             RefreshAoNResults();
         }
 
+        public void ReCalcAllAoN() {
+            foreach (var resultGroup in allResult.ResultGroups) {
+                RefreshListOfResult(resultGroup.Results.Count - 1, resultGroup.Results);
+            }
+            SaveDataAsync(isDelete: false);
+        }
+
         public void DeleteResult(int index) {
             Results.RemoveAt(index--);
 
-            RefreshListOfResult(index);
+            RefreshListOfResult(index, Results);
             SaveDataAsync(false);
         }
 
