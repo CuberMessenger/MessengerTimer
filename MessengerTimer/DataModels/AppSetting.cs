@@ -102,19 +102,25 @@ namespace MessengerTimer.DataModels {
             }
             set {
                 SaveSettings(nameof(AverageType), (int)value);
-                NotifyPropertyChanged("AverageType");
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int ScrambleFontSize {
+            get {
+                return ReadSettings(nameof(ScrambleFontSize), 24);
+            }
+            set {
+                SaveSettings(nameof(ScrambleFontSize), value);
+                NotifyPropertyChanged();
             }
         }
 
         public ApplicationDataContainer LocalSettings { get; set; }
 
-        public AppSettings() {
-            LocalSettings = ApplicationData.Current.LocalSettings;
-        }
+        public AppSettings() => LocalSettings = ApplicationData.Current.LocalSettings;
 
-        private void SaveSettings(string key, object value) {
-            LocalSettings.Values[key] = value;
-        }
+        private void SaveSettings(string key, object value) => LocalSettings.Values[key] = value;
 
         private T ReadSettings<T>(string key, T defaultValue) {
             if (LocalSettings.Values.ContainsKey(key)) {
@@ -128,9 +134,7 @@ namespace MessengerTimer.DataModels {
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged([CallerMemberName]string propName = "") {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
-        }
+        protected void NotifyPropertyChanged([CallerMemberName]string propName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
     }
 
 }

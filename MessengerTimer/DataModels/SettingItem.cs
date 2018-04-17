@@ -64,6 +64,8 @@ namespace MessengerTimer.DataModels {
                         return 0.0;
                     case "BackgroundTransparency: ":
                         return 0;
+                    case "ScrambleFontSize: ":
+                        return 10;
                     default:
                         return 0.0;
                 }
@@ -77,6 +79,8 @@ namespace MessengerTimer.DataModels {
                         return 3.0;
                     case "BackgroundTransparency: ":
                         return 255;
+                    case "ScrambleFontSize: ":
+                        return 80;
                     default:
                         return 0.0;
                 }
@@ -89,6 +93,8 @@ namespace MessengerTimer.DataModels {
                     case "StartDelay: ":
                         return 0.05;
                     case "BackgroundTransparency: ":
+                        return 1;
+                    case "ScrambleFontSize: ":
                         return 1;
                     default:
                         return 0.1;
@@ -103,6 +109,8 @@ namespace MessengerTimer.DataModels {
                         return appSettings.StartDelay / 10000000.0;
                     case "BackgroundTransparency: ":
                         return appSettings.MainGridBackgroudAlpha;
+                    case "ScrambleFontSize: ":
+                        return appSettings.ScrambleFontSize;
                     default:
                         return 0;
                 }
@@ -114,6 +122,9 @@ namespace MessengerTimer.DataModels {
                         break;
                     case "BackgroundTransparency: ":
                         appSettings.MainGridBackgroudAlpha = (byte)value;
+                        break;
+                    case "ScrambleFontSize: ":
+                        appSettings.ScrambleFontSize = (int)value;
                         break;
                     default:
                         break;
@@ -194,7 +205,8 @@ namespace MessengerTimer.DataModels {
             timingGroup.Items.Add(new SettingItem(titile: "DisplayMode: ", visibleControl: InputControlTypes.ComboBox));
 
             var scrambleGroup = new SettingItemGroup { Class = "Scramble", Items = new ObservableCollection<SettingItem>() };
-            //scrambleGroup.Items.Add(new SettingItem(titile: "TestInput: ", visibleControl: InputControlTypes.ToggleSwitch));
+            scrambleGroup.Items.Add(new SettingItem(titile: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
+            scrambleGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
@@ -203,7 +215,6 @@ namespace MessengerTimer.DataModels {
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
             userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTransparency: ", visibleControl: InputControlTypes.Slider));
 
             Instance.Add(timingGroup);

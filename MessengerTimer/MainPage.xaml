@@ -85,8 +85,8 @@
 
                     <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0 0 0 150" PointerEntered="RelativePanel_PointerEntered"
                             PointerExited="RelativePanel_PointerExited" PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged">
-                        <TextBlock Name="ScrambleTextBlock" FontSize="24" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40 10"
-                                Text="D' U B2 L2 R2 D R2 U R2 U2 F' L' F2 R' D2 B' F' D' R' D'" TextWrapping="WrapWholeWords" />
+                        <TextBlock Name="ScrambleTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40 10"
+                                FontSize="{x:Bind appSettings.ScrambleFontSize, Mode=OneWay}" TextWrapping="WrapWholeWords" />
 
                         <Button Name="PreviousScrambleButton" Style="{ThemeResource ButtonRevealStyle}" RelativePanel.AlignBottomWith="ScrambleTextBlock"
                                 RelativePanel.AlignTopWith="ScrambleTextBlock" FontFamily="Segoe MDL2 Assets" FontSize="20" Content="&#xE012;" Height="35"
