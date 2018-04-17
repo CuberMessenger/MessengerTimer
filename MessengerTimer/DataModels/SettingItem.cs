@@ -9,14 +9,8 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace MessengerTimer.DataModels {
-    public enum InputControlTypes { ToggleSwitch, Slider, ComboBox }
+    public enum InputControlTypes { ToggleSwitch, Slider, ComboBox, ColorPicker }
     public class SettingItem {
-        //Timing: NeedObserving, StartDelay, DisplayMode
-        //Scramble 
-        //Statistics 
-        //UI: TimerFormat, ShowScambleState
-
-        //ToggleSwitch Slider ComboBox 
         private static AppSettings appSettings = App.MainPageInstance.appSettings;
 
         private static List<string> displayModeEnums = new List<string>
@@ -28,7 +22,7 @@ namespace MessengerTimer.DataModels {
         private static List<string> averageTypes = new List<string>
         {AverageType.Average.ToString(), AverageType.Mean.ToString() };
 
-        private static InputControlTypes[] ICTs = new InputControlTypes[] { InputControlTypes.ToggleSwitch, InputControlTypes.Slider, InputControlTypes.ComboBox };
+        private static InputControlTypes[] ICTs = new InputControlTypes[] { InputControlTypes.ToggleSwitch, InputControlTypes.Slider, InputControlTypes.ComboBox, InputControlTypes.ColorPicker };
         public string Title { get; set; }
         public Dictionary<InputControlTypes, Visibility> InputControlVisibility { get; set; }
 
@@ -78,8 +72,6 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         return 0.0;
-                    case "BackgroundTransparency: ":
-                        return 0;
                     case "ScrambleFontSize: ":
                         return 0;
                     default:
@@ -93,8 +85,6 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         return 3.0;
-                    case "BackgroundTransparency: ":
-                        return 255;
                     case "ScrambleFontSize: ":
                         return 60;
                     default:
@@ -108,8 +98,6 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         return 0.05;
-                    case "BackgroundTransparency: ":
-                        return 1;
                     case "ScrambleFontSize: ":
                         return 1;
                     default:
@@ -123,8 +111,6 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         return appSettings.StartDelay / 10000000.0;
-                    case "BackgroundTransparency: ":
-                        return appSettings.MainGridBackgroudAlpha;
                     case "ScrambleFontSize: ":
                         return appSettings.ScrambleFontSize - 1;
                     default:
@@ -135,9 +121,6 @@ namespace MessengerTimer.DataModels {
                 switch (Title) {
                     case "StartDelay: ":
                         appSettings.StartDelay = (long)(value * 10000000);
-                        break;
-                    case "BackgroundTransparency: ":
-                        appSettings.MainGridBackgroudAlpha = (byte)value;
                         break;
                     case "ScrambleFontSize: ":
                         appSettings.ScrambleFontSize = (int)(value + 1);
@@ -194,6 +177,26 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public Windows.UI.Color BackgroundTint {
+            get {
+                switch (Title) {
+                    case "BackgroundTint: ":
+                        return appSettings.BackgroundTint;
+                    default:
+                        return Windows.UI.Colors.White;
+                }
+            }
+            set {
+                switch (Title) {
+                    case "BackgroundTint: ":
+                        appSettings.BackgroundTint = value;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         public SettingItem(string titile, InputControlTypes visibleControl) {
             Title = titile;
             InputControlVisibility = new Dictionary<InputControlTypes, Visibility>();
@@ -233,8 +236,8 @@ namespace MessengerTimer.DataModels {
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
             userInterfaceGroup.Items.Add(new SettingItem(titile: "SettingPageDefaultZoomOut: ", visibleControl: InputControlTypes.ToggleSwitch));
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTransparency: ", visibleControl: InputControlTypes.Slider));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
+            userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTint: ", visibleControl: InputControlTypes.ColorPicker));
 
             Instance.Add(timingGroup);
             Instance.Add(scrambleGroup);

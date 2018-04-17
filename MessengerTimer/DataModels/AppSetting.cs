@@ -67,11 +67,7 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public Visibility ScrambleFrameVisibility {
-            get {
-                return ShowScrambleState ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+        public Visibility ScrambleFrameVisibility => ShowScrambleState ? Visibility.Visible : Visibility.Collapsed;
 
         public bool ShowScrambleState {
             get {
@@ -83,11 +79,7 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public Visibility ScrambleTextVisibility {
-            get {
-                return ShowScrambleText ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+        public Visibility ScrambleTextVisibility => ShowScrambleText ? Visibility.Visible : Visibility.Collapsed;
 
         public bool ShowScrambleText {
             get {
@@ -99,11 +91,7 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public Visibility AverageTextVisibility {
-            get {
-                return ShowAverageText ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
+        public Visibility AverageTextVisibility => ShowAverageText ? Visibility.Visible : Visibility.Collapsed;
 
         public bool ShowAverageText {
             get {
@@ -112,19 +100,6 @@ namespace MessengerTimer.DataModels {
             set {
                 SaveSettings(nameof(ShowAverageText), value);
                 NotifyPropertyChanged("AverageTextVisibility");
-            }
-        }
-
-        public SolidColorBrush MainGridBackgroudBrush =>
-            new SolidColorBrush(Windows.UI.Color.FromArgb(MainGridBackgroudAlpha, 0xFF, 0xFF, 0xFF));
-
-        public byte MainGridBackgroudAlpha {
-            get {
-                return ReadSettings(nameof(MainGridBackgroudAlpha), (byte)0xA5);
-            }
-            set {
-                SaveSettings(nameof(MainGridBackgroudAlpha), value);
-                NotifyPropertyChanged("MainGridBackgroudBrush");
             }
         }
 
@@ -155,6 +130,34 @@ namespace MessengerTimer.DataModels {
             set {
                 SaveSettings(nameof(SettingPageDefaultZoomOut), value);
                 NotifyPropertyChanged();
+            }
+        }
+
+        public SolidColorBrush MainGridBackgroundBrush => new SolidColorBrush(BackgroundTint);
+
+        public Windows.UI.Color BackgroundTint {
+            get => Windows.UI.Color.FromArgb(
+                            (byte)((BackgroundTintARGB & 0xFF000000) >> 24),
+                            (byte)((BackgroundTintARGB & 0x00FF0000) >> 16),
+                            (byte)((BackgroundTintARGB & 0x0000FF00) >> 8),
+                            (byte)(BackgroundTintARGB & 0x000000FF));
+            set {
+                uint color = value.A;
+                color <<= 0b0000_1000; color |= value.R;
+                color <<= 0b0000_1000; color |= value.G;
+                color <<= 0b0000_1000; color |= value.B;
+                BackgroundTintARGB = color;
+            }
+        }
+
+        public uint BackgroundTintARGB {
+            get {
+                return ReadSettings(nameof(BackgroundTintARGB), 0xFFFFFFFF);
+            }
+            set {
+                SaveSettings(nameof(BackgroundTintARGB), value);
+                NotifyPropertyChanged("BackgroundTint");
+                NotifyPropertyChanged("MainGridBackgroundBrush");
             }
         }
 

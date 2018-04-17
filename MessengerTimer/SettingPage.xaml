@@ -12,7 +12,12 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Name="InputDescribeTextBlock" Text="{x:Bind Title}" VerticalAlignment="Center" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Name="InputDescribeTextBlock" Text="{x:Bind Title}" VerticalAlignment="Center" Margin="10 5"/>
                 <ToggleSwitch Visibility="{x:Bind GetControlVisibility(data:InputControlTypes.ToggleSwitch)}" Margin="10 5" Grid.Column="1" OnContent="On"
                         OffContent="Off" IsOn="{x:Bind IsToggleSwitchOn, Mode=TwoWay}" />
                 <Slider Visibility="{x:Bind GetControlVisibility(data:InputControlTypes.Slider)}" Width="200" Margin="10 5"
@@ -21,6 +26,9 @@
                 <ComboBox Visibility="{x:Bind GetControlVisibility(data:InputControlTypes.ComboBox)}" Margin="10 5" Grid.Column="1"
                         ItemsSource="{x:Bind ComboBoxItemSource ,Mode=OneTime}" SelectionChanged="ComboBox_SelectionChanged"
                         ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}" Loaded="ComboBox_Loaded" />
+                <ColorPicker Visibility="{x:Bind GetControlVisibility(data:InputControlTypes.ColorPicker)}" IsColorSliderVisible="True"
+                        IsColorChannelTextInputVisible="True" IsHexInputVisible="True" IsAlphaEnabled="True" IsAlphaSliderVisible="True"
+                        IsAlphaTextInputVisible="True" Color="{x:Bind BackgroundTint, Mode=TwoWay}" Grid.Row="1" Margin="25 10" />
             </Grid>
         </DataTemplate>
 
