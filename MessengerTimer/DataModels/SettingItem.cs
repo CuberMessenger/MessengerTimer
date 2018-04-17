@@ -65,7 +65,7 @@ namespace MessengerTimer.DataModels {
                     case "BackgroundTransparency: ":
                         return 0;
                     case "ScrambleFontSize: ":
-                        return 10;
+                        return 0;
                     default:
                         return 0.0;
                 }
@@ -80,7 +80,7 @@ namespace MessengerTimer.DataModels {
                     case "BackgroundTransparency: ":
                         return 255;
                     case "ScrambleFontSize: ":
-                        return 80;
+                        return 60;
                     default:
                         return 0.0;
                 }
@@ -110,7 +110,7 @@ namespace MessengerTimer.DataModels {
                     case "BackgroundTransparency: ":
                         return appSettings.MainGridBackgroudAlpha;
                     case "ScrambleFontSize: ":
-                        return appSettings.ScrambleFontSize;
+                        return appSettings.ScrambleFontSize - 1;
                     default:
                         return 0;
                 }
@@ -124,7 +124,7 @@ namespace MessengerTimer.DataModels {
                         appSettings.MainGridBackgroudAlpha = (byte)value;
                         break;
                     case "ScrambleFontSize: ":
-                        appSettings.ScrambleFontSize = (int)value;
+                        appSettings.ScrambleFontSize = (int)(value + 1);
                         break;
                     default:
                         break;
