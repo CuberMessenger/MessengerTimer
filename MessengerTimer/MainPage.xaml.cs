@@ -438,5 +438,7 @@ namespace MessengerTimer {
         private void NextScrambleButton_Click(object sender, RoutedEventArgs e) => NextScramble();
 
         public void ReloadInfoFramePage(Type page) => InfoFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
+
+        public void BindingsUpdate() => Bindings.Update();
     }
 }

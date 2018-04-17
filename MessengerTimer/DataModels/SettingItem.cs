@@ -39,6 +39,10 @@ namespace MessengerTimer.DataModels {
                         return appSettings.NeedObserving;
                     case "ShowScambleState: ":
                         return appSettings.ShowScrambleState;
+                    case "ShowScrambleText: ":
+                        return appSettings.ShowScrambleText;
+                    case "ShowAverageText: ":
+                        return appSettings.ShowAverageText;
                     default:
                         return false;
                 }
@@ -51,9 +55,16 @@ namespace MessengerTimer.DataModels {
                     case "ShowScambleState: ":
                         appSettings.ShowScrambleState = value;
                         break;
+                    case "ShowScrambleText: ":
+                        appSettings.ShowScrambleText = value;
+                        break;
+                    case "ShowAverageText: ":
+                        appSettings.ShowAverageText = value;
+                        break;
                     default:
                         break;
                 }
+                App.MainPageInstance.BindingsUpdate();
             }
         }
 
@@ -205,11 +216,13 @@ namespace MessengerTimer.DataModels {
             timingGroup.Items.Add(new SettingItem(titile: "DisplayMode: ", visibleControl: InputControlTypes.ComboBox));
 
             var scrambleGroup = new SettingItemGroup { Class = "Scramble", Items = new ObservableCollection<SettingItem>() };
+            scrambleGroup.Items.Add(new SettingItem(titile: "ShowScrambleText: ", visibleControl: InputControlTypes.ToggleSwitch));
             scrambleGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
             scrambleGroup.Items.Add(new SettingItem(titile: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
+            statisticsGroup.Items.Add(new SettingItem(titile: "ShowAverageText: ", visibleControl: InputControlTypes.ToggleSwitch));
             statisticsGroup.Items.Add(new SettingItem(titile: "AverageType: ", visibleControl: InputControlTypes.ComboBox));
 
 

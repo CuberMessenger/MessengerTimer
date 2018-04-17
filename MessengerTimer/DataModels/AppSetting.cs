@@ -67,7 +67,7 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public Visibility ScrambleVisibility {
+        public Visibility ScrambleFrameVisibility {
             get {
                 return ShowScrambleState ? Visibility.Visible : Visibility.Collapsed;
             }
@@ -79,7 +79,39 @@ namespace MessengerTimer.DataModels {
             }
             set {
                 SaveSettings(nameof(ShowScrambleState), value);
-                NotifyPropertyChanged("ScrambleVisibility");
+                NotifyPropertyChanged("ScrambleFrameVisibility");
+            }
+        }
+
+        public Visibility ScrambleTextVisibility {
+            get {
+                return ShowScrambleText ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public bool ShowScrambleText {
+            get {
+                return ReadSettings(nameof(ShowScrambleText), true);
+            }
+            set {
+                SaveSettings(nameof(ShowScrambleText), value);
+                NotifyPropertyChanged("ScrambleFrameVisibility");
+            }
+        }
+
+        public Visibility AverageTextVisibility {
+            get {
+                return ShowAverageText ? Visibility.Visible : Visibility.Collapsed;
+            }
+        }
+
+        public bool ShowAverageText {
+            get {
+                return ReadSettings(nameof(ShowAverageText), true);
+            }
+            set {
+                SaveSettings(nameof(ShowAverageText), value);
+                NotifyPropertyChanged("AverageTextVisibility");
             }
         }
 
