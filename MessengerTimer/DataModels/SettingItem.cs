@@ -43,6 +43,8 @@ namespace MessengerTimer.DataModels {
                         return appSettings.ShowScrambleText;
                     case "ShowAverageText: ":
                         return appSettings.ShowAverageText;
+                    case "SettingPageDefaultZoomOut: ":
+                        return appSettings.SettingPageDefaultZoomOut;
                     default:
                         return false;
                 }
@@ -60,6 +62,9 @@ namespace MessengerTimer.DataModels {
                         break;
                     case "ShowAverageText: ":
                         appSettings.ShowAverageText = value;
+                        break;
+                    case "SettingPageDefaultZoomOut: ":
+                        appSettings.SettingPageDefaultZoomOut = value;
                         break;
                     default:
                         break;
@@ -227,6 +232,7 @@ namespace MessengerTimer.DataModels {
 
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
+            userInterfaceGroup.Items.Add(new SettingItem(titile: "SettingPageDefaultZoomOut: ", visibleControl: InputControlTypes.ToggleSwitch));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTransparency: ", visibleControl: InputControlTypes.Slider));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
 

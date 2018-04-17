@@ -148,6 +148,16 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public bool SettingPageDefaultZoomOut {
+            get {
+                return ReadSettings(nameof(SettingPageDefaultZoomOut), false);
+            }
+            set {
+                SaveSettings(nameof(SettingPageDefaultZoomOut), value);
+                NotifyPropertyChanged();
+            }
+        }
+
         public ApplicationDataContainer LocalSettings { get; set; }
 
         public AppSettings() => LocalSettings = ApplicationData.Current.LocalSettings;
