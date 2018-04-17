@@ -205,8 +205,8 @@ namespace MessengerTimer.DataModels {
             timingGroup.Items.Add(new SettingItem(titile: "DisplayMode: ", visibleControl: InputControlTypes.ComboBox));
 
             var scrambleGroup = new SettingItemGroup { Class = "Scramble", Items = new ObservableCollection<SettingItem>() };
-            scrambleGroup.Items.Add(new SettingItem(titile: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
             scrambleGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
+            scrambleGroup.Items.Add(new SettingItem(titile: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
@@ -214,8 +214,8 @@ namespace MessengerTimer.DataModels {
 
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
             userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTransparency: ", visibleControl: InputControlTypes.Slider));
+            userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
 
             Instance.Add(timingGroup);
             Instance.Add(scrambleGroup);
