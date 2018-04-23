@@ -422,11 +422,13 @@ namespace MessengerTimer {
 
         private void ScrambleFrame_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.4;
 
+        private double Clamp(double value, double min, double max) => (value < min ? min : (value > max ? max : value));
+
         private void ScrambleFrame_ManipulationDelta(object sender, Windows.UI.Xaml.Input.ManipulationDeltaRoutedEventArgs e) =>
                 ScrambleFrame.Margin = new Thickness(
-                ScrambleFrame.Margin.Left, ScrambleFrame.Margin.Top,
-                Math.Clamp(ScrambleFrame.Margin.Right - e.Delta.Translation.X, 0, MainGrid.ActualWidth - 360),
-                Math.Clamp(ScrambleFrame.Margin.Bottom - e.Delta.Translation.Y, 0, MainGrid.ActualHeight - 280));
+                    ScrambleFrame.Margin.Left, ScrambleFrame.Margin.Top,
+                    Clamp(ScrambleFrame.Margin.Right - e.Delta.Translation.X, 0, MainGrid.ActualWidth - 360),
+                    Clamp(ScrambleFrame.Margin.Bottom - e.Delta.Translation.Y, 0, MainGrid.ActualHeight - 280));
 
         private void ScrambleFrame_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.8;
 

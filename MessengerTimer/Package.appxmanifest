@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="f4637af4-4acf-49e7-a2dd-947d254c9738" Publisher="CN=cuber" Version="1.0.7.0" />
-  <mp:PhoneIdentity PhoneProductId="f4637af4-4acf-49e7-a2dd-947d254c9738" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="29113CuberMessenger.MessengerTimer" Publisher="CN=08A320D2-B449-46A6-B8BE-887E4CB5BC55" Version="1.1.3.0" />
+  <mp:PhoneIdentity PhoneProductId="09f6b16b-21a3-4094-b39f-8ba316dbc004" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>MessengerTimer</DisplayName>
-    <PublisherDisplayName>cuber</PublisherDisplayName>
+    <PublisherDisplayName>CuberMessenger</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Dependencies>

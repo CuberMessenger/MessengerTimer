@@ -9,6 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "theosZAMin2Phase", "theosZA
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Native|Any CPU = Debug Native|Any CPU
+		Debug Native|ARM = Debug Native|ARM
+		Debug Native|x64 = Debug Native|x64
+		Debug Native|x86 = Debug Native|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
 		Debug|x64 = Debug|x64
@@ -19,6 +23,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|Any CPU.ActiveCfg = Debug Native|x86
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|ARM.ActiveCfg = Debug Native|ARM
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|ARM.Build.0 = Debug Native|ARM
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|ARM.Deploy.0 = Debug Native|ARM
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x64.ActiveCfg = Debug Native|x64
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x64.Build.0 = Debug Native|x64
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x64.Deploy.0 = Debug Native|x64
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x86.ActiveCfg = Debug Native|x86
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x86.Build.0 = Debug Native|x86
+		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug Native|x86.Deploy.0 = Debug Native|x86
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug|Any CPU.ActiveCfg = Debug|x64
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug|Any CPU.Build.0 = Debug|x64
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Debug|Any CPU.Deploy.0 = Debug|x64
@@ -41,6 +55,14 @@ Global
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Release|x86.ActiveCfg = Release|x86
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Release|x86.Build.0 = Release|x86
 		{F6CA3440-A9EE-489C-AE3C-D4FA18AFDA2A}.Release|x86.Deploy.0 = Release|x86
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|Any CPU.ActiveCfg = Debug Native|Any CPU
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|Any CPU.Build.0 = Debug Native|Any CPU
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|ARM.ActiveCfg = Debug Native|ARM
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|ARM.Build.0 = Debug Native|ARM
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|x64.ActiveCfg = Debug Native|x64
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|x64.Build.0 = Debug Native|x64
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|x86.ActiveCfg = Debug Native|x86
+		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug Native|x86.Build.0 = Debug Native|x86
 		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{89C5179A-367E-4B0F-908A-55E278C0FC8D}.Debug|ARM.ActiveCfg = Debug|ARM

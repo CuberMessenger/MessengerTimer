@@ -152,7 +152,7 @@ namespace MessengerTimer.DataModels {
 
         public uint BackgroundTintARGB {
             get {
-                return ReadSettings(nameof(BackgroundTintARGB), 0xFFFFFFFF);
+                return ReadSettings(nameof(BackgroundTintARGB), 0xA5FFFFFF);
             }
             set {
                 SaveSettings(nameof(BackgroundTintARGB), value);
