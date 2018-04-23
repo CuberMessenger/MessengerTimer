@@ -74,6 +74,8 @@ namespace MessengerTimer.DataModels {
                         return 0.0;
                     case "ScrambleFontSize: ":
                         return 0;
+                    case "ScrambleFrameSize :":
+                        return 0;
                     default:
                         return 0.0;
                 }
@@ -87,6 +89,8 @@ namespace MessengerTimer.DataModels {
                         return 3.0;
                     case "ScrambleFontSize: ":
                         return 60;
+                    case "ScrambleFrameSize :":
+                        return 1;
                     default:
                         return 0.0;
                 }
@@ -100,6 +104,8 @@ namespace MessengerTimer.DataModels {
                         return 0.05;
                     case "ScrambleFontSize: ":
                         return 1;
+                    case "ScrambleFrameSize :":
+                        return 0.01;
                     default:
                         return 0.1;
                 }
@@ -113,6 +119,8 @@ namespace MessengerTimer.DataModels {
                         return appSettings.StartDelay / 10000000.0;
                     case "ScrambleFontSize: ":
                         return appSettings.ScrambleFontSize - 1;
+                    case "ScrambleFrameSize :":
+                        return appSettings.ScrambleFrameSizeCoefficient - 0.5;
                     default:
                         return 0;
                 }
@@ -124,6 +132,9 @@ namespace MessengerTimer.DataModels {
                         break;
                     case "ScrambleFontSize: ":
                         appSettings.ScrambleFontSize = (int)(value + 1);
+                        break;
+                    case "ScrambleFrameSize :":
+                        appSettings.ScrambleFrameSizeCoefficient = value + 0.5;
                         break;
                     default:
                         break;
@@ -197,8 +208,8 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public SettingItem(string titile, InputControlTypes visibleControl) {
-            Title = titile;
+        public SettingItem(string title, InputControlTypes visibleControl) {
+            Title = title;
             InputControlVisibility = new Dictionary<InputControlTypes, Visibility>();
             foreach (InputControlTypes t in ICTs)
                 InputControlVisibility.Add(t, Visibility.Collapsed);
@@ -219,25 +230,26 @@ namespace MessengerTimer.DataModels {
             Instance = new List<SettingItemGroup>();
 
             var timingGroup = new SettingItemGroup { Class = "Timing", Items = new ObservableCollection<SettingItem>() };
-            timingGroup.Items.Add(new SettingItem(titile: "NeedObserving: ", visibleControl: InputControlTypes.ToggleSwitch));
-            timingGroup.Items.Add(new SettingItem(titile: "StartDelay: ", visibleControl: InputControlTypes.Slider));
-            timingGroup.Items.Add(new SettingItem(titile: "DisplayMode: ", visibleControl: InputControlTypes.ComboBox));
+            timingGroup.Items.Add(new SettingItem(title: "NeedObserving: ", visibleControl: InputControlTypes.ToggleSwitch));
+            timingGroup.Items.Add(new SettingItem(title: "StartDelay: ", visibleControl: InputControlTypes.Slider));
+            timingGroup.Items.Add(new SettingItem(title: "DisplayMode: ", visibleControl: InputControlTypes.ComboBox));
 
             var scrambleGroup = new SettingItemGroup { Class = "Scramble", Items = new ObservableCollection<SettingItem>() };
-            scrambleGroup.Items.Add(new SettingItem(titile: "ShowScrambleText: ", visibleControl: InputControlTypes.ToggleSwitch));
-            scrambleGroup.Items.Add(new SettingItem(titile: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
-            scrambleGroup.Items.Add(new SettingItem(titile: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
+            scrambleGroup.Items.Add(new SettingItem(title: "ShowScrambleText: ", visibleControl: InputControlTypes.ToggleSwitch));
+            scrambleGroup.Items.Add(new SettingItem(title: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
+            scrambleGroup.Items.Add(new SettingItem(title: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
-            statisticsGroup.Items.Add(new SettingItem(titile: "ShowAverageText: ", visibleControl: InputControlTypes.ToggleSwitch));
-            statisticsGroup.Items.Add(new SettingItem(titile: "AverageType: ", visibleControl: InputControlTypes.ComboBox));
+            statisticsGroup.Items.Add(new SettingItem(title: "ShowAverageText: ", visibleControl: InputControlTypes.ToggleSwitch));
+            statisticsGroup.Items.Add(new SettingItem(title: "AverageType: ", visibleControl: InputControlTypes.ComboBox));
 
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "SettingPageDefaultZoomOut: ", visibleControl: InputControlTypes.ToggleSwitch));
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
-            userInterfaceGroup.Items.Add(new SettingItem(titile: "BackgroundTint: ", visibleControl: InputControlTypes.ColorPicker));
+            userInterfaceGroup.Items.Add(new SettingItem(title: "SettingPageDefaultZoomOut: ", visibleControl: InputControlTypes.ToggleSwitch));
+            userInterfaceGroup.Items.Add(new SettingItem(title: "ScrambleFrameSize :", visibleControl: InputControlTypes.Slider));
+            userInterfaceGroup.Items.Add(new SettingItem(title: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
+            userInterfaceGroup.Items.Add(new SettingItem(title: "BackgroundTint: ", visibleControl: InputControlTypes.ColorPicker));
 
             Instance.Add(timingGroup);
             Instance.Add(scrambleGroup);

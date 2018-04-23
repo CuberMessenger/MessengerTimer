@@ -39,9 +39,14 @@ namespace MessengerTimer {
         private void ListView_GotFocus(object sender, RoutedEventArgs e) => SettingSemanticZoom.StartBringIntoView();
 
         private void ComboBox_Loaded(object sender, RoutedEventArgs e) {
-            var s = sender as ComboBox;
-            var i = s.DataContext as SettingItem;
-            s.SelectedItem = s.Items[i.ComboBoxSelectedIndex];
+            try {
+                var s = sender as ComboBox;
+                var i = s.DataContext as SettingItem;
+                s.SelectedItem = s.Items[i.ComboBoxSelectedIndex];
+            }
+            catch (NullReferenceException NRE) {
+                Console.WriteLine(NRE.Message);
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {

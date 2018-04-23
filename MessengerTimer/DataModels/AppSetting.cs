@@ -161,6 +161,21 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        public double GetScrambleFrameWidth => 320 * ScrambleFrameSizeCoefficient;
+
+        public double GetScrambleFrameHeight => 240 * ScrambleFrameSizeCoefficient;
+
+        public double ScrambleFrameSizeCoefficient {
+            get {
+                return ReadSettings(nameof(ScrambleFrameSizeCoefficient), 1.0);
+            }
+            set {
+                SaveSettings(nameof(ScrambleFrameSizeCoefficient), value);
+                NotifyPropertyChanged("GetScrambleFrameWidth");
+                NotifyPropertyChanged("GetScrambleFrameHeight");
+            }
+        }
+
         public ApplicationDataContainer LocalSettings { get; set; }
 
         public AppSettings() => LocalSettings = ApplicationData.Current.LocalSettings;
