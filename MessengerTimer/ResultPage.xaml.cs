@@ -165,7 +165,10 @@ namespace MessengerTimer {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
                 if (result && value > 0)
-                    App.MainPageInstance.UpdateResult(new Result(value, MainPage.Results.Count + 2, GetCheckedPunishment()));
+                    App.MainPageInstance.UpdateResult(new Result(
+                        value,
+                        MainPage.Results.Count + 2, GetCheckedPunishment(),
+                        null));
                 else
                     ShowAlertDialogAsync("Input Format Error!");
 

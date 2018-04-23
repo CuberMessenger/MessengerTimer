@@ -130,7 +130,10 @@ namespace MessengerTimer {
             EndTime = DateTime.Now;
             RefreshTimeTimer.Stop();
 
-            Result result = new Result((EndTime - StartTime).TotalSeconds, Results.Count + 2, appSettings.NeedObserving ? CurrentResultPunishment : Punishment.None);
+            Result result = new Result(
+                (EndTime - StartTime).TotalSeconds, Results.Count + 2,
+                appSettings.NeedObserving ? CurrentResultPunishment : Punishment.None,
+                ScrambleTextBlock.Text);
 
             DisplayTime(result);
             UpdateResult(result);

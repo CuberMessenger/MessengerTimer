@@ -169,10 +169,11 @@ namespace MessengerTimer.DataModels {
 
         public Result() { }
 
-        public Result(double resultValue, int id, Punishment punishment) {
+        public Result(double resultValue, int id, Punishment punishment, string scramble) {
             Id = id;
             ResultPunishment = punishment;
             ResultValue = Math.Round(resultValue, 3);
+            Scramble = scramble;
         }
 
 
