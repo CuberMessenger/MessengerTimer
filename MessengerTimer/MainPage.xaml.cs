@@ -379,8 +379,14 @@ namespace MessengerTimer {
         private void NavigateToCurrentScramble() {
             var current = BeforeScramblesStack.Peek();
             (ScrambleFrame.Content as ScramblePage).RefreshScramble(current.Item1);
-            //ScrambleTextBlock.Text = current.Item2;
             SetScrambleTextBlockByAnimation(current.Item2);
+        }
+
+        private void RollAfterToBefore() {
+            var current = BeforeScramblesStack.Pop();
+            while (AfterScramblesStack.Count > 0)
+                BeforeScramblesStack.Push(AfterScramblesStack.Pop());
+            BeforeScramblesStack.Push(current);
         }
 
         private void NextScramble(bool needNew = false) {
@@ -388,10 +394,7 @@ namespace MessengerTimer {
                 return;
 
             if (needNew && AfterScramblesStack.Count > 0) {
-                var current = BeforeScramblesStack.Pop();
-                while (AfterScramblesStack.Count > 0)
-                    BeforeScramblesStack.Push(AfterScramblesStack.Pop());
-                BeforeScramblesStack.Push(current);
+                RollAfterToBefore();
             }
 
             BeforeScramblesStack.Push(AfterScramblesStack.Count == 0 ? GenerateNewScramble() : AfterScramblesStack.Pop());

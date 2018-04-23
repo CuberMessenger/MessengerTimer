@@ -24,6 +24,5 @@ namespace MessengerTimer {
                 (InfoFrame.Content as ResultPage).UpdateTotalStatistics();
             }
         }
-
     }
 }
