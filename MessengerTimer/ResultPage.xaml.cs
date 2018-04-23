@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -96,16 +97,27 @@ namespace MessengerTimer {
             MenuFlyout menuFlyout = new MenuFlyout();
 
             var currentResult = (sender as FrameworkElement).DataContext;
-            MenuFlyoutItem modifyFlyoutItem = new MenuFlyoutItem { Text = "Modify", Tag = MainPage.Results.IndexOf(currentResult as Result) };
-            MenuFlyoutItem deleteFlyoutItem = new MenuFlyoutItem { Text = "Delete", Tag = MainPage.Results.IndexOf(currentResult as Result) };
+            int index = MainPage.Results.IndexOf(currentResult as Result);
+            var modifyFlyoutItem = new MenuFlyoutItem { Text = "Modify", Tag = index };
+            var deleteFlyoutItem = new MenuFlyoutItem { Text = "Delete", Tag = index };
+            var copyScrambleFlyoutItem = new MenuFlyoutItem { Text = "Copy Scramble", Tag = index };
 
             modifyFlyoutItem.Click += ModifyFlyoutItem_Click;
             deleteFlyoutItem.Click += DeleteFlyoutItem_Click;
+            copyScrambleFlyoutItem.Click += CopyScrambleFlyoutItem_Click;
 
             menuFlyout.Items.Add(modifyFlyoutItem);
             menuFlyout.Items.Add(deleteFlyoutItem);
+            menuFlyout.Items.Add(copyScrambleFlyoutItem);
 
             menuFlyout.ShowAt(sender as FrameworkElement);
+            GC.Collect();
+        }
+
+        private void CopyScrambleFlyoutItem_Click(object sender, RoutedEventArgs e) {
+            var dataPackage = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
+            dataPackage.SetText(Results[(int)(sender as MenuFlyoutItem).Tag].Scramble);
+            Clipboard.SetContent(dataPackage);
         }
 
         private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
