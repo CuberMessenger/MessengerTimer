@@ -2,7 +2,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="MainPageLargerTextBlock">
-            <Setter Property="FontSize" Value="50" />
+            <Setter Property="FontSize" Value="45" />
         </Style>
 
         <Style TargetType="TextBlock" x:Key="MainPageSmallerTextBlock">
@@ -69,24 +69,25 @@
                 <Grid Name="MainGrid" Background="{x:Bind appSettings.MainGridBackgroundBrush, Mode=OneWay}" Padding="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="2*" MinHeight="420" />
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="2.5*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" MinWidth="153" />
                     </Grid.ColumnDefinitions>
 
-                    <Frame Name="ScrambleFrame" Width="320" Height="240" VerticalAlignment="Bottom" HorizontalAlignment="Right" ManipulationMode="All"
-                            ManipulationStarted="ScrambleFrame_ManipulationStarted" ManipulationDelta="ScrambleFrame_ManipulationDelta"
+                    <Frame Name="ScrambleFrame" Width="{x:Bind appSettings.GetScrambleFrameWidth, Mode=OneWay}"
+                            Height="{x:Bind appSettings.GetScrambleFrameHeight, Mode=OneWay}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                            ManipulationMode="All" ManipulationStarted="ScrambleFrame_ManipulationStarted" ManipulationDelta="ScrambleFrame_ManipulationDelta"
                             ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="10"
                             Background="Transparent" Visibility="{x:Bind appSettings.ScrambleFrameVisibility, Mode=OneWay}" />
 
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 
-                    <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0 0 0 150"
-                            PointerEntered="RelativePanel_PointerEntered" PointerExited="RelativePanel_PointerExited"
-                            PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged" Visibility="{x:Bind appSettings.ScrambleTextVisibility, Mode=OneWay}">
+                    <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center" PointerEntered="RelativePanel_PointerEntered"
+                            PointerExited="RelativePanel_PointerExited" PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged"
+                            Visibility="{x:Bind appSettings.ScrambleTextVisibility, Mode=OneWay}">
                         <TextBlock Name="ScrambleTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40 10"
                                 FontSize="{x:Bind appSettings.ScrambleFontSize, Mode=OneWay}" TextWrapping="WrapWholeWords" />
 

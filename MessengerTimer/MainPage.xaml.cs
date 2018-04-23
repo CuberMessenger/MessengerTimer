@@ -373,6 +373,11 @@ namespace MessengerTimer {
         }
 
         private void NextScramble(bool needNew = false) {
+            var x = MainGrid.ActualWidth;
+            x = StatusTextBlock.ActualWidth;
+            x = AverageStackPanel.ActualHeight;
+            x = TimerTextBlock.ActualHeight;
+            x = MainGrid.ActualHeight;
             if (ScrambleTextBlock.Opacity != 1)
                 return;
 
