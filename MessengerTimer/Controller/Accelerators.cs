@@ -16,5 +16,14 @@ namespace MessengerTimer {
             }
             ResetTimer();
         }
+
+        private void CtrlDAccelerator_Invoked(Windows.UI.Xaml.Input.KeyboardAccelerator sender, Windows.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs args) {
+            DeleteResult(0);
+
+            if (InfoFrame.Content is ResultPage) {
+                (InfoFrame.Content as ResultPage).UpdateTotalStatistics();
+            }
+        }
+
     }
 }

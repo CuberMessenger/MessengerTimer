@@ -150,9 +150,14 @@ namespace MessengerTimer {
 
         private void InitAccelerators() {
             //Accelerators
-            var EscShotcut = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.Escape };
-            EscShotcut.Invoked += EscShotcut_Invoked;
-            MainGrid.KeyboardAccelerators.Add(EscShotcut);
+            var EscAccelerator = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.Escape };
+            var CtrlDAccelerator = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.D, Modifiers = Windows.System.VirtualKeyModifiers.Control };
+
+            EscAccelerator.Invoked += EscShotcut_Invoked;
+            CtrlDAccelerator.Invoked += CtrlDAccelerator_Invoked;
+
+            MainGrid.KeyboardAccelerators.Add(EscAccelerator);
+            MainGrid.KeyboardAccelerators.Add(CtrlDAccelerator);
         }
 
         private async Task ReadSaveDataAsync() {
@@ -305,6 +310,10 @@ namespace MessengerTimer {
         }
 
         public void DeleteResult(int index) {
+            if (Results.Count <= 0) {
+                return;
+            }
+
             Results.RemoveAt(index--);
 
             RefreshListOfResult(index, Results);

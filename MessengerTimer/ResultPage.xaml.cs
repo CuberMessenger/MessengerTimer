@@ -178,7 +178,7 @@ namespace MessengerTimer {
             GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
         }
 
-        private void UpdateTotalStatistics() {
+        internal void UpdateTotalStatistics() {
             BestStringTextBlock.Text = Results.Count > 0
                 ? Result.GetFormattedString(Results
                     .Where(r => r.ResultPunishment != Punishment.DNF)
