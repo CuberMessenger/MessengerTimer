@@ -50,6 +50,7 @@ namespace MessengerTimer.DataModels {
         private double _ao12Value;
         private double _resultValue;
         private Punishment _resultPunishment;
+        private string _scramble;
 
         public static string GetFormattedString(double value, Punishment punishment = Punishment.None) {
             if (value < 0)
@@ -155,6 +156,14 @@ namespace MessengerTimer.DataModels {
             get => _ao12Value; set {
                 _ao12Value = value;
                 NotifyPropertyChanged("Ao12String");
+            }
+        }
+
+        [JsonProperty(nameof(Scramble))]
+        public string Scramble {
+            get => _scramble; set {
+                _scramble = value;
+                NotifyPropertyChanged("Scramble");
             }
         }
 

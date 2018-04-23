@@ -100,7 +100,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controller\HotKeys.cs" />
+    <Compile Include="Controller\Accelerators.cs" />
     <Compile Include="DataModels\SettingItem.cs" />
     <Compile Include="EmptyPage.xaml.cs">
       <DependentUpon>EmptyPage.xaml</DependentUpon>

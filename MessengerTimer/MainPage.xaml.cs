@@ -116,7 +116,7 @@ namespace MessengerTimer {
 
             InitDisplay();
 
-            InitHotKeys();
+            InitAccelerators();
         }
 
         private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
@@ -148,9 +148,11 @@ namespace MessengerTimer {
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e) => 滴汤Button.Focus(FocusState.Keyboard);
 
-        private void InitHotKeys() {
-            //Hot Key
-            Window.Current.CoreWindow.KeyUp += EscapeKeyUp;
+        private void InitAccelerators() {
+            //Accelerators
+            var EscShotcut = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.Escape };
+            EscShotcut.Invoked += EscShotcut_Invoked;
+            MainGrid.KeyboardAccelerators.Add(EscShotcut);
         }
 
         private async Task ReadSaveDataAsync() {
@@ -373,11 +375,6 @@ namespace MessengerTimer {
         }
 
         private void NextScramble(bool needNew = false) {
-            var x = MainGrid.ActualWidth;
-            x = StatusTextBlock.ActualWidth;
-            x = AverageStackPanel.ActualHeight;
-            x = TimerTextBlock.ActualHeight;
-            x = MainGrid.ActualHeight;
             if (ScrambleTextBlock.Opacity != 1)
                 return;
 
@@ -445,5 +442,6 @@ namespace MessengerTimer {
         public void ReloadInfoFramePage(Type page) => InfoFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
 
         public void BindingsUpdate() => Bindings.Update();
+
     }
 }
