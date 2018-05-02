@@ -238,6 +238,7 @@ namespace MessengerTimer.DataModels {
             scrambleGroup.Items.Add(new SettingItem(title: "ShowScrambleText: ", visibleControl: InputControlTypes.ToggleSwitch));
             scrambleGroup.Items.Add(new SettingItem(title: "ShowScambleState: ", visibleControl: InputControlTypes.ToggleSwitch));
             scrambleGroup.Items.Add(new SettingItem(title: "ScrambleFontSize: ", visibleControl: InputControlTypes.Slider));
+            scrambleGroup.Items.Add(new SettingItem(title: "ScrambleFrameSize :", visibleControl: InputControlTypes.Slider));
 
 
             var statisticsGroup = new SettingItemGroup { Class = "Statistics", Items = new ObservableCollection<SettingItem>() };
@@ -247,7 +248,6 @@ namespace MessengerTimer.DataModels {
 
             var userInterfaceGroup = new SettingItemGroup { Class = "UserInterface", Items = new ObservableCollection<SettingItem>() };
             userInterfaceGroup.Items.Add(new SettingItem(title: "SettingPageDefaultZoomOut: ", visibleControl: InputControlTypes.ToggleSwitch));
-            userInterfaceGroup.Items.Add(new SettingItem(title: "ScrambleFrameSize :", visibleControl: InputControlTypes.Slider));
             userInterfaceGroup.Items.Add(new SettingItem(title: "TimerFormat: ", visibleControl: InputControlTypes.ComboBox));
             userInterfaceGroup.Items.Add(new SettingItem(title: "BackgroundTint: ", visibleControl: InputControlTypes.ColorPicker));
 
