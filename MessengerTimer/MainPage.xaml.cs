@@ -156,8 +156,8 @@ namespace MessengerTimer {
             EscAccelerator.Invoked += EscShotcut_Invoked;
             CtrlDAccelerator.Invoked += CtrlDAccelerator_Invoked;
 
-            MainGrid.KeyboardAccelerators.Add(EscAccelerator);
-            MainGrid.KeyboardAccelerators.Add(CtrlDAccelerator);
+            滴汤Button.KeyboardAccelerators.Add(EscAccelerator);
+            滴汤Button.KeyboardAccelerators.Add(CtrlDAccelerator);
         }
 
         private async Task ReadSaveDataAsync() {
@@ -352,6 +352,7 @@ namespace MessengerTimer {
             if (args.InvokedItem != null) {
                 NavigateOrWithdraw(StringToInfoFrameStatus[args.InvokedItem as string], StringToPageType[args.InvokedItem as string]);
             }
+            GC.Collect();
         }
 
         private void SetScrambleTextBlockByAnimation(string scramble) {

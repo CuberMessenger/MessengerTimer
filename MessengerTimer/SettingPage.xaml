@@ -41,8 +41,8 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid Padding="5">
-        <SemanticZoom Name="SettingSemanticZoom" IsZoomedInViewActive="{x:Bind local:App.MainPageInstance.appSettings.SettingPageDefaultZoomOut}"
+    <Grid Padding="5" Width="430">
+        <SemanticZoom  Name="SettingSemanticZoom" IsZoomedInViewActive="{x:Bind local:App.MainPageInstance.appSettings.SettingPageDefaultZoomOut}"
                 IsZoomOutButtonEnabled="True">
             <SemanticZoom.ZoomedOutView>
                 <ListView Name="ZoomOutListView" ItemsSource="{x:Bind SettingSemanticZoomCVS.View.CollectionGroups}" SelectionMode="Single"

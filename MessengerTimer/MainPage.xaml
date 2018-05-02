@@ -64,7 +64,7 @@
             </Frame>
 
             <Grid Grid.Column="1">
-                <Button Name="滴汤Button" Opacity="0" />
+                <Button Name="滴汤Button" Opacity="0" Width="0" Height="0"/>
 
                 <Grid Name="MainGrid" Background="{x:Bind appSettings.MainGridBackgroundBrush, Mode=OneWay}" Padding="20">
                     <Grid.RowDefinitions>
