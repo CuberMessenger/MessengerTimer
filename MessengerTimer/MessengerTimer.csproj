@@ -120,6 +120,7 @@
     <Compile Include="ResultPage.xaml.cs">
       <DependentUpon>ResultPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ScrambleGenerator\ScrambleGenerator.cs" />
     <Compile Include="ScramblePage.xaml.cs">
       <DependentUpon>ScramblePage.xaml</DependentUpon>
     </Compile>

@@ -75,8 +75,8 @@ namespace MessengerTimer {
             |____|       |____|
             Before      After
         */
-        private Stack<Tuple<string, string>> BeforeScramblesStack { get; set; }
-        private Stack<Tuple<string, string>> AfterScramblesStack { get; set; }
+        private Stack<(string, string)> BeforeScramblesStack { get; set; }
+        private Stack<(string, string)> AfterScramblesStack { get; set; }
         private DispatcherTimer TextBlockFadeOutTimer { get; set; }
         private DispatcherTimer TextBlockFadeInTimer { get; set; }
         public Grid MainGridPointer { get; private set; }
@@ -96,8 +96,8 @@ namespace MessengerTimer {
             RefreshTimeTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
             CurrentInfoFrameStatus = InfoFrameStatus.Null;
 
-            BeforeScramblesStack = new Stack<Tuple<string, string>>();
-            AfterScramblesStack = new Stack<Tuple<string, string>>();
+            BeforeScramblesStack = new Stack<(string, string)>();
+            AfterScramblesStack = new Stack<(string, string)>();
 
             TextBlockFadeOutTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
             TextBlockFadeInTimer = new DispatcherTimer { Interval = MilliSecondTimeSpan };
@@ -205,6 +205,8 @@ namespace MessengerTimer {
             catch (Exception) {
                 Debug.Assert(false, "SaveData seems broken");
             }
+
+            ScrambleGenerator.ScrambleType = allResult.ResultGroups[appSettings.CurrentDataGroupIndex].ScrambleType;
         }
 
         private void InitDisplay() {
@@ -398,7 +400,7 @@ namespace MessengerTimer {
                 RollAfterToBefore();
             }
 
-            BeforeScramblesStack.Push(AfterScramblesStack.Count == 0 ? GenerateNewScramble() : AfterScramblesStack.Pop());
+            BeforeScramblesStack.Push(AfterScramblesStack.Count == 0 ? ScrambleGenerator.Generate() : AfterScramblesStack.Pop());
             NavigateToCurrentScramble();
         }
 
@@ -408,17 +410,11 @@ namespace MessengerTimer {
 
             if (BeforeScramblesStack.Count == 1) {
                 AfterScramblesStack.Push(BeforeScramblesStack.Pop());
-                BeforeScramblesStack.Push(GenerateNewScramble());
+                BeforeScramblesStack.Push(ScrambleGenerator.Generate());
             }
             else
                 AfterScramblesStack.Push(BeforeScramblesStack.Pop());
             NavigateToCurrentScramble();
-        }
-
-        private Tuple<string, string> GenerateNewScramble() {
-            string cube = Tools.randomCube();
-            string scramble = new Search().solution(cube, 21, 1000000, 0, Search.INVERSE_SOLUTION);
-            return new Tuple<string, string>(cube, scramble);
         }
 
         private void ScrambleFrame_ManipulationStarted(object sender, Windows.UI.Xaml.Input.ManipulationStartedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.4;

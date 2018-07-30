@@ -30,6 +30,9 @@ namespace MessengerTimer.DataModels {
             }
         }
 
+        [JsonProperty(nameof(ScrambleType))]
+        public ScrambleType ScrambleType { get; set; }
+
         [JsonProperty(nameof(Results))]
         public ObservableCollection<Result> Results { get; set; }
 
