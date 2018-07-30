@@ -53,6 +53,8 @@ namespace MessengerTimer {
         public static AllResults allResult;
 
         //Useful Var
+        private readonly List<string> ScrambleTypeList = Enum.GetNames(typeof(ScrambleType)).ToList();
+
         private TimerStatus _timerStatus;
         private TimerStatus TimerStatus {
             get => _timerStatus;
@@ -119,10 +121,6 @@ namespace MessengerTimer {
             InitAccelerators();
         }
 
-        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e) {
-            throw new NotImplementedException();
-        }
-
         private async void InitBingBackgroundAsync() {
             var image = new ImageBrush {
                 ImageSource = await BingImage.GetImageAsync(),
@@ -143,7 +141,7 @@ namespace MessengerTimer {
 
             NextScramble();
 
-            this.Loaded += MainPage_Loaded;
+            Loaded += MainPage_Loaded;
         }
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e) => 滴汤Button.Focus(FocusState.Keyboard);
@@ -206,7 +204,8 @@ namespace MessengerTimer {
                 Debug.Assert(false, "SaveData seems broken");
             }
 
-            ScrambleGenerator.ScrambleType = allResult.ResultGroups[appSettings.CurrentDataGroupIndex].ScrambleType;
+            ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
+            ScrambleTypeComboBox.SelectedItem = allResult.CurrentGroup().ScrambleType.ToString();
         }
 
         private void InitDisplay() {
@@ -432,11 +431,13 @@ namespace MessengerTimer {
         private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
             PreviousScrambleButton.Opacity = 1;
             NextScrambleButton.Opacity = 1;
+            ScrambleTypeComboBox.Opacity = 1;
         }
 
         private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
             PreviousScrambleButton.Opacity = 0;
             NextScrambleButton.Opacity = 0;
+            ScrambleTypeComboBox.Opacity = 0;
         }
 
         private void ScrambleTextBlock_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
@@ -454,5 +455,14 @@ namespace MessengerTimer {
 
         public void BindingsUpdate() => Bindings.Update();
 
+        private void ScrambleTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            var s = sender as ComboBox;
+            allResult.CurrentGroup().ScrambleType = (ScrambleType)Enum.Parse(typeof(ScrambleType), s.SelectedItem as string);
+            ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
+            BeforeScramblesStack.Clear();
+            AfterScramblesStack.Clear();
+            NextScramble();
+            GC.Collect();
+        }
     }
 }

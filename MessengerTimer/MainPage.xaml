@@ -1,5 +1,8 @@
-﻿<Page x:Class="MessengerTimer.MainPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d">
+﻿<Page x:Class="MessengerTimer.MainPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+        xmlns:local="using:MessengerTimer">
     <Page.Resources>
         <Style TargetType="TextBlock" x:Key="MainPageLargerTextBlock">
             <Setter Property="FontSize" Value="45" />
@@ -27,8 +30,9 @@
         </Style>
     </Page.Resources>
 
-    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280" ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200"
-            AlwaysShowHeader="False" IsSettingsVisible="False">
+    <NavigationView Name="MainPageNavigationView" ExpandedModeThresholdWidth="1280"
+            ItemInvoked="MainPageNavigationView_ItemInvoked" OpenPaneLength="200" AlwaysShowHeader="False"
+            IsSettingsVisible="False">
         <NavigationView.MenuItems>
             <NavigationViewItem Name="ResultNavigationItem" Icon="AllApps" Content="Result" />
             <NavigationViewItem Name="FormulaNavigationItem" Content="Formula">
@@ -64,9 +68,10 @@
             </Frame>
 
             <Grid Grid.Column="1">
-                <Button Name="滴汤Button" Opacity="0" Width="0" Height="0" Canvas.ZIndex="-1"/>
+                <Button Name="滴汤Button" Opacity="0" Width="0" Height="0" Canvas.ZIndex="-1" />
 
-                <Grid Name="MainGrid" Background="{x:Bind appSettings.MainGridBackgroundBrush, Mode=OneWay}" Padding="20">
+                <Grid Name="MainGrid" Background="{x:Bind appSettings.MainGridBackgroundBrush, Mode=OneWay}"
+                        Padding="20">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
                         <RowDefinition Height="2*" MinHeight="420" />
@@ -78,30 +83,49 @@
                     </Grid.ColumnDefinitions>
 
                     <Frame Name="ScrambleFrame" Width="{x:Bind appSettings.GetScrambleFrameWidth, Mode=OneWay}"
-                            Height="{x:Bind appSettings.GetScrambleFrameHeight, Mode=OneWay}" VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                            ManipulationMode="All" ManipulationStarted="ScrambleFrame_ManipulationStarted" ManipulationDelta="ScrambleFrame_ManipulationDelta"
-                            ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2" Grid.ColumnSpan="2" Canvas.ZIndex="10"
-                            Background="Transparent" Visibility="{x:Bind appSettings.ScrambleFrameVisibility, Mode=OneWay}" />
+                            Height="{x:Bind appSettings.GetScrambleFrameHeight, Mode=OneWay}" VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right" ManipulationMode="All"
+                            ManipulationStarted="ScrambleFrame_ManipulationStarted"
+                            ManipulationDelta="ScrambleFrame_ManipulationDelta"
+                            ManipulationCompleted="ScrambleFrame_ManipulationCompleted" Grid.RowSpan="2"
+                            Grid.ColumnSpan="2" Canvas.ZIndex="10" Background="Transparent"
+                            Visibility="{x:Bind appSettings.ScrambleFrameVisibility, Mode=OneWay}" />
 
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 
-                    <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center" PointerEntered="RelativePanel_PointerEntered"
-                            PointerExited="RelativePanel_PointerExited" PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged"
+                    <RelativePanel Name="ScrambleRelativePanel" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                            PointerEntered="RelativePanel_PointerEntered" PointerExited="RelativePanel_PointerExited"
+                            PointerWheelChanged="ScrambleTextBlock_PointerWheelChanged"
                             Visibility="{x:Bind appSettings.ScrambleTextVisibility, Mode=OneWay}">
-                        <TextBlock Name="ScrambleTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="40 10"
-                                FontSize="{x:Bind appSettings.ScrambleFontSize, Mode=OneWay}" TextWrapping="WrapWholeWords" />
+                        <TextBlock Name="ScrambleTextBlock" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                Margin="40 10" FontSize="{x:Bind appSettings.ScrambleFontSize, Mode=OneWay}"
+                                TextWrapping="WrapWholeWords" />
 
-                        <Button Name="PreviousScrambleButton" Style="{ThemeResource ButtonRevealStyle}" RelativePanel.AlignBottomWith="ScrambleTextBlock"
-                                RelativePanel.AlignTopWith="ScrambleTextBlock" FontFamily="Segoe MDL2 Assets" FontSize="20" Content="&#xE012;" Height="35"
-                                RelativePanel.AlignLeftWith="ScrambleTextBlock" Opacity="0" Click="PreviousScrambleButton_Click" />
+                        <Button Name="PreviousScrambleButton" Style="{ThemeResource ButtonRevealStyle}"
+                                RelativePanel.AlignBottomWith="ScrambleTextBlock"
+                                RelativePanel.AlignTopWith="ScrambleTextBlock" FontFamily="Segoe MDL2 Assets"
+                                FontSize="20" Content="&#xE012;" Height="35"
+                                RelativePanel.AlignLeftWith="ScrambleTextBlock" Opacity="0"
+                                Click="PreviousScrambleButton_Click" />
 
-                        <Button Name="NextScrambleButton" Style="{ThemeResource ButtonRevealStyle}" FontFamily="Segoe MDL2 Assets" FontSize="20"
-                                Content="&#xE013;" RelativePanel.AlignBottomWith="ScrambleTextBlock" Height="35" RelativePanel.AlignTopWith="ScrambleTextBlock"
-                                RelativePanel.AlignRightWith="ScrambleTextBlock" Opacity="0" Click="NextScrambleButton_Click" />
+                        <Button Name="NextScrambleButton" Style="{ThemeResource ButtonRevealStyle}"
+                                FontFamily="Segoe MDL2 Assets" FontSize="20" Content="&#xE013;"
+                                RelativePanel.AlignBottomWith="ScrambleTextBlock" Height="35"
+                                RelativePanel.AlignTopWith="ScrambleTextBlock"
+                                RelativePanel.AlignRightWith="ScrambleTextBlock" Opacity="0"
+                                Click="NextScrambleButton_Click" />
+
+                        <ComboBox Name="ScrambleTypeComboBox" RelativePanel.AlignTopWith="NextScrambleButton"
+                                RelativePanel.AlignBottomWith="NextScrambleButton" Height="35" Margin="0 8 0 0"
+                                RelativePanel.RightOf="NextScrambleButton" Opacity="0"
+                                ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}"
+                                ItemsSource="{x:Bind ScrambleTypeList}"
+                                SelectionChanged="ScrambleTypeComboBox_SelectionChanged" />
                     </RelativePanel>
 
-                    <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"
-                            Style="{StaticResource MainPageLargerTextBlock}" Text="{x:Bind TimerStatus}" />
+                    <TextBlock Name="StatusTextBlock" Grid.Column="1" HorizontalAlignment="Center"
+                            VerticalAlignment="Center" Style="{StaticResource MainPageLargerTextBlock}"
+                            Text="{x:Bind TimerStatus}" />
 
                     <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
@@ -109,20 +133,24 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <StackPanel Name="AverageStackPanel" HorizontalAlignment="Left" Visibility="{x:Bind appSettings.AverageTextVisibility, Mode=OneWay}"
-                                Margin="0 35 100 0">
+                        <StackPanel Name="AverageStackPanel" HorizontalAlignment="Left"
+                                Visibility="{x:Bind appSettings.AverageTextVisibility, Mode=OneWay}" Margin="0 35 100 0">
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                                <TextBlock Name="Ao5ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                                <TextBlock Text=" Ao5: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Name="Ao5ValueTextBlock" Margin="30 0 0 0"
+                                        Style="{StaticResource MainPageLargerTextBlock}" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}" VerticalAlignment="Center" />
-                                <TextBlock Name="Ao12ValueTextBlock" Margin="30 0 0 0" Style="{StaticResource MainPageLargerTextBlock}" />
+                                <TextBlock Text="Ao12: " Style="{StaticResource MainPageSmallerTextBlock}"
+                                        VerticalAlignment="Center" />
+                                <TextBlock Name="Ao12ValueTextBlock" Margin="30 0 0 0"
+                                        Style="{StaticResource MainPageLargerTextBlock}" />
                             </StackPanel>
                         </StackPanel>
-                        <TextBlock Name="TimerTextBlock" Text="0.000" Margin="0 35 0 0" VerticalAlignment="Top" Grid.Column="1"
-                                Style="{StaticResource MainPageLargerTextBlock}" />
+                        <TextBlock Name="TimerTextBlock" Text="0.000" Margin="0 35 0 0" VerticalAlignment="Top"
+                                Grid.Column="1" Style="{StaticResource MainPageLargerTextBlock}" />
                     </Grid>
                 </Grid>
             </Grid>

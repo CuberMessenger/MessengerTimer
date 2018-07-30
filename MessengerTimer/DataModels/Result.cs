@@ -15,6 +15,8 @@ namespace MessengerTimer.DataModels {
         [JsonProperty(nameof(ResultGroups))]
         public ObservableCollection<ResultGroup> ResultGroups { get; set; }
 
+        public ResultGroup CurrentGroup() => ResultGroups[App.MainPageInstance.appSettings.CurrentDataGroupIndex];
+
         public static AllResults FromJson(string json) => JsonConvert.DeserializeObject<AllResults>(json, Converter.Settings);
     }
 
