@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 using MessengerTimer.DataModels;
 using System.Text;
 using System.Collections.ObjectModel;
-using min2phase;
 using System.Collections.Generic;
 using System.Threading;
 using Windows.UI.Xaml.Media.Animation;

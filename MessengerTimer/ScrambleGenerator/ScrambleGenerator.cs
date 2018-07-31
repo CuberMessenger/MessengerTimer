@@ -1,9 +1,9 @@
-﻿using min2phase;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSMinTwoPhase;
 
 namespace MessengerTimer {
     public enum ScrambleType { x3, x2, x4, x5, x6, x7 }
@@ -30,9 +30,9 @@ namespace MessengerTimer {
             return ("", "");
         }
 
-        private static (string, string) Generate5x5() {
+        //private static (string, string) Generate5x5() {
 
-        }
+        //}
 
         private static (string, string) Generate3x3() {
             string cube = Tools.randomCube();

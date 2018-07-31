@@ -106,13 +106,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="CoordCube.cs" />
-    <Compile Include="CoordCubeHuge.cs" />
-    <Compile Include="CubieCube.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Search.cs" />
-    <Compile Include="Tools.cs" />
-    <Compile Include="Util.cs" />
     <EmbeddedResource Include="Properties\theosZAMin2Phase.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -102,6 +102,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\Accelerators.cs" />
+    <Compile Include="CSMinTwoPhase\CoordCube.cs" />
+    <Compile Include="CSMinTwoPhase\CubieCube.cs" />
+    <Compile Include="CSMinTwoPhase\Search.cs" />
+    <Compile Include="CSMinTwoPhase\Tools.cs" />
+    <Compile Include="CSMinTwoPhase\Util.cs" />
     <Compile Include="DataModels\SettingItem.cs" />
     <Compile Include="EmptyPage.xaml.cs">
       <DependentUpon>EmptyPage.xaml</DependentUpon>
@@ -194,12 +199,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\theosZAMin2Phase\theosZAMin2Phase.csproj">
-      <Project>{89c5179a-367e-4b0f-908a-55e278c0fc8d}</Project>
-      <Name>theosZAMin2Phase</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
