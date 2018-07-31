@@ -380,7 +380,7 @@ namespace MessengerTimer {
 
         private void NavigateToCurrentScramble() {
             var current = BeforeScramblesStack.Peek();
-            (ScrambleFrame.Content as ScramblePage).RefreshScramble(current.Item1);
+            (ScrambleFrame.Content as ScramblePage).RefreshScramble(current.Item1, ScrambleGenerator.ScrambleOrder);
             SetScrambleTextBlockByAnimation(current.Item2);
         }
 
@@ -462,7 +462,6 @@ namespace MessengerTimer {
             BeforeScramblesStack.Clear();
             AfterScramblesStack.Clear();
             NextScramble();
-            GC.Collect();
         }
     }
 }

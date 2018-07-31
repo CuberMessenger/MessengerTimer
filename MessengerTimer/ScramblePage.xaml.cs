@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
@@ -28,24 +29,71 @@ namespace MessengerTimer {
         private static Brush GreenBrush = new SolidColorBrush(Windows.UI.Colors.Green);
         private static Brush RedBrush = new SolidColorBrush(Windows.UI.Colors.Red);
         private static Brush OrangeBrush = new SolidColorBrush(Windows.UI.Colors.Orange);
+        private static Style RectangleStyle = new Style();
 
         public static Dictionary<char, Brush> FaceToBrush = new Dictionary<char, Brush> {
             { 'U', WhiteBrush},{ 'D', YellowBrush},{ 'F', GreenBrush},{ 'B', BlueBrush},{ 'R', RedBrush},{ 'L', OrangeBrush}
         };
 
-        public List<Brush> brushes = new List<Brush>();
+        private int Order { get; set; }
 
-        public void RefreshScramble(string cube) {
-            for (int i = 0; i < cube.Length; i++)
-                brushes[i] = FaceToBrush[cube[i]];
-            Bindings.Update();
+        private void GenerateFaceGrid(ref Grid grid) {
+            grid.RowDefinitions.Clear();
+            grid.ColumnDefinitions.Clear();
+            GridLength gridLength = new GridLength(1d, GridUnitType.Star);
+            for (int i = 0; i < Order; i++) {
+                grid.RowDefinitions.Add(new RowDefinition { Height = gridLength });
+                grid.ColumnDefinitions.Add(new ColumnDefinition { Width = gridLength });
+            }
+
+            grid.Children.Clear();
+            for (int i = 0; i < Order; i++) {
+                for (int j = 0; j < Order; j++) {
+                    Rectangle rectangle = new Rectangle { Style = RectangleStyle };
+                    rectangle.SetValue(Grid.RowProperty, i);
+                    rectangle.SetValue(Grid.ColumnProperty, j);
+                    grid.Children.Add(rectangle);
+                }
+            }
+
+        }
+
+        private void SetFaceColor(ref Grid grid, string face) {
+            int i = 0;
+            foreach (Rectangle rec in grid.Children) {
+                rec.Fill = FaceToBrush[face[i++]];
+            }
+        }
+
+        public void RefreshScramble(string cube, int order) {
+            if (order != Order) {
+                Order = order;
+
+                GenerateFaceGrid(ref UFaceGrid);
+                GenerateFaceGrid(ref RFaceGrid);
+                GenerateFaceGrid(ref FFaceGrid);
+                GenerateFaceGrid(ref DFaceGrid);
+                GenerateFaceGrid(ref LFaceGrid);
+                GenerateFaceGrid(ref BFaceGrid);
+            }
+            int start = 0;
+            int nos = Order * Order;
+            SetFaceColor(ref UFaceGrid, cube.Substring(start, nos));
+            SetFaceColor(ref RFaceGrid, cube.Substring(start += nos, nos));
+            SetFaceColor(ref FFaceGrid, cube.Substring(start += nos, nos));
+            SetFaceColor(ref DFaceGrid, cube.Substring(start += nos, nos));
+            SetFaceColor(ref LFaceGrid, cube.Substring(start += nos, nos));
+            SetFaceColor(ref BFaceGrid, cube.Substring(start += nos, nos));
         }
 
         public ScramblePage() {
             this.InitializeComponent();
 
-            for (int i = 0; i < 54; i++)
-                brushes.Add(null);
+            if (RectangleStyle.Setters.Count == 0) {
+                RectangleStyle.TargetType = typeof(Rectangle);
+                RectangleStyle.Setters.Add(new Setter(Shape.StrokeProperty, Windows.UI.Colors.Gray));
+                RectangleStyle.Setters.Add(new Setter(Shape.StrokeThicknessProperty, 0.5d));
+            }
         }
     }
 }
