@@ -102,11 +102,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controller\Accelerators.cs" />
-    <Compile Include="CSMinTwoPhase\CoordCube.cs" />
-    <Compile Include="CSMinTwoPhase\CubieCube.cs" />
-    <Compile Include="CSMinTwoPhase\Search.cs" />
-    <Compile Include="CSMinTwoPhase\Tools.cs" />
-    <Compile Include="CSMinTwoPhase\Util.cs" />
     <Compile Include="DataModels\SettingItem.cs" />
     <Compile Include="EmptyPage.xaml.cs">
       <DependentUpon>EmptyPage.xaml</DependentUpon>
@@ -199,6 +194,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TNoodle.NET\TNoodle.NET.csproj">
+      <Project>{adf3b14c-45aa-47fb-8bc9-15a86d89df49}</Project>
+      <Name>TNoodle.NET</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
