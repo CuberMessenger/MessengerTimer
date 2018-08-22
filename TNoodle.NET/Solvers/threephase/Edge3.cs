@@ -343,38 +343,36 @@ namespace TNoodle.Solvers.Threephase
             int[] mov = mvrot[mrIdx];
             int idx = 0;
 
-            if (IS_64BIT_PLATFORM)
+#if IS_64BIT_PLATFORM
+            long val = 0xba9876543210L;
+            for (int i = 0; i < end; i++)
             {
-                long val = 0xba9876543210L;
-                for (int i = 0; i < end; i++)
+                int v = movo[ep[mov[i]]] << 2;
+                idx *= 12 - i;
+                idx += (int)((val >> v) & 0xf);
+                val -= 0x111111111110L << v;
+            }           
+#else
+            //long is not as fast as expected
+            int vall = 0x76543210;
+            int valh = 0xba98;
+            for (int i = 0; i < end; i++)
+            {
+                int v = movo[ep[mov[i]]] << 2;
+                idx *= 12 - i;
+                if (v >= 32)
                 {
-                    int v = movo[ep[mov[i]]] << 2;
-                    idx *= 12 - i;
-                    idx += (int)((val >> v) & 0xf);
-                    val -= 0x111111111110L << v;
+                    idx += (valh >> (v - 32)) & 0xf;
+                    valh -= 0x1110 << (v - 32);
+                }
+                else
+                {
+                    idx += (vall >> v) & 0xf;
+                    valh -= 0x1111;
+                    vall -= 0x11111110 << v;
                 }
             }
-            else
-            {   //long is not as fast as expected
-                int vall = 0x76543210;
-                int valh = 0xba98;
-                for (int i = 0; i < end; i++)
-                {
-                    int v = movo[ep[mov[i]]] << 2;
-                    idx *= 12 - i;
-                    if (v >= 32)
-                    {
-                        idx += (valh >> (v - 32)) & 0xf;
-                        valh -= 0x1110 << (v - 32);
-                    }
-                    else
-                    {
-                        idx += (vall >> v) & 0xf;
-                        valh -= 0x1111;
-                        vall -= 0x11111110 << v;
-                    }
-                }
-            }
+#endif
             return idx;
 
         }
