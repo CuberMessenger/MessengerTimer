@@ -26,9 +26,9 @@ namespace MessengerTimer {
         }
 
         private static (string, string) GenerateCubePuzzle() {
-            var puzle = new CubePuzzle(ScrambleOrder);
-            string scramble = puzle.GenerateWcaScramble(Rand);
-            string cube = ((new CubeState(puzle)).ApplyAlgorithm(scramble) as CubeState).ToFaceCube();
+            var puzzle = new CubePuzzle(ScrambleOrder);
+            string scramble = puzzle.GenerateWcaScramble(Rand);
+            string cube = ((new CubeState(puzzle)).ApplyAlgorithm(scramble) as CubeState).ToFaceCube();
             return (cube, scramble);
         }
     }

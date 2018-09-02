@@ -161,12 +161,12 @@
     <EmbeddedResource Include="Properties\TNoodle.NET.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="MissingFeatures.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.7</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="MissingFeatures.txt" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
