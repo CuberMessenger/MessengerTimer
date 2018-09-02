@@ -127,7 +127,7 @@
                            ManipulationDelta="ScrambleFrame_ManipulationDelta"
                            ManipulationCompleted="ScrambleFrame_ManipulationCompleted"
                            Grid.RowSpan="2"
-                           Grid.ColumnSpan="2"
+                           Grid.ColumnSpan="3"
                            Canvas.ZIndex="10"
                            Background="Transparent"
                            Visibility="{x:Bind appSettings.ScrambleFrameVisibility, Mode=OneWay}" />
@@ -135,7 +135,7 @@
                     <!--<TextBlock Name="TestTTB" FontSize="30" />-->
 
                     <RelativePanel Name="ScrambleRelativePanel"
-                                   Grid.ColumnSpan="2"
+                                   Grid.ColumnSpan="3"
                                    HorizontalAlignment="Center"
                                    PointerEntered="RelativePanel_PointerEntered"
                                    PointerExited="RelativePanel_PointerExited"
@@ -188,7 +188,7 @@
                     </RelativePanel>
 
                     <TextBlock Name="StatusTextBlock"
-                               Grid.Column="1"
+                               Grid.Column="2"
                                Grid.Row="1"
                                Margin="0 35 0 0"
                                HorizontalAlignment="Center"
@@ -196,46 +196,41 @@
                                Style="{StaticResource MainPageLargerTextBlock}"
                                Text="{x:Bind TimerStatus}" />
 
-                    <Grid Grid.Row="1"
-                          Grid.Column="0"
-                          Grid.ColumnSpan="2"
-                          HorizontalAlignment="Center">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <StackPanel Name="AverageStackPanel"
-                                    HorizontalAlignment="Left"
-                                    Visibility="{x:Bind appSettings.AverageTextVisibility, Mode=OneWay}"
-                                    Margin="0 35 100 0">
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center">
-                                <TextBlock Text=" Ao5: "
-                                           Style="{StaticResource MainPageSmallerTextBlock}"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Name="Ao5ValueTextBlock"
-                                           Margin="30 0 0 0"
-                                           Style="{StaticResource MainPageLargerTextBlock}" />
-                            </StackPanel>
-
-                            <StackPanel Orientation="Horizontal"
-                                        HorizontalAlignment="Center">
-                                <TextBlock Text="Ao12: "
-                                           Style="{StaticResource MainPageSmallerTextBlock}"
-                                           VerticalAlignment="Center" />
-                                <TextBlock Name="Ao12ValueTextBlock"
-                                           Margin="30 0 0 0"
-                                           Style="{StaticResource MainPageLargerTextBlock}" />
-                            </StackPanel>
+                    <StackPanel HorizontalAlignment="Center"
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Name="AverageStackPanel"
+                                Visibility="{x:Bind appSettings.AverageTextVisibility, Mode=OneWay}"
+                                Margin="0 35 100 0">
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text=" Ao5: "
+                                       Style="{StaticResource MainPageSmallerTextBlock}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Name="Ao5ValueTextBlock"
+                                       Margin="30 0 0 0"
+                                       Style="{StaticResource MainPageLargerTextBlock}" />
                         </StackPanel>
-                        <TextBlock Name="TimerTextBlock"
-                                   Text="0.000"
-                                   Margin="0 35 0 0"
-                                   VerticalAlignment="Top"
-                                   Grid.Column="1"
-                                   Style="{StaticResource MainPageLargerTextBlock}" />
-                    </Grid>
+
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Center">
+                            <TextBlock Text="Ao12: "
+                                       Style="{StaticResource MainPageSmallerTextBlock}"
+                                       VerticalAlignment="Center" />
+                            <TextBlock Name="Ao12ValueTextBlock"
+                                       Margin="30 0 0 0"
+                                       Style="{StaticResource MainPageLargerTextBlock}" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Grid.Row="1"
+                               Name="TimerTextBlock"
+                               Text="0.000"
+                               Margin="0 35 0 0"
+                               VerticalAlignment="Top"
+                               HorizontalAlignment="Center"
+                               Grid.Column="1"
+                               Style="{StaticResource MainPageLargerTextBlock}" />
                 </Grid>
             </Grid>
         </Grid>

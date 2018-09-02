@@ -457,9 +457,15 @@ namespace MessengerTimer {
         private void ScrambleTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var s = sender as ComboBox;
             allResult.CurrentGroup().ScrambleType = (ScrambleType)Enum.Parse(typeof(ScrambleType), s.SelectedItem as string);
+            ChangeScrambleType();
+            SaveDataAsync(false);
+        }
+
+        public void ChangeScrambleType() {
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
             BeforeScramblesStack.Clear();
             AfterScramblesStack.Clear();
+            ScrambleTypeComboBox.SelectedIndex = (int)ScrambleGenerator.ScrambleType;
             NextScramble();
         }
     }

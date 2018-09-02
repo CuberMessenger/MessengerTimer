@@ -39,7 +39,7 @@ namespace MessengerTimer {
             appSettings.CurrentDataGroupIndex = Math.Max(0, ResultGroups.IndexOf(cg as ResultGroup));
             if (appSettings.CurrentDataGroupIndex >= 0) {
                 RefreshMainPageDotResults();
-
+                App.MainPageInstance.ChangeScrambleType();
                 App.MainPageInstance.RefreshAoNResults();
             }
 
