@@ -47,6 +47,10 @@ namespace MessengerTimer {
             catch (NullReferenceException NRE) {
                 Console.WriteLine(NRE.Message);
             }
+            catch (IndexOutOfRangeException) {
+                ((sender as ComboBox).DataContext as SettingItem).ComboBoxSelectedIndex = 0;
+                ComboBox_Loaded(sender, e);
+            }
         }
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {

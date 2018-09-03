@@ -138,8 +138,6 @@ namespace MessengerTimer {
             InfoFrame.Navigate(typeof(EmptyPage));
             CurrentInfoFrameStatus = InfoFrameStatus.Empty;
 
-            NextScramble();
-
             Loaded += MainPage_Loaded;
         }
 
@@ -205,6 +203,7 @@ namespace MessengerTimer {
 
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
             ScrambleTypeComboBox.SelectedItem = allResult.CurrentGroup().ScrambleType.ToString();
+            NextScramble();
         }
 
         private void InitDisplay() {
@@ -230,7 +229,12 @@ namespace MessengerTimer {
 
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
-            await FileIO.WriteTextAsync(file, json);
+            try {
+                await FileIO.WriteTextAsync(file, json);
+            }
+            catch (FileLoadException) {
+
+            }
         }
 
         public void UpdateResult(Result result, int index = 0) {
@@ -457,9 +461,18 @@ namespace MessengerTimer {
         private void ScrambleTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             var s = sender as ComboBox;
             allResult.CurrentGroup().ScrambleType = (ScrambleType)Enum.Parse(typeof(ScrambleType), s.SelectedItem as string);
+            ChangeScrambleType();
+            SaveDataAsync(false);
+        }
+
+        public void ChangeScrambleType() {
+            if (ScrambleGenerator.ScrambleType == allResult.CurrentGroup().ScrambleType) {
+                return;
+            }
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
             BeforeScramblesStack.Clear();
             AfterScramblesStack.Clear();
+            ScrambleTypeComboBox.SelectedIndex = (int)ScrambleGenerator.ScrambleType;
             NextScramble();
         }
     }
