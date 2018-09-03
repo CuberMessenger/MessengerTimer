@@ -138,8 +138,6 @@ namespace MessengerTimer {
             InfoFrame.Navigate(typeof(EmptyPage));
             CurrentInfoFrameStatus = InfoFrameStatus.Empty;
 
-            NextScramble();
-
             Loaded += MainPage_Loaded;
         }
 
@@ -205,6 +203,7 @@ namespace MessengerTimer {
 
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
             ScrambleTypeComboBox.SelectedItem = allResult.CurrentGroup().ScrambleType.ToString();
+            NextScramble();
         }
 
         private void InitDisplay() {
@@ -462,6 +461,9 @@ namespace MessengerTimer {
         }
 
         public void ChangeScrambleType() {
+            if (ScrambleGenerator.ScrambleType == allResult.CurrentGroup().ScrambleType) {
+                return;
+            }
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;
             BeforeScramblesStack.Clear();
             AfterScramblesStack.Clear();
