@@ -19,6 +19,12 @@ namespace MessengerTimer {
 
         private void CtrlDAccelerator_Invoked(Windows.UI.Xaml.Input.KeyboardAccelerator sender, Windows.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs args) {
             DeleteResult(0);
+            if (allResult.CurrentGroup().Results.Count > 0) {
+                DisplayTime(allResult.CurrentGroup().Results[0]);
+            }
+            else {
+                DisplayTime(Result.GetFormattedString(0d));
+            }
 
             if (InfoFrame.Content is ResultPage) {
                 (InfoFrame.Content as ResultPage).UpdateTotalStatistics();
