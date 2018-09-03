@@ -229,7 +229,12 @@ namespace MessengerTimer {
 
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
-            await FileIO.WriteTextAsync(file, json);
+            try {
+                await FileIO.WriteTextAsync(file, json);
+            }
+            catch (FileLoadException) {
+
+            }
         }
 
         public void UpdateResult(Result result, int index = 0) {

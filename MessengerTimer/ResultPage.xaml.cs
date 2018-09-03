@@ -76,6 +76,10 @@ namespace MessengerTimer {
         }
 
         private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e) {
+            if (MainPage.allResult.ResultGroups.Count <= 1) {
+                ShowAlertDialogAsync("Cannot delete all groups!");
+                goto End;
+            }
             //1. Delete content from memory
             MainPage.allResult.ResultGroups.RemoveAt(appSettings.CurrentDataGroupIndex);
 
@@ -90,6 +94,7 @@ namespace MessengerTimer {
 
             ShowAlertDialogAsync("Results Deleted!");
 
+            End:
             DeleteCurrentDataGroupButton.Flyout.Hide();
         }
 
