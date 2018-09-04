@@ -242,10 +242,26 @@ namespace MessengerTimer {
 
             RefreshListOfResult(index, Results);
 
-            new Thread(() => { SaveDataAsync(false); }).Start();
+            SaveDataAsync(false);
 
             if (InfoFrame.Content is ResultPage)
                 (InfoFrame.Content as ResultPage).UpdateUI();
+        }
+
+        public void MergeResultGroup(ResultGroup target) {
+            int targetIndex = allResult.ResultGroups.IndexOf(target);
+            if (targetIndex < appSettings.CurrentDataGroupIndex) {
+                appSettings.CurrentDataGroupIndex--;
+            }
+            allResult.ResultGroups.RemoveAt(targetIndex);
+            if (target.Results.Count > 0) {
+                for (int i = target.Results.Count - 1; i >= 0; i--) {
+                    Results.Insert(0, new Result(Results.Count + 2, target.Results[i]));
+                }
+                RefreshListOfResult(target.Results.Count - 1, Results);
+            }
+
+            SaveDataAsync(false);
         }
 
         public void RefreshAoNResults() {

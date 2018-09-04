@@ -107,7 +107,7 @@
                     <DataTemplate x:DataType="data:ResultGroup">
                         <TextBlock Name="DataGroupNameTextBlock"
                                    Text="{x:Bind GroupName, Mode=OneWay}"
-                                   FontSize="24" />
+                                   FontSize="18" />
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
@@ -145,7 +145,6 @@
                     Content="&#xE75C;"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="24"
-                    
                     Style="{StaticResource ButtonRevealStyle}"
                     Margin="5 0">
                 <Button.Flyout>
@@ -196,6 +195,64 @@
                         </StackPanel>
                     </Flyout>
                 </Button.Flyout>
+            </Button>
+
+            <Button Name="MergeDataGroupNameButton"
+                    Style="{StaticResource ButtonRevealStyle}"
+                    Margin="5 0"
+                    Width="44"
+                    Height="36">
+                <Button.Flyout>
+                    <Flyout>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Merge the target group"
+                                       Style="{StaticResource NormalText}"
+                                       HorizontalAlignment="Left" />
+
+                            <TextBlock Text="to the top of current group."
+                                       Style="{StaticResource NormalText}"
+                                       HorizontalAlignment="Left" />
+
+                            <StackPanel>
+                                <TextBlock Text="Target Group: "
+                                           Style="{StaticResource NormalText}"
+                                           HorizontalAlignment="Left"
+                                           Margin="0 10"/>
+
+                                <ComboBox Name="MergeTargetGroupComboBox"
+                                          ItemsSource="{x:Bind ResultGroups, Mode=OneWay}"
+                                          Height="40"
+                                          Width="80"
+                                          ItemContainerStyle="{ThemeResource ComboBoxItemRevealStyle}">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate x:DataType="data:ResultGroup">
+                                            <TextBlock Name="DataGroupNameTextBlock"
+                                                       Text="{x:Bind GroupName, Mode=OneWay}"
+                                                       FontSize="18" />
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <Button Name="ConfirmMergeDataGroupButton"
+                                    Content="Merge"
+                                    FontSize="20"
+                                    Click="ConfirmMergeDataGroupButton_Click"
+                                    HorizontalAlignment="Right" />
+                        </StackPanel>
+                    </Flyout>
+                </Button.Flyout>
+                <Grid HorizontalAlignment="Left"
+                      VerticalAlignment="Top">
+                    <TextBlock Text="&#xE976;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="24"
+                               Margin="3 -3 0 0" />
+                    <TextBlock Text="&#xE97B;"
+                               FontFamily="Segoe MDL2 Assets"
+                               FontSize="24"
+                               Margin="-3 3 0 0" />
+                </Grid>
             </Button>
         </StackPanel>
 

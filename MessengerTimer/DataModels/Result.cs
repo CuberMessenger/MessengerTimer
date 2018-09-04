@@ -174,6 +174,13 @@ namespace MessengerTimer.DataModels {
 
         public Result() { }
 
+        public Result(int id, Result r) {
+            Id = id;
+            ResultValue = r.ResultValue;
+            ResultPunishment = r.ResultPunishment;
+            Scramble = r.Scramble;
+        }
+
         public Result(double resultValue, int id, Punishment punishment, string scramble) {
             Id = id;
             ResultPunishment = punishment;
@@ -182,8 +189,8 @@ namespace MessengerTimer.DataModels {
         }
 
 
-        public Result(int Id, double resultValue, double ao5Value, double ao12Value) {
-            this.Id = Id;
+        public Result(int id, double resultValue, double ao5Value, double ao12Value) {
+            this.Id = id;
             ResultValue = resultValue;
             Ao5Value = ao5Value;
             Ao12Value = ao12Value;

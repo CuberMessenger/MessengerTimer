@@ -234,5 +234,21 @@ namespace MessengerTimer {
 
             ChangeDataGroupNameButton.Flyout.Hide();
         }
+
+        private void ConfirmMergeDataGroupButton_Click(object sender, RoutedEventArgs e) {
+            ResultGroup resultGroup = MergeTargetGroupComboBox.SelectedItem as ResultGroup;
+            if (resultGroup == MainPage.allResult.CurrentGroup()) {
+                ShowAlertDialogAsync("You need to merge two different groups!");
+                goto End;
+            }
+            if (resultGroup is null) {
+                ShowAlertDialogAsync("Please selete target group!");
+                goto End;
+            }
+            App.MainPageInstance.MergeResultGroup(resultGroup);
+
+            End:
+            MergeDataGroupNameButton.Flyout.Hide();
+        }
     }
 }
