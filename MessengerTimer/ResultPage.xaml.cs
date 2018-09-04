@@ -222,5 +222,17 @@ namespace MessengerTimer {
             Bindings.Update();
             UpdateTotalStatistics();
         }
+
+        private void ConfirmChangeDataGroupButton_Click(object sender, RoutedEventArgs e) {
+            string groupName = ChangeDataGroupNameTextBox.Text;
+            if (!String.IsNullOrWhiteSpace(groupName)) {
+                MainPage.allResult.CurrentGroup().GroupName = groupName;
+                MainPage.SaveDataAsync(false);
+            }
+            else
+                ShowAlertDialogAsync("Invalid DataGroup Name!");
+
+            ChangeDataGroupNameButton.Flyout.Hide();
+        }
     }
 }
