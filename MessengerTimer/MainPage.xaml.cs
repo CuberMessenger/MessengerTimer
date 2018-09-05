@@ -17,7 +17,8 @@ using System.Diagnostics;
 
 // https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x804 上介绍了“空白页”项模板
 
-namespace MessengerTimer {
+namespace MessengerTimer
+{
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
@@ -39,7 +40,8 @@ namespace MessengerTimer {
      */
     public enum TimerFormat { MMSSFF, MMSSFFF, SSFF, SSFFF }
 
-    public sealed partial class MainPage : Page {
+    public sealed partial class MainPage : Page
+    {
         //Static Val
         private static Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
         private static Brush YellowBrush = new SolidColorBrush(Windows.UI.Colors.Yellow);
@@ -55,9 +57,11 @@ namespace MessengerTimer {
         private readonly List<string> ScrambleTypeList = Enum.GetNames(typeof(ScrambleType)).ToList();
 
         private TimerStatus _timerStatus;
-        private TimerStatus TimerStatus {
+        private TimerStatus TimerStatus
+        {
             get => _timerStatus;
-            set {
+            set
+            {
                 _timerStatus = value;
                 if (value != TimerStatus.Display)
                     Bindings.Update();
@@ -90,7 +94,8 @@ namespace MessengerTimer {
         //Setting
         public AppSettings appSettings = new AppSettings();
 
-        private void InitVars() {
+        private void InitVars()
+        {
             App.MainPageInstance = this;
 
             TimerStatus = TimerStatus.Waiting;
@@ -106,7 +111,8 @@ namespace MessengerTimer {
             MainGridPointer = MainGrid;
         }
 
-        public MainPage() {
+        public MainPage()
+        {
             InitializeComponent();
 
             InitVars();
@@ -120,15 +126,18 @@ namespace MessengerTimer {
             InitAccelerators();
         }
 
-        private async void InitBingBackgroundAsync() {
-            var image = new ImageBrush {
+        private async void InitBingBackgroundAsync()
+        {
+            var image = new ImageBrush
+            {
                 ImageSource = await BingImage.GetImageAsync(),
                 Stretch = Stretch.UniformToFill
             };
             BackGroundGrid.Background = image;
         }
 
-        private void InitUI() {
+        private void InitUI()
+        {
             InitBingBackgroundAsync();
 
             ResetTimer();
@@ -143,7 +152,8 @@ namespace MessengerTimer {
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e) => 滴汤Button.Focus(FocusState.Keyboard);
 
-        private void InitAccelerators() {
+        private void InitAccelerators()
+        {
             //Accelerators
             var EscAccelerator = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.Escape };
             var CtrlDAccelerator = new Windows.UI.Xaml.Input.KeyboardAccelerator { Key = Windows.System.VirtualKey.D, Modifiers = Windows.System.VirtualKeyModifiers.Control };
@@ -155,15 +165,18 @@ namespace MessengerTimer {
             滴汤Button.KeyboardAccelerators.Add(CtrlDAccelerator);
         }
 
-        private async Task ReadSaveDataAsync() {
+        private async Task ReadSaveDataAsync()
+        {
             StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
 
             StorageFile file = await storageFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
             string data = await FileIO.ReadTextAsync(file);
 
-            if (String.IsNullOrWhiteSpace(data)) {
-                allResult = new AllResults {
+            if (String.IsNullOrWhiteSpace(data))
+            {
+                allResult = new AllResults
+                {
                     ResultGroups = new ObservableCollection<ResultGroup>() {
                         new ResultGroup() {
                             GroupName = "3x3",
@@ -172,32 +185,39 @@ namespace MessengerTimer {
                     }
                 };
             }
-            else {
+            else
+            {
                 allResult = AllResults.FromJson(data);
             }
         }
 
-        private void FillResult(ResultGroup resultGroup) {
-            foreach (var item in resultGroup.Results) {
+        private void FillResult(ResultGroup resultGroup)
+        {
+            foreach (var item in resultGroup.Results)
+            {
                 Results.Add(item);
             }
 
             RefreshAoNResults();
         }
 
-        private async void InitResults() {
+        private async void InitResults()
+        {
             await ReadSaveDataAsync();
 
-            FillStart:
-            try {
+        FillStart:
+            try
+            {
                 if (appSettings.CurrentDataGroupIndex >= 0 && appSettings.CurrentDataGroupIndex < allResult.ResultGroups.Count)
                     FillResult(allResult.ResultGroups[appSettings.CurrentDataGroupIndex]);
-                else {
+                else
+                {
                     appSettings.CurrentDataGroupIndex = 0;
                     goto FillStart;
                 }
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Debug.Assert(false, "SaveData seems broken");
             }
 
@@ -206,7 +226,8 @@ namespace MessengerTimer {
             NextScramble();
         }
 
-        private void InitDisplay() {
+        private void InitDisplay()
+        {
             RefreshTimeTimer.Tick += RefreshTimeTimer_Tick;
 
             TextBlockFadeOutTimer.Tick += TextBlockFadeOutTimer_Tick;
@@ -218,8 +239,10 @@ namespace MessengerTimer {
 
         public void ResetTimer() => DisplayTime(Result.GetFormattedString(0));
 
-        public static async void SaveDataAsync(bool isDelete) {
-            if (!isDelete) {
+        public static async void SaveDataAsync(bool isDelete)
+        {
+            if (!isDelete)
+            {
                 allResult.ResultGroups[App.MainPageInstance.appSettings.CurrentDataGroupIndex].Results.Clear();
                 foreach (var item in Results)
                     allResult.ResultGroups[App.MainPageInstance.appSettings.CurrentDataGroupIndex].Results.Add(item);
@@ -229,15 +252,18 @@ namespace MessengerTimer {
 
             var file = await ApplicationData.Current.LocalFolder.CreateFileAsync("SaveData", CreationCollisionOption.OpenIfExists);
 
-            try {
+            try
+            {
                 await FileIO.WriteTextAsync(file, json);
             }
-            catch (FileLoadException) {
+            catch (FileLoadException)
+            {
 
             }
         }
 
-        public void UpdateResult(Result result, int index = 0) {
+        public void UpdateResult(Result result, int index = 0)
+        {
             Results.Insert(index, result);
 
             RefreshListOfResult(index, Results);
@@ -248,14 +274,18 @@ namespace MessengerTimer {
                 (InfoFrame.Content as ResultPage).UpdateUI();
         }
 
-        public void MergeResultGroup(ResultGroup target) {
+        public void MergeResultGroup(ResultGroup target)
+        {
             int targetIndex = allResult.ResultGroups.IndexOf(target);
-            if (targetIndex < appSettings.CurrentDataGroupIndex) {
+            if (targetIndex < appSettings.CurrentDataGroupIndex)
+            {
                 appSettings.CurrentDataGroupIndex--;
             }
             allResult.ResultGroups.RemoveAt(targetIndex);
-            if (target.Results.Count > 0) {
-                for (int i = target.Results.Count - 1; i >= 0; i--) {
+            if (target.Results.Count > 0)
+            {
+                for (int i = target.Results.Count - 1; i >= 0; i--)
+                {
                     Results.Insert(0, new Result(Results.Count + 2, target.Results[i]));
                 }
                 RefreshListOfResult(target.Results.Count - 1, Results);
@@ -264,29 +294,36 @@ namespace MessengerTimer {
             SaveDataAsync(false);
         }
 
-        public void RefreshAoNResults() {
-            try {
+        public void RefreshAoNResults()
+        {
+            try
+            {
                 Ao5ValueTextBlock.Text = Results.First().Ao5String;
                 Ao12ValueTextBlock.Text = Results.First().Ao12String;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 Ao5ValueTextBlock.Text = double.NaN.ToString();
                 Ao12ValueTextBlock.Text = double.NaN.ToString();
             }
         }
 
-        private double CalcAoNValue(int startIndex, int N, ObservableCollection<Result> source) {
+        private double CalcAoNValue(int startIndex, int N, ObservableCollection<Result> source)
+        {
             double aoN = 0;
 
-            if (source.Count - startIndex >= N) {
+            if (source.Count - startIndex >= N)
+            {
                 List<Result> validResults = null;
                 var window = source.Skip(startIndex).Take(N);
                 var NumOfDNF = window.Where(rst => rst.ResultPunishment == Punishment.DNF).Count();
 
                 if (NumOfDNF >= 2)
                     return -1;//means DNF
-                else if (NumOfDNF == 1) {
-                    switch (appSettings.AverageType) {
+                else if (NumOfDNF == 1)
+                {
+                    switch (appSettings.AverageType)
+                    {
                         case AverageType.Average:
                             validResults = window.ToList();
                             validResults.Remove(window.Where(rst => rst.ResultPunishment == Punishment.DNF).First());
@@ -295,9 +332,11 @@ namespace MessengerTimer {
                             return -1;//means DNF
                     }
                 }
-                else {
+                else
+                {
                     validResults = window.OrderByDescending(rst => rst.ResultValue).ToList();
-                    if (appSettings.AverageType == AverageType.Average) {
+                    if (appSettings.AverageType == AverageType.Average)
+                    {
                         validResults.RemoveAt(0);
                     }
                 }
@@ -312,8 +351,10 @@ namespace MessengerTimer {
             return aoN;
         }
 
-        public void RefreshListOfResult(int index, ObservableCollection<Result> source) {
-            for (int i = index; i >= 0; i--) {
+        public void RefreshListOfResult(int index, ObservableCollection<Result> source)
+        {
+            for (int i = index; i >= 0; i--)
+            {
                 source[i].Id = source.Count - i;
                 source[i].Ao5Value = CalcAoNValue(i, 5, source);
                 source[i].Ao12Value = CalcAoNValue(i, 12, source);
@@ -322,15 +363,19 @@ namespace MessengerTimer {
             RefreshAoNResults();
         }
 
-        public void ReCalcAllAoN() {
-            foreach (var resultGroup in allResult.ResultGroups) {
+        public void ReCalcAllAoN()
+        {
+            foreach (var resultGroup in allResult.ResultGroups)
+            {
                 RefreshListOfResult(resultGroup.Results.Count - 1, resultGroup.Results);
             }
             SaveDataAsync(isDelete: false);
         }
 
-        public void DeleteResult(int index) {
-            if (Results.Count <= 0) {
+        public void DeleteResult(int index)
+        {
+            if (Results.Count <= 0)
+            {
                 return;
             }
 
@@ -340,7 +385,8 @@ namespace MessengerTimer {
             SaveDataAsync(false);
         }
 
-        private void WithdrawInfoFrame() {
+        private void WithdrawInfoFrame()
+        {
             InfoFrame.Navigate(typeof(EmptyPage), null, new EntranceNavigationTransitionInfo());
             CurrentInfoFrameStatus = InfoFrameStatus.Empty;
         }
@@ -359,62 +405,74 @@ namespace MessengerTimer {
             { "Tips and About",typeof(TipsAndAboutPage)}
         };
 
-        private void NavigateOrWithdraw(InfoFrameStatus pageStatusEnum, Type page) {
+        private void NavigateOrWithdraw(InfoFrameStatus pageStatusEnum, Type page)
+        {
             if (CurrentInfoFrameStatus == pageStatusEnum)
                 WithdrawInfoFrame();
-            else {
+            else
+            {
                 InfoFrame.Navigate(page, null, new EntranceNavigationTransitionInfo());
                 CurrentInfoFrameStatus = pageStatusEnum;
             }
         }
 
-        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args) {
-            if (args.InvokedItem != null) {
+        private void MainPageNavigationView_ItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
+        {
+            if (args.InvokedItem != null)
+            {
                 NavigateOrWithdraw(StringToInfoFrameStatus[args.InvokedItem as string], StringToPageType[args.InvokedItem as string]);
             }
             GC.Collect();
         }
 
-        private void SetScrambleTextBlockByAnimation(string scramble) {
+        private void SetScrambleTextBlockByAnimation(string scramble)
+        {
             ScrambleToBeDisplay = scramble;
             TextBlockFadeOutTimer.Start();
         }
 
-        private void TextBlockFadeInTimer_Tick(object sender, object e) {
+        private void TextBlockFadeInTimer_Tick(object sender, object e)
+        {
             if (ScrambleTextBlock.Opacity < 1)
                 ScrambleTextBlock.Opacity += 0.34;
             else
                 TextBlockFadeInTimer.Stop();
         }
 
-        private void TextBlockFadeOutTimer_Tick(object sender, object e) {
+        private void TextBlockFadeOutTimer_Tick(object sender, object e)
+        {
             if (ScrambleTextBlock.Opacity > 0)
                 ScrambleTextBlock.Opacity -= 0.34;
-            else {
+            else
+            {
                 TextBlockFadeOutTimer.Stop();
                 ScrambleTextBlock.Text = ScrambleToBeDisplay;
                 TextBlockFadeInTimer.Start();
             }
         }
 
-        private void NavigateToCurrentScramble() {
+        private void NavigateToCurrentScramble()
+        {
             var current = BeforeScramblesStack.Peek();
             (ScrambleFrame.Content as ScramblePage).RefreshScramble(current.Item1, ScrambleGenerator.ScrambleOrder);
             SetScrambleTextBlockByAnimation(current.Item2);
         }
 
-        private void RollAfterToBefore() {
+        private void RollAfterToBefore()
+        {
             var current = BeforeScramblesStack.Pop();
             while (AfterScramblesStack.Count > 0)
                 BeforeScramblesStack.Push(AfterScramblesStack.Pop());
             BeforeScramblesStack.Push(current);
         }
 
-        private void NextScramble(bool needNew = false) {
+        private void NextScramble(bool needNew = false)
+        {
             if (ScrambleTextBlock.Opacity != 1)
                 return;
 
-            if (needNew && AfterScramblesStack.Count > 0) {
+            if (needNew && AfterScramblesStack.Count > 0)
+            {
                 RollAfterToBefore();
             }
 
@@ -422,11 +480,13 @@ namespace MessengerTimer {
             NavigateToCurrentScramble();
         }
 
-        private void PreviousScramble() {
+        private void PreviousScramble()
+        {
             if (ScrambleTextBlock.Opacity != 1)
                 return;
 
-            if (BeforeScramblesStack.Count == 1) {
+            if (BeforeScramblesStack.Count == 1)
+            {
                 AfterScramblesStack.Push(BeforeScramblesStack.Pop());
                 BeforeScramblesStack.Push(ScrambleGenerator.Generate());
             }
@@ -447,19 +507,22 @@ namespace MessengerTimer {
 
         private void ScrambleFrame_ManipulationCompleted(object sender, Windows.UI.Xaml.Input.ManipulationCompletedRoutedEventArgs e) => ScrambleFrame.Opacity = 0.8;
 
-        private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+        private void RelativePanel_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
             PreviousScrambleButton.Opacity = 1;
             NextScrambleButton.Opacity = 1;
             ScrambleTypeComboBox.Opacity = 1;
         }
 
-        private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+        private void RelativePanel_PointerExited(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
             PreviousScrambleButton.Opacity = 0;
             NextScrambleButton.Opacity = 0;
             ScrambleTypeComboBox.Opacity = 0;
         }
 
-        private void ScrambleTextBlock_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e) {
+        private void ScrambleTextBlock_PointerWheelChanged(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
             if (e.GetCurrentPoint(ScrambleRelativePanel).Properties.MouseWheelDelta < 0)
                 NextScramble();
             else
@@ -474,15 +537,18 @@ namespace MessengerTimer {
 
         public void BindingsUpdate() => Bindings.Update();
 
-        private void ScrambleTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void ScrambleTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var s = sender as ComboBox;
             allResult.CurrentGroup().ScrambleType = (ScrambleType)Enum.Parse(typeof(ScrambleType), s.SelectedItem as string);
             ChangeScrambleType();
             SaveDataAsync(false);
         }
 
-        public void ChangeScrambleType() {
-            if (ScrambleGenerator.ScrambleType == allResult.CurrentGroup().ScrambleType) {
+        public void ChangeScrambleType()
+        {
+            if (ScrambleGenerator.ScrambleType == allResult.CurrentGroup().ScrambleType)
+            {
                 return;
             }
             ScrambleGenerator.ScrambleType = allResult.CurrentGroup().ScrambleType;

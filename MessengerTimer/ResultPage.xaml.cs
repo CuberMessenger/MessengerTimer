@@ -8,11 +8,13 @@ using Windows.UI.Xaml.Controls;
 
 // https://go.microsoft.com/fwlink/?LinkId=234238 上介绍了“空白页”项模板
 
-namespace MessengerTimer {
+namespace MessengerTimer
+{
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class ResultPage : Page {
+    public sealed partial class ResultPage : Page
+    {
         private static AppSettings appSettings = App.MainPageInstance.appSettings;
 
         public ObservableCollection<Result> Results = MainPage.Results;
@@ -21,23 +23,27 @@ namespace MessengerTimer {
 
         private bool NeedReload = true;
 
-        public ResultPage() {
+        public ResultPage()
+        {
             this.InitializeComponent();
             this.Loaded += ResultPage_Loaded;
         }
 
         private void ResultPage_Loaded(object sender, RoutedEventArgs e) => UpdateUI();
 
-        private void RefreshMainPageDotResults() {
+        private void RefreshMainPageDotResults()
+        {
             MainPage.Results.Clear();
             for (int i = 0; i < ResultGroups[appSettings.CurrentDataGroupIndex].Results.Count; i++)
                 MainPage.Results.Add(ResultGroups[appSettings.CurrentDataGroupIndex].Results[i]);
         }
 
-        private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+        private void GroupComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var cg = (sender as ComboBox).SelectedItem;
             appSettings.CurrentDataGroupIndex = Math.Max(0, ResultGroups.IndexOf(cg as ResultGroup));
-            if (appSettings.CurrentDataGroupIndex >= 0) {
+            if (appSettings.CurrentDataGroupIndex >= 0)
+            {
                 RefreshMainPageDotResults();
                 App.MainPageInstance.ChangeScrambleType();
                 App.MainPageInstance.RefreshAoNResults();
@@ -48,14 +54,17 @@ namespace MessengerTimer {
             NeedReload = true;
         }
 
-        private async void ShowAlertDialogAsync(string message) {
+        private async void ShowAlertDialogAsync(string message)
+        {
             ContentDialog contentDialog = new ContentDialog { Title = message, CloseButtonText = "OK" };
             await contentDialog.ShowAsync();
         }
 
-        private void ConfirmAddDataGroupButton_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmAddDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
             string groupName = NewDataGroupNameTextBox.Text;
-            if (!String.IsNullOrWhiteSpace(groupName)) {
+            if (!String.IsNullOrWhiteSpace(groupName))
+            {
                 ResultGroups.Add(new ResultGroup { Results = new ObservableCollection<Result>(), GroupName = groupName });
                 appSettings.CurrentDataGroupIndex = ResultGroups.Count - 1;
                 RefreshMainPageDotResults();
@@ -75,8 +84,10 @@ namespace MessengerTimer {
             AddDataGroupButton.Flyout.Hide();
         }
 
-        private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e) {
-            if (MainPage.allResult.ResultGroups.Count <= 1) {
+        private void ConfirmDeleteCurrentDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (MainPage.allResult.ResultGroups.Count <= 1)
+            {
                 ShowAlertDialogAsync("Cannot delete all groups!");
                 goto End;
             }
@@ -94,11 +105,12 @@ namespace MessengerTimer {
 
             ShowAlertDialogAsync("Results Deleted!");
 
-            End:
+        End:
             DeleteCurrentDataGroupButton.Flyout.Hide();
         }
 
-        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e) {
+        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        {
             MenuFlyout menuFlyout = new MenuFlyout();
 
             var currentResult = (sender as FrameworkElement).DataContext;
@@ -119,25 +131,29 @@ namespace MessengerTimer {
             GC.Collect();
         }
 
-        private void CopyScrambleFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private void CopyScrambleFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
             var dataPackage = new DataPackage { RequestedOperation = DataPackageOperation.Copy };
             dataPackage.SetText(Results[(int)(sender as MenuFlyoutItem).Tag].Scramble);
             Clipboard.SetContent(dataPackage);
         }
 
-        private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private void DeleteFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
             App.MainPageInstance.DeleteResult((int)(sender as MenuFlyoutItem).Tag);
             UpdateTotalStatistics();
         }
 
         private void SetCheckedRadioButton(Punishment punishment) => RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList()[(int)punishment].IsChecked = true;
 
-        private Punishment GetCheckedPunishment() {
+        private Punishment GetCheckedPunishment()
+        {
             var radioButtons = RadioButtonsStackPanel.Children.OfType<RadioButton>().ToList();
             return (Punishment)radioButtons.IndexOf(radioButtons.First(rb => (bool)rb.IsChecked));
         }
 
-        private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e) {
+        private async void ModifyFlyoutItem_Click(object sender, RoutedEventArgs e)
+        {
             var indexToModify = (int)(sender as MenuFlyoutItem).Tag;
 
             EditTextBox.Text = Results[indexToModify].ResultValue.ToString();
@@ -145,10 +161,12 @@ namespace MessengerTimer {
 
             var dialogResult = await EditDialog.ShowAsync();
 
-            if (dialogResult == ContentDialogResult.Primary) {
+            if (dialogResult == ContentDialogResult.Primary)
+            {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
-                if (result && value > 0) {
+                if (result && value > 0)
+                {
                     //1. Modify result in current memory
                     //2. Modify result in MainPage memory Done by one line of code
                     MainPage.Results[indexToModify].ResultValue = value;
@@ -167,18 +185,21 @@ namespace MessengerTimer {
             }
         }
 
-        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e) {
+        private void NewDataGroupNameTextBox_KeyUp(object sender, Windows.UI.Xaml.Input.KeyRoutedEventArgs e)
+        {
             if (e.Key == Windows.System.VirtualKey.Enter)
                 ConfirmAddDataGroupButton_Click(null, null);
         }
 
-        private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
+        private async void AddResultButton_Click(object sender, RoutedEventArgs e)
+        {
             EditTextBox.Text = String.Empty;
             NonePunishmentRadioButton.IsChecked = true;
 
             var dialogResult = await EditDialog.ShowAsync();
 
-            if (dialogResult == ContentDialogResult.Primary) {
+            if (dialogResult == ContentDialogResult.Primary)
+            {
                 var result = Double.TryParse(EditTextBox.Text, out double value);
 
                 if (result && value > 0)
@@ -193,12 +214,14 @@ namespace MessengerTimer {
             }
         }
 
-        private void Page_Loaded(object sender, RoutedEventArgs e) {
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
             NeedReload = false;
             GroupComboBox.SelectedIndex = appSettings.CurrentDataGroupIndex;
         }
 
-        internal void UpdateTotalStatistics() {
+        internal void UpdateTotalStatistics()
+        {
             BestStringTextBlock.Text = Results.Count > 0
                 ? Result.GetFormattedString(Results
                     .Where(r => r.ResultPunishment != Punishment.DNF)
@@ -218,14 +241,17 @@ namespace MessengerTimer {
                 : double.NaN.ToString();
         }
 
-        public void UpdateUI() {
+        public void UpdateUI()
+        {
             Bindings.Update();
             UpdateTotalStatistics();
         }
 
-        private void ConfirmChangeDataGroupButton_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmChangeDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
             string groupName = ChangeDataGroupNameTextBox.Text;
-            if (!String.IsNullOrWhiteSpace(groupName)) {
+            if (!String.IsNullOrWhiteSpace(groupName))
+            {
                 MainPage.allResult.CurrentGroup().GroupName = groupName;
                 MainPage.SaveDataAsync(false);
             }
@@ -235,20 +261,44 @@ namespace MessengerTimer {
             ChangeDataGroupNameButton.Flyout.Hide();
         }
 
-        private void ConfirmMergeDataGroupButton_Click(object sender, RoutedEventArgs e) {
+        private void ConfirmMergeDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
             ResultGroup resultGroup = MergeTargetGroupComboBox.SelectedItem as ResultGroup;
-            if (resultGroup == MainPage.allResult.CurrentGroup()) {
+            if (resultGroup == MainPage.allResult.CurrentGroup())
+            {
                 ShowAlertDialogAsync("You need to merge two different groups!");
                 goto End;
             }
-            if (resultGroup is null) {
+            if (resultGroup is null)
+            {
                 ShowAlertDialogAsync("Please selete target group!");
                 goto End;
             }
             App.MainPageInstance.MergeResultGroup(resultGroup);
 
-            End:
+        End:
             MergeDataGroupNameButton.Flyout.Hide();
+        }
+
+        private async void ClearDataGroupButton_Click(object sender, RoutedEventArgs e)
+        {
+            var confirmDialog = new ContentDialog()
+            {
+                Title = "Do you really want to erase this group?",
+                Content = "This cannot be undo.",
+                PrimaryButtonText = "No",
+                SecondaryButtonText = "Yes",
+                DefaultButton = ContentDialogButton.Primary
+            };
+            var result = await confirmDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Secondary)
+            {
+                ResultGroup resultGroup = MainPage.allResult.CurrentGroup();
+                resultGroup.Results.Clear();
+                Results.Clear();
+                MainPage.SaveDataAsync(true);
+            }
         }
     }
 }
