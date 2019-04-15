@@ -1,0 +1,10 @@
+MessengerTimer 是一款UWP魔方计时器，拥有实用的功能和优美的外观。自2018年春节至同年五月份，开发工作已完成大半，停滞两个月后又进行了后期的完善。紧接着就进入了长达半年多的Logo设计步骤，由于某人在Logo设计上的辛勤劳作和精雕细琢，MessengerTimer在历经长达14.5个月打磨后终于面世。
+MessengerTimer拥有基本的魔方计时功能，使用空格键开始/暂停；包含2~7阶魔方的打乱公式生成；包含基本的成绩统计和记录功能。
+其包含Algdb.net的快捷访问（导航栏倒数第三个），可拖动的打乱图案，支持滚轮切换打乱（鼠标置于打乱公式上时），可以把某一成绩列表合并到当前列表。
+可选的设置直接去摸索即可，有两个快捷键：Esc，停止当前动作，比如在观察中，找不到十字想放弃这把，按Esc即可退出计时状态；Ctrl + D，删除上一次的成绩，比如自以为sub11的我突然爆出了15的PW(Personal Worst)，优雅迅速地按下Ctrl + D，就当无事发生。
+背景图片是每日必应壁纸，壁纸和algdb需要网络支持。背景可以改为纯色或调整透明度。
+
+MessengerTimer is a Rubik's Cube Timer on the UWP platform. It's use- and beauti-, ful. From the Spring Festival of 2018 to May of the same year, most of the developing work had been done. After two months of relaxing, we improve the timer further. Then is the long-term Logo design process. Because of somebody's hard working, after the polishing for 14.5 months, MessengerTimer finally comes out.
+MessengerTimer has basic cuber timing functions; 2~7 order cube scramble generation; contains basic statistics and storing function.
+It includes a quick access to Algdb.net (the third in the navigation bar), a draggable scramble frame, and support using Wheel Up/Down to change scrambles(when the mouse is placed on the scramble formula), you can merge a result list to the current list.
+If you want to know about hotkeys, copy the Chinese description above and ask google.
