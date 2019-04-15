@@ -112,9 +112,9 @@
                     </Grid.RowDefinitions>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" MinWidth="220" />
+                        <ColumnDefinition Width="*" MinWidth="220"/>
+                        <ColumnDefinition Width="*" MinWidth="220"/>
                     </Grid.ColumnDefinitions>
 
                     <Frame Name="ScrambleFrame"
@@ -132,7 +132,7 @@
                            Background="Transparent"
                            Visibility="{x:Bind appSettings.ScrambleFrameVisibility, Mode=OneWay}" />
 
-                    <!--<TextBlock Name="TestTTB" FontSize="30" />-->
+                    <!--<TextBlock Name="TestTTB" FontSize="30" Foreground="Red" />-->
 
                     <RelativePanel Name="ScrambleRelativePanel"
                                    Grid.ColumnSpan="3"
@@ -188,17 +188,17 @@
                     </RelativePanel>
 
                     <TextBlock Name="StatusTextBlock"
-                               Grid.Column="2"
+                               Grid.ColumnSpan="3"
                                Grid.Row="1"
                                Margin="0 35 0 0"
-                               HorizontalAlignment="Center"
+                               HorizontalAlignment="Right"
                                VerticalAlignment="Top"
                                Style="{StaticResource MainPageLargerTextBlock}"
                                Text="{x:Bind TimerStatus}" />
 
-                    <StackPanel HorizontalAlignment="Center"
+                    <StackPanel HorizontalAlignment="Left"
                                 Grid.Row="1"
-                                Grid.Column="0"
+                                Grid.ColumnSpan="3"
                                 Name="AverageStackPanel"
                                 Visibility="{x:Bind appSettings.AverageTextVisibility, Mode=OneWay}"
                                 Margin="0 35 100 0">
@@ -229,7 +229,7 @@
                                Margin="0 35 0 0"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Center"
-                               Grid.Column="1"
+                               Grid.ColumnSpan="3"
                                Style="{StaticResource MainPageLargerTextBlock}" />
                 </Grid>
             </Grid>
