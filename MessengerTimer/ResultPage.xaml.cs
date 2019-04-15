@@ -173,6 +173,7 @@ namespace MessengerTimer {
         }
 
         private async void AddResultButton_Click(object sender, RoutedEventArgs e) {
+            DBT.Text = SomeSeparator.ActualWidth.ToString();
             EditTextBox.Text = String.Empty;
             NonePunishmentRadioButton.IsChecked = true;
 

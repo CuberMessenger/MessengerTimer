@@ -12,8 +12,6 @@
                x:Key="ResultText">
             <Setter Property="FontSize"
                     Value="24" />
-            <Setter Property="Margin"
-                    Value="20 0 0 0" />
             <Setter Property="HorizontalAlignment"
                     Value="Center" />
         </Style>
@@ -332,21 +330,24 @@
 
             <TextBlock Text="Id"
                        Style="{StaticResource NormalText}"
-                       Margin="30 0 0 0"
-                       HorizontalAlignment="Left"
+                       HorizontalAlignment="Center"
                        Grid.Column="0" />
             <TextBlock Text="Result"
                        Style="{StaticResource NormalText}"
-                       Margin="0"
-                       HorizontalAlignment="Left"
+                       HorizontalAlignment="Center"
                        Grid.Column="1" />
             <TextBlock Text="Ao5"
                        Style="{StaticResource NormalText}"
-                       Margin="0"
-                       HorizontalAlignment="Left"
+                       HorizontalAlignment="Center"
                        Grid.Column="2" />
             <TextBlock Text="Ao12"
                        Style="{StaticResource NormalText}"
+                       HorizontalAlignment="Center"
+                       Grid.Column="3" />
+            <TextBlock Text=""
+                       Foreground="Red"
+                       Style="{StaticResource NormalText}"
+                       Name="DBT"
                        Margin="0"
                        HorizontalAlignment="Left"
                        Grid.Column="3" />
@@ -356,46 +357,39 @@
                              Padding="0 5" />
 
         <ListView Name="ResultListView"
-                  Width="Auto"
+                  Width="{x:Bind SomeSeparator.ActualWidth, Mode=OneWay}"
                   ItemsSource="{x:Bind Results, Mode=OneWay}"
                   SelectionMode="Single"
                   Grid.Row="8">
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="data:Result">
-                    <Grid Margin="0 0 15 0"
+                    <Grid Margin="-12 0 0 0"
                           RightTapped="Grid_RightTapped"
-                          Width="Auto"
+                          Width="388"
                           Background="Transparent">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Name="ResultIdTextBlock"
                                    Text="{x:Bind Id, Mode=OneWay }"
                                    Style="{StaticResource ResultText}"
-                                   Grid.Column="0"
-                                   HorizontalAlignment="Left" />
+                                   Grid.Column="0"/>
                         <TextBlock Name="ResultTextBlock"
                                    Text="{x:Bind ResultString, Mode=OneWay}"
                                    Style="{StaticResource ResultText}"
-                                   Grid.Column="1"
-                                   HorizontalAlignment="Left"
-                                   Padding="15 0 0 0" />
+                                   Grid.Column="1"/>
                         <TextBlock Name="ResultAo5TextBlock"
                                    Text="{x:Bind Ao5String, Mode=OneWay}"
                                    Style="{StaticResource ResultText}"
-                                   Grid.Column="2"
-                                   HorizontalAlignment="Left"
-                                   Padding="0 0 0 0" />
+                                   Grid.Column="2"/>
                         <TextBlock Name="ResultAo12TextBlock"
                                    Text="{x:Bind Ao12String, Mode=OneWay}"
                                    Style="{StaticResource ResultText}"
-                                   Grid.Column="3"
-                                   HorizontalAlignment="Left"
-                                   Padding="12 0 0 0" />
+                                   Grid.Column="3"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
