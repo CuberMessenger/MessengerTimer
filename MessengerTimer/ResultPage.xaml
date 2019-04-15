@@ -140,7 +140,7 @@
             </Button>
 
             <Button Name="ChangeDataGroupNameButton"
-                    Content="&#xE75C;"
+                    Content="&#xE70F;"
                     FontFamily="Segoe MDL2 Assets"
                     FontSize="24"
                     Style="{StaticResource ButtonRevealStyle}"
@@ -167,6 +167,17 @@
                     </Flyout>
                 </Button.Flyout>
             </Button>
+
+            <Button Name="ClearDataGroupButton"
+                    Content="&#xE75C;"
+                    FontFamily="Segoe MDL2 Assets"
+                    FontSize="24"
+                    Style="{StaticResource ButtonRevealStyle}"
+                    Margin="5 0"
+                    Click="ClearDataGroupButton_Click">
+                
+            </Button>
+                
 
             <Button Name="DeleteCurrentDataGroupButton"
                     Content="&#xE74D;"
@@ -394,5 +405,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
     </Grid>
 </Page>

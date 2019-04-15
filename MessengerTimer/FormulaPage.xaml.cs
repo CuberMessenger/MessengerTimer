@@ -28,7 +28,12 @@ namespace MessengerTimer
     {
         public FormulaPage()
         {
-            this.InitializeComponent();            
+            this.InitializeComponent();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            FormulaWebView.Navigate(new Uri("http://algdb.net/"));
         }
     }
 }
