@@ -178,7 +178,7 @@
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
     <Content Include="PrivacyPolicy\css\style.css" />
-    <Content Include="PrivacyPolicy\PrivacyPolicy.html" />
+    <Content Include="PrivacyPolicy\index.html" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
