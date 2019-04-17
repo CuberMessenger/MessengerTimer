@@ -177,8 +177,8 @@
     <Content Include="Assets\Wide310x150Logo.scale-100.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
     <Content Include="Assets\Wide310x150Logo.scale-400.png" />
-    <Content Include="PrivacyPolicy\css\style.css" />
-    <Content Include="PrivacyPolicy\index.html" />
+    <Content Include="css\style.css" />
+    <Content Include="index.html" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +231,9 @@
       <Project>{adf3b14c-45aa-47fb-8bc9-15a86d89df49}</Project>
       <Name>TNoodle.NET</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PrivacyPolicy\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
