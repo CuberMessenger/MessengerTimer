@@ -176,15 +176,15 @@ namespace MessengerTimer.DataModels {
             }
         }
 
-        public ApplicationDataContainer LocalSettings { get; set; }
+        public ApplicationDataContainer RoamingSettings { get; set; }
 
-        public AppSettings() => LocalSettings = ApplicationData.Current.LocalSettings;
+        public AppSettings() => RoamingSettings = ApplicationData.Current.RoamingSettings;
 
-        private void SaveSettings(string key, object value) => LocalSettings.Values[key] = value;
+        private void SaveSettings(string key, object value) => RoamingSettings.Values[key] = value;
 
         private T ReadSettings<T>(string key, T defaultValue) {
-            if (LocalSettings.Values.ContainsKey(key)) {
-                return (T)LocalSettings.Values[key];
+            if (RoamingSettings.Values.ContainsKey(key)) {
+                return (T)RoamingSettings.Values[key];
             }
             if (null != defaultValue) {
                 return defaultValue;
